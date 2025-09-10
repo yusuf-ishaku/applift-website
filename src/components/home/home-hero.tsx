@@ -9,7 +9,7 @@ const HomeHero = () => {
           <div className="flex flex-col items-center gap-[40px] max-w-[858px] min-h-[218px] mx-auto">
             <div className="flex items-center flex-col gap-[28px]">
               <h2 className="font-medium text-[48px] leading-[60px] text-[#FAFAFA]">
-                Software Solutions That Drive Growth
+                Software Solutions That Drive Growth!
               </h2>
               <p className="text-[18px] leading-[23px] text-center text-[#E6E6E6]">
                 From strategy to execution, we build digital products that solve
