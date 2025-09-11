@@ -19,7 +19,7 @@ const cards: Card[] = [
     ],
   },
   {
-    title: "UX Audits & Improvements",
+    title: "UX Audits & Improvements.",
     items: [
       "Full UX/UI audits & usability reports",
       "Actionable fixes for retention & conversion",
