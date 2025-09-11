@@ -319,114 +319,113 @@ body {
   }
 }
 
-/* Basic editor styles */
-.tiptap {
-  :first-child {
-    margin-top: 0;
-  }
+@layer components {
+  /* Basic editor styles */
+  .tiptap {
+    :first-child {
+      margin-top: 0;
+    }
 
-  h1 {
-    @apply scroll-m-20 text-4xl font-extrabold tracking-tight text-balance;
-  }
+    h1 {
+      @apply scroll-m-20 text-4xl font-extrabold tracking-tight text-balance;
+    }
 
-  h2 {
-    /* @apply border-b */
-    @apply scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0;
-  }
+    h2 {
+      /* @apply border-b */
+      @apply scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0;
+    }
 
-  h3 {
-    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
-  }
+    h3 {
+      @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+    }
 
-  h4 {
-    @apply scroll-m-20 text-xl font-semibold tracking-tight;
-  }
+    h4 {
+      @apply scroll-m-20 text-xl font-semibold tracking-tight;
+    }
 
-  p {
-    @apply leading-7 [&:not(:first-child)]:mt-6;
-  }
+    p {
+      @apply leading-7 [&:not(:first-child)]:mt-6;
+    }
 
-  blockquote {
-    @apply mt-6 border-l-2 pl-6 italic;
-  }
+    blockquote {
+      @apply mt-6 border-l-2 pl-6 italic;
+    }
 
-  table {
-    @apply w-full border-collapse;
-  }
+    table {
+      @apply w-full border-collapse;
+    }
 
-  thead tr {
-    @apply border-t even:bg-muted m-0 p-0;
-  }
+    thead tr {
+      @apply border-t even:bg-muted m-0 p-0;
+    }
 
-  th {
-    @apply border px-4 py-2 text-left font-bold;
-  }
+    th {
+      @apply border px-4 py-2 text-left font-bold;
+    }
 
-  tbody tr {
-    @apply border-t even:bg-muted m-0 p-0;
-  }
+    tbody tr {
+      @apply border-t even:bg-muted m-0 p-0;
+    }
 
-  td {
-    @apply border px-4 py-2 text-left;
-  }
+    td {
+      @apply border px-4 py-2 text-left;
+    }
 
-  /* Utility for alignment variants (mimics the [&[align=center]] and [&[align=right]] logic) */
-  th[align="center"],
-  td[align="center"] {
-    @apply text-center;
-  }
+    /* Utility for alignment variants (mimics the [&[align=center]] and [&[align=right]] logic) */
+    th[align="center"],
+    td[align="center"] {
+      @apply text-center;
+    }
 
-  th[align="right"],
-  td[align="right"] {
-    @apply text-right;
-  }
+    th[align="right"],
+    td[align="right"] {
+      @apply text-right;
+    }
 
-  ul {
-    @apply list-disc;
-  }
+    ul {
+      @apply list-disc;
+    }
 
-  ol {
-    @apply list-decimal;
-  }
+    ol {
+      @apply list-decimal;
+    }
 
-  ul,
-  ol {
-    @apply my-6 ml-6 [&>li]:mt-2;
-  }
+    ul,
+    ol {
+      @apply my-6 ml-6 [&>li]:mt-2;
+    }
 
-  code {
-    @apply bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
-  }
+    code {
+      @apply bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+    }
 
-  p:first-of-type {
-    @apply text-muted-foreground text-xl;
-  }
+    p:first-of-type {
+      @apply text-muted-foreground text-xl;
+    }
 
-  small {
-    @apply text-sm leading-none font-medium;
-  }
+    small {
+      @apply text-sm leading-none font-medium;
+    }
 
-  pre {
-    background: var(--black);
-    border-radius: 0.5rem;
-    color: var(--white);
-    font-family: "JetBrainsMono", monospace;
-    margin: 1.5rem 0;
-    padding: 0.75rem 1rem;
-  }
+    pre {
+      background: var(--black);
+      border-radius: 0.5rem;
+      color: var(--white);
+      font-family: "JetBrainsMono", monospace;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+    }
 
-  hr {
-    @apply bg-border shrink-0 h-px w-full;
+    hr {
+      @apply bg-border shrink-0 h-px w-full;
+    }
+  }
+  .hero {
+    background-image: linear-gradient(180deg, #00060a, #00111e);
+    @apply box-border rounded-[20px] min-h-[468px];
   }
 }
 
 * {
   /*@apply border border-red-500 border-solid;*/
-}
-
-@layer components {
-  .hero {
-    background-image: linear-gradient(180deg, #00060a, #00111e);
-    @apply box-border rounded-[20px] min-h-[468px];
-  }
 }

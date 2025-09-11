@@ -82,7 +82,7 @@ const WhatWeDo = () => {
 
   return (
     <>
-      <div className="mt-[80px]">
+      <div className="mt-[80px] hidden lg:block">
         <div>
           <div className="box-borer flex items-center justify-center py-[16px] px-[33px] gap-[10px] w-[202px] mx-auto rounded-[30px] bg-[#00060A]">
             <h4 className="font-medium text-[20px] leading-[25px] text-center text-[#B3D1E9]">
@@ -93,7 +93,7 @@ const WhatWeDo = () => {
             <div className="absolute size-full -bottom-2">
               {distance && (
                 <div
-                  className="mx-auto rounded-full scale-110 bg-background flex items-center justify-center"
+                  className="mx-auto hidden lg:block rounded-full scale-110 bg-background flex items-center justify-center"
                   style={{
                     height: `${distance}px`,
                     width: `${distance}px`,

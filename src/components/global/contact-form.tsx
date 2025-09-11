@@ -5,7 +5,7 @@ import { ContactFormEclipse } from "../svgs";
 const ContactForm = () => {
   return (
     <>
-      <div>
+      <div className="hidden lg:block">
         <div className="grid grid-cols-2 items-start gap-[41px]">
           <div className="flex flex-col items-start gap-[64px] relative">
             <ContactFormEclipse className="absolute -top-[45%] -left-1/4 animate-pulse duration-1000" />

@@ -39,7 +39,7 @@ const clients: Client[] = [
 const TargetClients = () => {
   return (
     <>
-      <div className="mt-[100px]">
+      <div className="mt-[100px] hidden lg:block">
         <div className="grid grid-cols-2">
           <div
             className="bg-center bg-no-repeat bg-contain size-[496px]"

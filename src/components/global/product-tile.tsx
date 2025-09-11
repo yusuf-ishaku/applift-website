@@ -26,8 +26,8 @@ const StatGrid = ({
     value: string;
   }
 >) => (
-  <div className="flex items-center gap-[56px]">
-    <div className="basis-[20%] flex flex-col items-start gap-[16px]">
+  <div className="grid grid-cols-2 lg:flex items-center gap-[56px]">
+    <div className="lg:basis-[20%] flex flex-col items-start gap-[16px]">
       <p className="text-[16px] leading-[20px] text-center text-white">
         {item1.title}
       </p>
@@ -35,7 +35,7 @@ const StatGrid = ({
         {item1.value}
       </p>
     </div>
-    <div className="basis-[60%] flex flex-col items-start gap-[16px] border-x-[#012D51] border-solid border-x-2 px-8">
+    <div className="lg:basis-[60%] flex flex-col items-start gap-[16px] border-x-[#012D51] border-solid border-x-2 px-8">
       <p className="text-[16px] leading-[20px] text-center text-white">
         {item2.title}
       </p>
@@ -43,7 +43,7 @@ const StatGrid = ({
         {item2.value}
       </p>
     </div>
-    <div className="basis-[20%] flex flex-col items-start gap-[16px]">
+    <div className="col-span-2 lg:basis-[20%] flex flex-col items-start gap-[16px]">
       <p className="text-[16px] leading-[20px] text-center text-white">
         {item3.title}
       </p>
@@ -57,8 +57,8 @@ const StatGrid = ({
 const ProductTile = ({ product }: { product: Product }) => {
   return (
     <>
-      <div className="flex items-center gap-[57px] max-w-[1342px]">
-        <div className="w-[642px] h-[428px] bg-[#CCE0F0] rounded-[10px]">
+      <div className="flex flex-col lg:flex-row items-center gap-[57px] max-w-[1342px]">
+        <div className="lg:w-[642px] h-[428px] bg-[#CCE0F0] rounded-[10px]">
           <img
             src={product.image}
             draggable={false}
@@ -80,8 +80,8 @@ const ProductTile = ({ product }: { product: Product }) => {
                 </Badge>
               ))}
             </div>
-            <Separator className="!bg-[#012D51] !w-[620px]" />
-            <div className="flex flex-col gap-[64px]">
+            <Separator className="!bg-[#012D51] lg:!w-[620px]" />
+            <div className="flex flex-col gap-y-10 lg:gap-y-[64px] w-full">
               <StatGrid
                 item1={{
                   title: "Time to MVP",

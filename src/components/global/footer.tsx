@@ -122,7 +122,7 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="dark:bg-[#00060A] relative flex flex-col gap-[27px] mt-[150px] items-center py-5">
+      <footer className="dark:bg-[#00060A] relative hidden lg:flex flex-col gap-[27px] mt-[150px] items-center py-5">
         <Separator className="bg-[#014883]" />
         <h4 className="font-bold text-[20px] leading-[25px] tracking-[0.79em] uppercase text-[#878787] text-center">
           Turning ideas into real software

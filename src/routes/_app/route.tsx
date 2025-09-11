@@ -11,7 +11,7 @@ function RouteComponent() {
   return (
     <>
       <Navbar />
-      <main className="w-full [&>*]:px-[80px] mt-[32px]">
+      <main className="w-full [&>*]:px-[10px] lg:[&>*]:px-[80px] mt-[32px]">
         <Outlet />
         <ContactForm />
       </main>

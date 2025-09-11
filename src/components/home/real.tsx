@@ -30,9 +30,6 @@ const Real = () => {
             }}
           />
         </div>
-        {/*<div className="max-w-[1280px] mx-auto flex items-center gap-[57px]">
-
-        </div>*/}
       </div>
     </>
   );

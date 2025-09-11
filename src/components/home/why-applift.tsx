@@ -26,7 +26,7 @@ const WhyApplift = () => {
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-4 gap-1 items-center w-full">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-1 items-center w-full">
             {features.map((feat, index) => (
               <div
                 key={feat}

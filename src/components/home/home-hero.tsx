@@ -25,7 +25,7 @@ const HomeHero = () => {
               </Button>
             </div>
           </div>
-          <div className="flex absolute bottom-0 w-full justify-end">
+          <div className="flex absolute top-[10%] lg:bottom-0 w-full justify-end">
             <div
               className="basis-1/2 h-[659px] [background-size:100%] translate-y-[47%] bg-no-repeat"
               style={{
