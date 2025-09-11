@@ -1,6 +1,6 @@
 import companyMembers from "@/assets/images/company-members.png";
 import Branding from "@/components/company/branding";
-import CompanyHero from "@/components/company/hero";
+import CompanyHero from "@/components/company/company-hero";
 import { HowWeWork } from "@/components/company/how-we-work";
 import OurStructure from "@/components/company/our-structure";
 import { Separator } from "@/components/ui/separator";
@@ -13,9 +13,10 @@ export const Route = createFileRoute("/_app/company")({
 function RouteComponent() {
   return (
     <>
-      <div>
-        <CompanyHero />
-        <Branding />
+      {/*<div>*/}
+      <CompanyHero />
+      <Branding />
+      <section>
         <div className="mt-44 max-w-[1077px] mx-auto space-y-[48px]">
           <p className="text-[24px] leading-[30px] text-center text-[#E6E6E6]">
             We believe in collaboration, curiosity, and building with intent.
@@ -40,9 +41,10 @@ function RouteComponent() {
           </p>
           <Separator className="[background-image:linear-gradient(90.38deg,#00111E_18.59%,rgba(141,141,141,0)_105.12%)] !w-[441px] mx-auto" />
         </div>
-        <HowWeWork />
-        <OurStructure />
-      </div>
+      </section>
+      <HowWeWork />
+      <OurStructure />
+      {/*</div>*/}
     </>
   );
 }

@@ -41,7 +41,7 @@ const slots: Slot[] = [
 const WorkHero = () => {
   return (
     <>
-      <div className="mt-[64px] rounded-b-[100px] flex items-center">
+      <div className="mt-[64px] rounded-b-[100px] flex items-center hero pb-24">
         <div className="flex flex-col gap-[24px] max-w-[877px] mx-auto">
           <div className="group mx-auto -space-x-16 min-w-[221.53px] min-h-[211.67px]">
             {slots.map((slot, index) => (

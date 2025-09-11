@@ -5,10 +5,10 @@ const HomeHero = () => {
   return (
     <>
       <div>
-        <div className="box-border [background-image:linear-gradient(270deg,rgba(0,11,20,0.2)_0%,rgba(1,73,132,0)_100%)] rounded-[20px] min-h-[468px] flex items-center relative overflow-y-hidden">
-          <div className="flex flex-col items-center gap-[40px] max-w-[858px] min-h-[218px] mx-auto">
+        <div className="hero flex items-center relative overflow-y-hidden">
+          <div className="flex flex-col items-center gap-[40px] max-w-4xl min-h-[218px] mx-auto">
             <div className="flex items-center flex-col gap-[28px]">
-              <h2 className="font-medium text-[48px] leading-[60px] text-[#FAFAFA]">
+              <h2 className="font-medium text-[48px] leading-[60px] text-[#FAFAFA] text-center">
                 Software Solutions That Drive Growth!
               </h2>
               <p className="text-[18px] leading-[23px] text-center text-[#E6E6E6]">

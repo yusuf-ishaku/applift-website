@@ -74,8 +74,8 @@ const WhatWeDo = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setStep((prev) => (prev + 1) % 5); // 5 steps: 0-4
-    }, 1000); // change every 1s
+      setStep((prev) => (prev + 1) % 5);
+    }, 500);
 
     return () => clearInterval(interval);
   }, []);

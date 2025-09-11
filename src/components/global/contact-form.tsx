@@ -8,7 +8,7 @@ const ContactForm = () => {
       <div>
         <div className="grid grid-cols-2 items-start gap-[41px]">
           <div className="flex flex-col items-start gap-[64px] relative">
-            <ContactFormEclipse className="absolute -top-[45%] -left-1/4" />
+            <ContactFormEclipse className="absolute -top-[45%] -left-1/4 animate-pulse duration-1000" />
             <img
               src={gradientGlass}
               className="w-[217px] h-[232.98px]"
