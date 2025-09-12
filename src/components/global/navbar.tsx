@@ -27,7 +27,7 @@ const links = linkOptions([
 const Navbar = () => {
   return (
     <>
-      <nav className="sticky top-4 z-10">
+      <nav className="sticky top-4 z-50">
         <div className="h-[97px] mt-[41px] mx-[10px] lg:mx-[80px] rounded-[10px] px-[32px] pt-[26px] pb-[27px] flex items-center justify-between border border-solid [border-image-source:linear-gradixent(90.38deg,#00111E_18.59%,rgba(141,141,141,0)_105.12%)] bg-background/80 backdrop-blur-xs">
           <div className="dark:bg-transparent lg:p-1.5 rounded-xl">
             <img
@@ -59,7 +59,7 @@ const Navbar = () => {
                 Start a Project
               </a>
             </Button>
-            <Button size="icon" variant="outline">
+            <Button size="icon" variant="outline" className="lg:hidden">
               <Menu />
             </Button>
           </div>

@@ -1,9 +1,9 @@
-import logoxl from "@/assets/images/logo-xl.png";
-import { socials } from "@/constants/socials";
-import { Link, linkOptions } from "@tanstack/react-router";
+"use client";
+
 import clsx from "clsx";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Separator } from "../ui/separator";
+import { Separator } from "@/components/ui/separator";
+import logoxl from "@/assets/images/logo-xl.png";
 
 function SlantedBox({
   className,
@@ -44,34 +44,49 @@ function SlantedBox({
   return (
     <canvas
       ref={canvasRef}
-      className={clsx("block absolute bottom-0 w-16", className)}
-      style={{ height: `${height - 1}px` }}
+      className={clsx("absolute bottom-0 w-16", className)}
+      style={{ height: `${height - 1.9}px` }}
     />
   );
 }
 
-const links = linkOptions([
+const links = [
   {
-    to: "/blog",
+    href: "/blog",
     label: "Blog",
   },
   {
-    to: "/services" as never,
+    href: "/services",
     label: "Our Services",
   },
   {
-    to: "/about" as never,
+    href: "/about",
     label: "About Us",
   },
   {
-    to: "/privacy-policy" as never,
+    href: "/privacy-policy",
     label: "Privacy Policy",
   },
   {
-    to: "/contact",
+    href: "/contact",
     label: "Contact",
   },
-]);
+];
+
+const socials = [
+  {
+    label: "Twitter",
+    href: "https://twitter.com",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://linkedin.com",
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com",
+  },
+];
 
 const Footer = () => {
   const canvasSeparatorRef = useRef<HTMLDivElement>(null);
@@ -122,50 +137,63 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="dark:bg-[#00060A] relative hidden lg:flex flex-col gap-[27px] mt-[150px] items-center py-5">
+      <footer className="dark:bg-[#00060A] relative flex flex-col gap-y-4 lg:gap-[27px] mt-[150px] items-center py-5">
         <Separator className="bg-[#014883]" />
-        <h4 className="font-bold text-[20px] leading-[25px] tracking-[0.79em] uppercase text-[#878787] text-center">
+        <h4 className="font-bold text-sm sm:text-base lg:text-[20px] leading-[25px] tracking-[0.2em] sm:tracking-[0.4em] lg:tracking-[0.79em] uppercase text-[#878787] text-center px-4">
           Turning ideas into real software
         </h4>
         <Separator ref={secondSeparatorRef} className="bg-[#014883]" />
-        <img src={logoxl} draggable={false} className="w-[142.14px]" />
+        <img
+          src={logoxl}
+          draggable={false}
+          className="w-24 sm:w-32 lg:w-[142.14px]"
+          alt="Applift Labs Logo"
+        />
         <Separator className="bg-[#014883]" ref={thirdSeparatorRef} />
-        <div className="flex items-center gap-[96px]">
+        <div className="flex items-center justify-center flex-wrap gap-4 sm:gap-8 lg:gap-[96px] px-4">
           {links.map((link) => (
-            <Link
+            <a
               key={link.label}
-              to={link.to}
-              className="text-[20px] leading-[25px] text-[#1A1A1A] dark:text-[#E6E6E6]"
+              href={link.href}
+              className="text-sm sm:text-base lg:text-[20px] leading-[25px] text-[#1A1A1A] dark:text-[#E6E6E6] text-center hover:opacity-80 transition-opacity"
             >
               {link.label}
-            </Link>
+            </a>
           ))}
         </div>
         <Separator ref={canvasSeparatorRef} className="bg-[#014883]" />
-        <div className="flex items-center gap-[96px]">
+        <div className="flex items-center justify-center flex-wrap gap-4 sm:gap-8 lg:gap-[96px] px-4">
           {socials.map((link) => (
-            <Link
+            <a
               key={link.label}
-              to={link.to}
-              className="text-[20px] leading-[25px] text-[#1A1A1A] dark:text-[#E6E6E6]"
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm sm:text-base lg:text-[20px] leading-[25px] text-[#1A1A1A] dark:text-[#E6E6E6] text-center hover:opacity-80 transition-opacity"
             >
               {link.label}
-            </Link>
+            </a>
           ))}
         </div>
         <Separator
           ref={fifthSeparatorRef}
           className="bg-[#014883] !w-[calc(100%-theme(spacing.80))]"
         />
-        <p className="text-[14px] leading-[18px] text-[#878787]">
+        <p className="text-xs sm:text-sm lg:text-[14px] leading-[18px] text-[#878787] text-center">
           © 2025 Applift Labs
         </p>
 
-        {/* SECTION CANVASES  */}
+        {/* SECTION CANVASES */}
         {distances.canvas && (
           <>
-            <SlantedBox className="left-0" height={distances.canvas} />
-            <SlantedBox className="right-0" height={distances.canvas} />
+            <SlantedBox
+              className="left-0 sm:left-4 lg:left-0 hidden lg:block"
+              height={distances.canvas}
+            />
+            <SlantedBox
+              className="right-0 sm:right-4 lg:right-0 hidden lg:block"
+              height={distances.canvas}
+            />
           </>
         )}
 
@@ -173,11 +201,11 @@ const Footer = () => {
         {distances.second && (
           <>
             <div
-              className="bg-[#014883] absolute w-[1px] bottom-0 left-16"
+              className="hidden lg:block bg-[#014883] absolute w-[1px] bottom-0 left-4 sm:left-8 lg:left-16"
               style={{ height: `${distances.second}px` }}
             />
             <div
-              className="bg-[#014883] absolute w-[1px] bottom-0 right-16"
+              className="hidden lg:block bg-[#014883] absolute w-[1px] bottom-0 right-4 sm:right-8 lg:right-16"
               style={{ height: `${distances.second}px` }}
             />
           </>
@@ -187,11 +215,11 @@ const Footer = () => {
         {distances.third && (
           <>
             <div
-              className="bg-[#014883] absolute w-[1px] bottom-0 left-40"
+              className="hidden lg:block bg-[#014883] absolute w-[1px] bottom-0 left-8 sm:left-16 lg:left-40"
               style={{ height: `${distances.third + 0.25}px` }}
             />
             <div
-              className="bg-[#014883] absolute w-[1px] bottom-0 right-40"
+              className="hidden lg:block bg-[#014883] absolute w-[1px] bottom-0 right-8 sm:right-16 lg:right-40"
               style={{ height: `${distances.third + 0.25}px` }}
             />
           </>
@@ -201,11 +229,11 @@ const Footer = () => {
         {distances.fifth && (
           <>
             <div
-              className="bg-[#014883] absolute w-[1px] bottom-0 left-80"
+              className="hidden lg:block bg-[#014883] absolute w-[1px] bottom-0 left-12 sm:left-24 lg:left-80"
               style={{ height: `${distances.fifth + 0.25}px` }}
             />
             <div
-              className="bg-[#014883] absolute w-[1px] bottom-0 right-80"
+              className="hidden lg:block bg-[#014883] absolute w-[1px] bottom-0 right-12 sm:right-24 lg:right-80"
               style={{ height: `${distances.fifth + 0.25}px` }}
             />
           </>

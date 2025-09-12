@@ -82,7 +82,7 @@ const WhatWeDo = () => {
 
   return (
     <>
-      <div className="mt-[80px] hidden lg:block">
+      <div className="mt-[80px]">
         <div>
           <div className="box-borer flex items-center justify-center py-[16px] px-[33px] gap-[10px] w-[202px] mx-auto rounded-[30px] bg-[#00060A]">
             <h4 className="font-medium text-[20px] leading-[25px] text-center text-[#B3D1E9]">
@@ -90,16 +90,16 @@ const WhatWeDo = () => {
             </h4>
           </div>
           <div className="min-h-[689px] mt-[36px] relative">
-            <div className="absolute size-full -bottom-2">
+            <div className="absolute -z-10 lg:z-10 opacity-30 lg:opacity-100 size-full bottom-0 flex items-center">
               {distance && (
                 <div
-                  className="mx-auto hidden lg:block rounded-full scale-110 bg-background flex items-center justify-center"
+                  className="mx-auto rounded-full h-full lg:scale-[115%] lg:bg-background flex items-center justify-center translate-y-1"
                   style={{
                     height: `${distance}px`,
                     width: `${distance}px`,
                   }}
                 >
-                  <div className="rounded-full size-[73%] border-border border-solid border flex items-center justify-center">
+                  <div className="rounded-full size-[73%] border-border border-solid lg:border flex items-center justify-center">
                     <div
                       className={clsx(
                         "rounded-full size-[202px] flex items-center justify-center transition-colors duration-500",
@@ -136,13 +136,13 @@ const WhatWeDo = () => {
                   </div>
                 </div>
               )}
-              <Separator className="absolute top-[47.8%]" />
+              <Separator className="absolute top-[50%] hidden lg:block" />
               <Separator
-                className="absolute left-[calc(50%)] h-full z-10 top-0"
+                className="absolute left-[calc(50%)] h-full z-10 top-0 hidden lg:block"
                 orientation="vertical"
               />
             </div>
-            <div className="h-full grid grid-cols-2 grid-rows-2 gap-y-[66.5px] gap-x-[220.5px]">
+            <div className="h-full grid lg:grid-cols-2 gap-y-10 lg:gap-y-[66.5px] lg:gap-x-[220.5px]">
               {cards.map((card, index) => (
                 <div
                   key={index}
@@ -153,29 +153,25 @@ const WhatWeDo = () => {
                         ? refB
                         : undefined
                   }
-                  className="group flex even:items-end flex-col gap-y-[36px]"
+                  className="group flex lg:even:items-end flex-col gap-y-4 lg:gap-y-[36px]"
                 >
-                  <h5 className="font-medium text-[32px] leading-[40px] text-white">
+                  <h5 className="font-medium text-2xl sm:text-3xl md:text-[32px] leading-snug sm:leading-normal md:leading-[40px] text-white">
                     {card.title}
                   </h5>
                   <div
                     className={clsx(
-                      "w-[500.63px] bg-[#00111E] flex group-even:justify-end group-[&:nth-child(-n+2)]:items-start group-[&:nth-child(n+3):nth-child(-n+4)]:items-end",
-                      "group-odd:pr-0 group-even:pl-0 p-[24px] group-[&:nth-child(-n+2)]:pb-[53.5px] group-[&:nth-child(n+3)]:pt-[28px]",
-                      // "group-[&:nth-child(1)]:[clip-path:path('M0_0H418H500.626C445.5_8_315.507_138.985_327.5_250.5H0V0Z')]",
-                      // "group-[&:nth-child(2)]:[clip-path:path('M501.5_0H83.5003H0.874023C56_8_184.994_138.985_173_250.5H501.5V0Z')]",
-                      // "group-[&:nth-child(3)]:[clip-path:path('M0_234H365H529.5C329.5_156.5_329.5_0_329.5_0H0V234Z')]",
-                      // "group-[&:nth-child(4)]:[clip-path:path('M529.5_234H164.5H0C189_137_190.5_0_190.5_0H529.5V234Z')]",
+                      "lg:w-[500.63px] lg:bg-[#00111E] h-full flex lg:group-even:justify-end group-[&:nth-child(-n+2)]:items-start lg:group-[&:nth-child(n+3):nth-child(-n+4)]:items-end",
+                      "lg:group-odd:pr-0 lg:group-even:pl-0 md:p-[24px] lg:group-[&:nth-child(-n+2)]:pb-[53.5px] lg:group-[&:nth-child(n+3)]:pt-[28px]",
                     )}
                   >
-                    <div className="w-[307px] flex flex-col items-start gap-[24px]">
+                    <div className="lg:w-[307px] flex flex-col items-start gap-[24px]">
                       {card.items.map((item, index) => (
                         <div
                           key={index}
-                          className="flex group-even:flex-row-reverse items-start gap-[16px] w-full"
+                          className="flex lg:group-even:flex-row-reverse items-start gap-[16px] w-full"
                         >
                           <Circle className="size-[12px] fill-[#67A2D3] stroke-[#67A2D3] translate-y-1.5" />
-                          <div className="group-even:text-right">{item}</div>
+                          <div className="lg:group-even:text-right">{item}</div>
                         </div>
                       ))}
                     </div>

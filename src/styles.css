@@ -422,7 +422,7 @@ body {
   }
   .hero {
     background-image: linear-gradient(180deg, #00060a, #00111e);
-    @apply box-border rounded-[20px] min-h-[468px];
+    @apply box-border rounded-[20px] min-h-[380px] md:min-h-[468px];
   }
 }
 

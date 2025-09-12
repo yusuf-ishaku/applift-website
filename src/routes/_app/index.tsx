@@ -24,7 +24,7 @@ function RouteComponent() {
         pauseOnHover
         speed={50}
         direction="left"
-        className="[&_div]:ml-[77px] mt-[76px]"
+        className="[&_div:not(:first-child)]:ml-[77px] mt-[76px] [-webkit-mask-image:linear-gradient(to_right,transparent,black_25%,black_75%,transparent)] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:100%_100%] [mask-image:linear-gradient(to_right,transparent,black_25%,black_75%,transparent)] [mask-repeat:no-repeat] [mask-size:100%_100%]"
       >
         <Logo1 />
         <Logo2 />

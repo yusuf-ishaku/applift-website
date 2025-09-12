@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
@@ -19,105 +20,76 @@ const StatGrid = ({
   item1,
   item2,
   item3,
-}: Record<
-  "item1" | "item2" | "item3",
-  {
-    title: string;
-    value: string;
-  }
->) => (
-  <div className="grid grid-cols-2 lg:flex items-center gap-[56px]">
-    <div className="lg:basis-[20%] flex flex-col items-start gap-[16px]">
-      <p className="text-[16px] leading-[20px] text-center text-white">
-        {item1.title}
-      </p>
-      <p className="font-medium text-[24px] leading-[30px] text-center text-white">
-        {item1.value}
-      </p>
-    </div>
-    <div className="lg:basis-[60%] flex flex-col items-start gap-[16px] border-x-[#012D51] border-solid border-x-2 px-8">
-      <p className="text-[16px] leading-[20px] text-center text-white">
-        {item2.title}
-      </p>
-      <p className="font-medium text-[24px] leading-[30px] text-center text-white">
-        {item2.value}
-      </p>
-    </div>
-    <div className="col-span-2 lg:basis-[20%] flex flex-col items-start gap-[16px]">
-      <p className="text-[16px] leading-[20px] text-center text-white">
-        {item3.title}
-      </p>
-      <p className="font-medium text-[24px] leading-[30px] text-center text-white">
-        {item3.value}
-      </p>
-    </div>
+}: Record<"item1" | "item2" | "item3", { title: string; value: string }>) => (
+  <div className="flex flex-col sm:flex-row sm:items-center sm:divide-x sm:divide-[#012D51] gap-6 sm:gap-8 w-full">
+    {[item1, item2, item3].map((item, i) => (
+      <div
+        key={item.title}
+        className={clsx(
+          "flex flex-col items-start gap-2 sm:gap-4 sm:flex-1",
+          i === 1 && "sm:px-6",
+        )}
+      >
+        <p className="text-sm sm:text-base text-white">{item.title}</p>
+        <p className="font-medium text-lg sm:text-2xl text-white">
+          {item.value}
+        </p>
+      </div>
+    ))}
   </div>
 );
 
 const ProductTile = ({ product }: { product: Product }) => {
   return (
-    <>
-      <div className="flex flex-col lg:flex-row items-center gap-[57px] max-w-[1342px]">
-        <div className="lg:w-[642px] h-[428px] bg-[#CCE0F0] rounded-[10px]">
-          <img
-            src={product.image}
-            draggable={false}
-            className="size-full aspect-video rounded-[10px]"
-          />
-        </div>
-        <div className="flex flex-col items-start gap-[56px]">
-          <div className="flex flex-col items-start gap-[24px] ">
-            <h4 className="font-medium text-[32px] leading-[40px] text-[#FAFAFA]">
-              {product.title}
-            </h4>
-            <div className="flex items-center gap-[16px]">
-              {product.tags.map((tag) => (
-                <Badge
-                  className="box-border bg-[rgba(1,45,81,0.2)] rounded-[30px] text-[14px] leading-[20px] text-center text-[#B3D1E9] border border-solid [border-image-source:linear-gradient(90.38deg,#00111E_18.59%,rgba(141,141,141,0)_105.12%)]"
-                  key={tag}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-            <Separator className="!bg-[#012D51] lg:!w-[620px]" />
-            <div className="flex flex-col gap-y-10 lg:gap-y-[64px] w-full">
-              <StatGrid
-                item1={{
-                  title: "Time to MVP",
-                  value: product.timeToMVP,
-                }}
-                item2={{
-                  title: "Industry",
-                  value: product.industry,
-                }}
-                item3={{
-                  title: "Platform",
-                  value: product.platform1,
-                }}
-              />
-              <StatGrid
-                item1={{
-                  title: "Satisfaction",
-                  value: product.satisfaction,
-                }}
-                item2={{
-                  title: "Platform",
-                  value: product.platform2,
-                }}
-                item3={{
-                  title: "Raised",
-                  value: product.raised,
-                }}
-              />
-            </div>
-          </div>
-          <Button className="[box-shadow:4px_4px_5px_0px_#014883E5_inset] rounded-[10px] box-border bg-[#0264B5] border border-solid border-[#014883] text-[14px] leading-[18px] font-medium text-white backdrop-blur-3xl">
-            Open Website
-          </Button>
-        </div>
+    <div className="flex flex-col lg:flex-row items-center gap-10 lg:!gap-8 !border-yellow-500">
+      {/* Image */}
+      <div className="w-full basis-1/2 h-[486px] lg:w-[598px] /h-auto bg-[#CCE0F0] rounded-[10px] overflow-hidden">
+        <img
+          src={product.image}
+          draggable={false}
+          className="w-full h-full object-cover aspect-video rounded-[10px]"
+        />
       </div>
-    </>
+
+      {/* Details */}
+      <div className="flex basis-1/2 flex-col items-start gap-8 lg:gap-14 w-full px-0 lg:px-0 !border-green-500">
+        <div className="flex flex-col items-start gap-6 w-full">
+          <h4 className="font-medium text-2xl sm:text-3xl lg:text-[32px] lg:leading-[40px] text-[#FAFAFA]">
+            {product.title}
+          </h4>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {product.tags.map((tag) => (
+              <Badge
+                key={tag}
+                className="bg-[rgba(1,45,81,0.2)] rounded-[30px] text-xs sm:text-sm text-[#B3D1E9] border border-[#00111E]/40"
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+
+          <Separator className="!bg-[#012D51] w-full" />
+
+          <div className="flex flex-col gap-8 lg:gap-16 w-full">
+            <StatGrid
+              item1={{ title: "Time to MVP", value: product.timeToMVP }}
+              item2={{ title: "Industry", value: product.industry }}
+              item3={{ title: "Platform", value: product.platform1 }}
+            />
+            <StatGrid
+              item1={{ title: "Satisfaction", value: product.satisfaction }}
+              item2={{ title: "Platform", value: product.platform2 }}
+              item3={{ title: "Raised", value: product.raised }}
+            />
+          </div>
+        </div>
+
+        <Button className="[box-shadow:4px_4px_5px_0px_#014883E5_inset] rounded-[10px] bg-[#0264B5] border border-[#014883] text-sm sm:text-base font-medium text-white">
+          Open Website
+        </Button>
+      </div>
+    </div>
   );
 };
 
