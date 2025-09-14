@@ -10,7 +10,7 @@ const HomeHero = () => {
             <div className="flex items-center flex-col gap-[28px]">
               <div className="flex flex-col gap-6 sm:gap-7">
                 <h2 className="font-medium text-3xl sm:text-4xl md:text-5xl text-[#FAFAFA] text-center">
-                  Software Solutions That Drive Growth!
+                  Software Solutions That Drive Growth.
                 </h2>
                 <p className="text-base sm:text-lg leading-relaxed text-[#E6E6E6] text-center">
                   From strategy to execution, we build digital products that
