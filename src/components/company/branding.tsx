@@ -1,3 +1,5 @@
+// TODO DEAL WITH THIS!!!
+
 import clsx from "clsx";
 import { useLayoutEffect, useRef, useState, type FC } from "react";
 import { BrandingSvg } from "../svgs";
@@ -96,7 +98,7 @@ const Block: FC<{ block: BlockT; index: number }> = ({ block, index }) => {
 const Branding = () => {
   return (
     <>
-      <div className="flex justify-center items-center gap-[5px] w-[1159px] h-[347px] mt-[132px] mx-auto">
+      <div className="hidden md:flex justify-center items-center gap-[5px] w-[1159px] h-[347px] mt-[132px] mx-auto">
         {blocks.map((block, index) => (
           <Block block={block} index={index} key={index} />
         ))}
