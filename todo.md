@@ -1,1 +1,2 @@
-- Replace Applift logos with SVGs
+- Check figma for comments
+- Make all pages responsive

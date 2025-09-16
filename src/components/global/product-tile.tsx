@@ -41,7 +41,7 @@ const StatGrid = ({
 
 const ProductTile = ({ product }: { product: Product }) => {
   return (
-    <div className="flex flex-col lg:flex-row items-center gap-10 lg:!gap-8 !border-yellow-500">
+    <div className="flex flex-col lg:flex-row items-center gap-10 lg:!gap-8 max-w-dvw">
       {/* Image */}
       <div className="w-full basis-1/2 h-[486px] lg:w-[598px] /h-auto bg-[#CCE0F0] rounded-[10px] overflow-hidden">
         <img
@@ -52,7 +52,7 @@ const ProductTile = ({ product }: { product: Product }) => {
       </div>
 
       {/* Details */}
-      <div className="flex basis-1/2 flex-col items-start gap-8 lg:gap-14 w-full px-0 lg:px-0 !border-green-500">
+      <div className="flex basis-1/2 flex-col items-start gap-8 lg:gap-14 w-full px-0 lg:px-0">
         <div className="flex flex-col items-start gap-6 w-full">
           <h4 className="font-medium text-2xl sm:text-3xl lg:text-[32px] lg:leading-[40px] text-[#FAFAFA]">
             {product.title}

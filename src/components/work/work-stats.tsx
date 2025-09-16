@@ -12,7 +12,7 @@ const stats: Array<{
   },
   {
     value: "50+",
-    title: "Total projects delivered",
+    title: "Projects delivered",
   },
   {
     value: "12",
@@ -22,22 +22,23 @@ const stats: Array<{
 
 const WorkStats = () => {
   return (
-    <>
-      <div className="mt-[64px]">
-        <div className="flex items-center gap-[178px] max-w-[1280px] mx-auto">
-          {stats.map((stat, index) => (
-            <div className="flex flex-col items-center gap-[12px]" key={index}>
-              <h4 className="font-meium text-[48px] leading-[60px] text-center text-[#FAFAFA]">
-                {stat.value}
-              </h4>
-              <p className="text-[20px] leading-[25px] text-center text-[#CFCFCF]">
-                {stat.title}
-              </p>
-            </div>
-          ))}
-        </div>
+    <section className="mt-16 px-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 items-start md:items-center justify-center gap-8 sm:gap-16 /md:gap-[178px] /max-w-7xl mx-auto">
+        {stats.map((stat, index) => (
+          <div
+            key={index}
+            className="flex flex-col justify-around h-full items-center gap-3 text-center flex-1 min-w-[130px]"
+          >
+            <h4 className="font-medium text-3xl sm:text-4xl md:text-5xl leading-tight text-[#FAFAFA]">
+              {stat.value}
+            </h4>
+            <p className="text-base sm:text-lg md:text-xl leading-snug text-[#CFCFCF]">
+              {stat.title}
+            </p>
+          </div>
+        ))}
       </div>
-    </>
+    </section>
   );
 };
 

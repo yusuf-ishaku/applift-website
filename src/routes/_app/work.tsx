@@ -13,7 +13,7 @@ function RouteComponent() {
       <WorkHero />
       <WorkStats />
       <WorkTabs />
-      <div className="mb-64" />
+      <div className="mb-20" />
     </>
   );
 }

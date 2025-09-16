@@ -1181,50 +1181,6 @@ export const OperationsAndPeople = () => {
   );
 };
 
-export const ContactFormEclipse: FC<ComponentProps<"svg">> = (props) => (
-  <svg
-    {...props}
-    width="495"
-    height="792"
-    viewBox="0 0 495 792"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <g filter="url(#filter0_f_457_451)">
-      <circle
-        cx="99"
-        cy="396"
-        r="290.032"
-        stroke="#0264B5"
-        strokeWidth="11.9355"
-      />
-    </g>
-    <defs>
-      <filter
-        id="filter0_f_457_451"
-        x="-297"
-        y="0"
-        width="792"
-        height="792"
-        filterUnits="userSpaceOnUse"
-        colorInterpolationFilters="sRGB"
-      >
-        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="BackgroundImageFix"
-          result="shape"
-        />
-        <feGaussianBlur
-          stdDeviation="50"
-          result="effect1_foregroundBlur_457_451"
-        />
-      </filter>
-    </defs>
-  </svg>
-);
-
 export const AfricanSMEs = () => {
   return (
     <>
