@@ -36,6 +36,40 @@ import {
   LuHeading6,
 } from "react-icons/lu";
 import { Button } from "../ui/button";
+import {
+  Type,
+  LayoutPanelTop,
+  Image,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
+
+const tabs: {
+  label: string;
+  value: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    label: "Formatting",
+    value: "formatting",
+    icon: Type,
+  },
+  {
+    label: "Blocks",
+    value: "blocks",
+    icon: LayoutPanelTop,
+  },
+  {
+    label: "Media",
+    value: "media",
+    icon: Image,
+  },
+  {
+    label: "Actions",
+    value: "actions",
+    icon: Zap,
+  },
+];
 
 const headings = [
   {
@@ -102,11 +136,17 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
 
   return (
     <Tabs defaultValue="formatting" className="mb-2">
-      <TabsList>
-        <TabsTrigger value="formatting">Formatting</TabsTrigger>
-        <TabsTrigger value="blocks">Blocks</TabsTrigger>
-        <TabsTrigger value="media">Media</TabsTrigger>
-        <TabsTrigger value="actions">Actions</TabsTrigger>
+      <TabsList className="w-full p-1 md:bg-transparent h-auto">
+        {tabs.map((tab) => (
+          <TabsTrigger
+            key={tab.value}
+            value={tab.value}
+            className="md:!py-2 md:px-3 /max-md:!justify-start"
+          >
+            <tab.icon className="hidden md:inline-block" />
+            <span>{tab.label}</span>
+          </TabsTrigger>
+        ))}
       </TabsList>
 
       {/* Inline Formatting */}
@@ -114,7 +154,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isBold ? "default" : "outline"}
+          variant={state.isBold ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!state.canBold}
           title="Bold"
@@ -124,7 +164,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isItalic ? "default" : "outline"}
+          variant={state.isItalic ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={!state.canItalic}
           title="Italic"
@@ -134,7 +174,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isStrike ? "default" : "outline"}
+          variant={state.isStrike ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={!state.canStrike}
           title="Strikethrough"
@@ -144,7 +184,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isUnderline ? "default" : "outline"}
+          variant={state.isUnderline ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           title="Underline"
         >
@@ -153,7 +193,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isCode ? "default" : "outline"}
+          variant={state.isCode ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleCode().run()}
           disabled={!state.canCode}
           title="Code"
@@ -163,7 +203,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isSubscript ? "default" : "outline"}
+          variant={state.isSubscript ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleSubscript().run()}
           title="Subscript"
         >
@@ -172,7 +212,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isSuperscript ? "default" : "outline"}
+          variant={state.isSuperscript ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleSuperscript().run()}
           title="Superscript"
         >
@@ -181,7 +221,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant="outline"
+          variant="secondary"
           onClick={() => {
             const color = prompt("Enter text color (hex or name)");
             if (color) editor.chain().focus().setColor(color).run();
@@ -193,7 +233,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant="outline"
+          variant="secondary"
           onClick={() => {
             const color = prompt("Enter highlight color (hex or name)");
             if (color) editor.chain().focus().toggleHighlight({ color }).run();
@@ -209,7 +249,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isParagraph ? "default" : "outline"}
+          variant={state.isParagraph ? "default" : "ghost"}
           onClick={() => editor.chain().focus().setParagraph().run()}
           title="Paragraph"
         >
@@ -221,7 +261,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
             type="button"
             key={level}
             size="icon"
-            variant={state[`isHeading${level}`] ? "default" : "outline"}
+            variant={state[`isHeading${level}`] ? "default" : "ghost"}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level }).run()
             }
@@ -235,7 +275,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isBulletList ? "default" : "outline"}
+          variant={state.isBulletList ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           title="Bullet List"
         >
@@ -244,7 +284,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isOrderedList ? "default" : "outline"}
+          variant={state.isOrderedList ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           title="Numbered List"
         >
@@ -253,7 +293,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isBlockquote ? "default" : "outline"}
+          variant={state.isBlockquote ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           title="Blockquote"
         >
@@ -262,7 +302,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.isTaskList ? "default" : "outline"}
+          variant={state.isTaskList ? "default" : "ghost"}
           onClick={() => editor.chain().focus().toggleTaskList().run()}
           title="Task List"
         >
@@ -275,7 +315,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
             key={align}
             type="button"
             size="icon"
-            variant={state.textAlign === align ? "default" : "outline"}
+            variant={state.textAlign === align ? "default" : "ghost"}
             onClick={() => editor.chain().focus().setTextAlign(align).run()}
             title={`Align ${align}`}
           >
@@ -296,7 +336,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant="outline"
+          variant="secondary"
           onClick={() => {
             const url = prompt("Enter image URL");
             if (url) editor.chain().focus().setImage({ src: url }).run();
@@ -308,7 +348,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant="outline"
+          variant="secondary"
           onClick={() => {
             const url = prompt("Enter YouTube URL");
             if (url)
@@ -325,7 +365,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant="outline"
+          variant="secondary"
           onClick={() => {
             editor.chain().focus().insertTable({ rows: 3, cols: 3 }).run();
           }}
@@ -336,7 +376,7 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         <Button
           type="button"
           size="icon"
-          variant={state.hasLink ? "default" : "outline"}
+          variant={state.hasLink ? "default" : "ghost"}
           onClick={() => {
             const href = prompt("Enter link URL");
             if (href) editor.chain().focus().setLink({ href }).run();

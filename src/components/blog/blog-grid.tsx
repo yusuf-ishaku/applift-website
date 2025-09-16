@@ -3,8 +3,10 @@ import { Check } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import BlogCard from "./blog-card";
+import { blogCategories } from "@/constants/blog";
 
-const tabs = ["All", "Company", "Tutorial", "Product", "Engineering"] as const;
+
+const tabs = ["All", ...blogCategories] as const;
 
 const BlogGrid = () => {
   const [filter, setFilter] = useState<(typeof tabs)[number]>("All");

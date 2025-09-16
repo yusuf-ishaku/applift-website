@@ -12,16 +12,19 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexxRouteImport } from './routes/indexx'
-import { Route as DemoRouteRouteImport } from './routes/_demo/route'
+import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
-import { Route as DemoEditorRouteImport } from './routes/_demo/editor'
+import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AppWorkRouteImport } from './routes/_app/work'
 import { Route as AppContactRouteImport } from './routes/_app/contact'
 import { Route as AppCompanyRouteImport } from './routes/_app/company'
 import { Route as AppBlogIndexRouteImport } from './routes/_app/blog/index'
 import { Route as BlogBlogxSlugRouteImport } from './routes/_blog/blogx/$slug'
+import { Route as AuthEditorNewRouteImport } from './routes/_auth/editor/new'
 import { Route as AppBlogSlugRouteImport } from './routes/_app/blog/$slug'
+import { Route as AuthEditorPublishedSlugRouteImport } from './routes/_auth/editor/published/$slug'
+import { Route as AuthEditorDraftDraftIdRouteImport } from './routes/_auth/editor/draft/$draftId'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -31,8 +34,8 @@ const IndexxRoute = IndexxRouteImport.update({
   path: '/indexx',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoRouteRoute = DemoRouteRouteImport.update({
-  id: '/_demo',
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRouteRoute = AppRouteRouteImport.update({
@@ -44,10 +47,10 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const DemoEditorRoute = DemoEditorRouteImport.update({
-  id: '/editor',
-  path: '/editor',
-  getParentRoute: () => DemoRouteRoute,
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppWorkRoute = AppWorkRouteImport.update({
   id: '/work',
@@ -74,10 +77,25 @@ const BlogBlogxSlugRoute = BlogBlogxSlugRouteImport.update({
   path: '/blogx/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthEditorNewRoute = AuthEditorNewRouteImport.update({
+  id: '/editor/new',
+  path: '/editor/new',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 const AppBlogSlugRoute = AppBlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
   getParentRoute: () => AppRouteRoute,
+} as any)
+const AuthEditorPublishedSlugRoute = AuthEditorPublishedSlugRouteImport.update({
+  id: '/editor/published/$slug',
+  path: '/editor/published/$slug',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthEditorDraftDraftIdRoute = AuthEditorDraftDraftIdRouteImport.update({
+  id: '/editor/draft/$draftId',
+  path: '/editor/draft/$draftId',
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: '/api/auth/$',
@@ -90,36 +108,45 @@ export interface FileRoutesByFullPath {
   '/company': typeof AppCompanyRoute
   '/contact': typeof AppContactRoute
   '/work': typeof AppWorkRoute
-  '/editor': typeof DemoEditorRoute
+  '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
   '/blog/$slug': typeof AppBlogSlugRoute
+  '/editor/new': typeof AuthEditorNewRoute
   '/blogx/$slug': typeof BlogBlogxSlugRoute
   '/blog': typeof AppBlogIndexRoute
+  '/editor/draft/$draftId': typeof AuthEditorDraftDraftIdRoute
+  '/editor/published/$slug': typeof AuthEditorPublishedSlugRoute
 }
 export interface FileRoutesByTo {
   '/indexx': typeof IndexxRoute
   '/company': typeof AppCompanyRoute
   '/contact': typeof AppContactRoute
   '/work': typeof AppWorkRoute
-  '/editor': typeof DemoEditorRoute
+  '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
   '/blog/$slug': typeof AppBlogSlugRoute
+  '/editor/new': typeof AuthEditorNewRoute
   '/blogx/$slug': typeof BlogBlogxSlugRoute
   '/blog': typeof AppBlogIndexRoute
+  '/editor/draft/$draftId': typeof AuthEditorDraftDraftIdRoute
+  '/editor/published/$slug': typeof AuthEditorPublishedSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
-  '/_demo': typeof DemoRouteRouteWithChildren
+  '/_auth': typeof AuthRouteRouteWithChildren
   '/indexx': typeof IndexxRoute
   '/_app/company': typeof AppCompanyRoute
   '/_app/contact': typeof AppContactRoute
   '/_app/work': typeof AppWorkRoute
-  '/_demo/editor': typeof DemoEditorRoute
+  '/auth/login': typeof AuthLoginRoute
   '/_app/': typeof AppIndexRoute
   '/_app/blog/$slug': typeof AppBlogSlugRoute
+  '/_auth/editor/new': typeof AuthEditorNewRoute
   '/_blog/blogx/$slug': typeof BlogBlogxSlugRoute
   '/_app/blog/': typeof AppBlogIndexRoute
+  '/_auth/editor/draft/$draftId': typeof AuthEditorDraftDraftIdRoute
+  '/_auth/editor/published/$slug': typeof AuthEditorPublishedSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -128,41 +155,51 @@ export interface FileRouteTypes {
     | '/company'
     | '/contact'
     | '/work'
-    | '/editor'
+    | '/auth/login'
     | '/'
     | '/blog/$slug'
+    | '/editor/new'
     | '/blogx/$slug'
     | '/blog'
+    | '/editor/draft/$draftId'
+    | '/editor/published/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/indexx'
     | '/company'
     | '/contact'
     | '/work'
-    | '/editor'
+    | '/auth/login'
     | '/'
     | '/blog/$slug'
+    | '/editor/new'
     | '/blogx/$slug'
     | '/blog'
+    | '/editor/draft/$draftId'
+    | '/editor/published/$slug'
   id:
     | '__root__'
     | '/_app'
-    | '/_demo'
+    | '/_auth'
     | '/indexx'
     | '/_app/company'
     | '/_app/contact'
     | '/_app/work'
-    | '/_demo/editor'
+    | '/auth/login'
     | '/_app/'
     | '/_app/blog/$slug'
+    | '/_auth/editor/new'
     | '/_blog/blogx/$slug'
     | '/_app/blog/'
+    | '/_auth/editor/draft/$draftId'
+    | '/_auth/editor/published/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AppRouteRoute: typeof AppRouteRouteWithChildren
-  DemoRouteRoute: typeof DemoRouteRouteWithChildren
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   IndexxRoute: typeof IndexxRoute
+  AuthLoginRoute: typeof AuthLoginRoute
   BlogBlogxSlugRoute: typeof BlogBlogxSlugRoute
 }
 export interface FileServerRoutesByFullPath {
@@ -196,11 +233,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexxRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_demo': {
-      id: '/_demo'
+    '/_auth': {
+      id: '/_auth'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof DemoRouteRouteImport
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -217,12 +254,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_demo/editor': {
-      id: '/_demo/editor'
-      path: '/editor'
-      fullPath: '/editor'
-      preLoaderRoute: typeof DemoEditorRouteImport
-      parentRoute: typeof DemoRouteRoute
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_app/work': {
       id: '/_app/work'
@@ -259,12 +296,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogBlogxSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/editor/new': {
+      id: '/_auth/editor/new'
+      path: '/editor/new'
+      fullPath: '/editor/new'
+      preLoaderRoute: typeof AuthEditorNewRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
     '/_app/blog/$slug': {
       id: '/_app/blog/$slug'
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof AppBlogSlugRouteImport
       parentRoute: typeof AppRouteRoute
+    }
+    '/_auth/editor/published/$slug': {
+      id: '/_auth/editor/published/$slug'
+      path: '/editor/published/$slug'
+      fullPath: '/editor/published/$slug'
+      preLoaderRoute: typeof AuthEditorPublishedSlugRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/editor/draft/$draftId': {
+      id: '/_auth/editor/draft/$draftId'
+      path: '/editor/draft/$draftId'
+      fullPath: '/editor/draft/$draftId'
+      preLoaderRoute: typeof AuthEditorDraftDraftIdRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
   }
 }
@@ -302,22 +360,27 @@ const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
   AppRouteRouteChildren,
 )
 
-interface DemoRouteRouteChildren {
-  DemoEditorRoute: typeof DemoEditorRoute
+interface AuthRouteRouteChildren {
+  AuthEditorNewRoute: typeof AuthEditorNewRoute
+  AuthEditorDraftDraftIdRoute: typeof AuthEditorDraftDraftIdRoute
+  AuthEditorPublishedSlugRoute: typeof AuthEditorPublishedSlugRoute
 }
 
-const DemoRouteRouteChildren: DemoRouteRouteChildren = {
-  DemoEditorRoute: DemoEditorRoute,
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthEditorNewRoute: AuthEditorNewRoute,
+  AuthEditorDraftDraftIdRoute: AuthEditorDraftDraftIdRoute,
+  AuthEditorPublishedSlugRoute: AuthEditorPublishedSlugRoute,
 }
 
-const DemoRouteRouteWithChildren = DemoRouteRoute._addFileChildren(
-  DemoRouteRouteChildren,
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
   AppRouteRoute: AppRouteRouteWithChildren,
-  DemoRouteRoute: DemoRouteRouteWithChildren,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
   IndexxRoute: IndexxRoute,
+  AuthLoginRoute: AuthLoginRoute,
   BlogBlogxSlugRoute: BlogBlogxSlugRoute,
 }
 export const routeTree = rootRouteImport

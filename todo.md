@@ -1,3 +1,4 @@
 - Check figma for comments
 - Make all pages responsive
 - Add links on footer especially socials
+- Not found route

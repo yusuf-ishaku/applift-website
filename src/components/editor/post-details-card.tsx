@@ -1,4 +1,4 @@
-import type { newBlogSchema } from "@/schemas";
+import { newBlogSchema } from "@/schemas";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import type z from "zod";
@@ -12,16 +12,17 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { makeSlug } from "@/utils/client";
 
 /* ---------------- Post Details ---------------- */
 function PostDetailsCardComponent() {
   const form = useFormContext<z.infer<typeof newBlogSchema>>();
   return (
-    <Card>
+    <Card className="![background-image:linear-gradient(270deg,rgba(0,11,20,0.2)_0%,rgba(1,73,132,0)_100%)] bg-transparent border-none">
       <CardHeader>
         <CardTitle>Post Details</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6">
         <FormField
           control={form.control}
           name="title"
@@ -29,7 +30,14 @@ function PostDetailsCardComponent() {
             <FormItem>
               <FormLabel>Title *</FormLabel>
               <FormControl>
-                <Input placeholder="Enter post title" {...field} />
+                <Input
+                  placeholder="Enter post title"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    form.setValue("slug", makeSlug(e.currentTarget.value));
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -43,7 +51,7 @@ function PostDetailsCardComponent() {
             <FormItem>
               <FormLabel>Slug</FormLabel>
               <FormControl>
-                <Input placeholder="url-slug" {...field} />
+                <Input placeholder="url-slug-for-this-post" {...field} />
               </FormControl>
             </FormItem>
           )}

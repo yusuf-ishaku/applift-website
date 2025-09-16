@@ -4,6 +4,7 @@ import * as TanstackQuery from "./providers/tanstack-query";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import type { BlogPost } from "./types";
 
 // Create a new router instance
 export const createRouter = () => {
@@ -25,5 +26,8 @@ export const createRouter = () => {
 declare module "@tanstack/react-router" {
   interface Register {
     router: ReturnType<typeof createRouter>;
+  }
+  interface HistoryState {
+    draft?: BlogPost;
   }
 }

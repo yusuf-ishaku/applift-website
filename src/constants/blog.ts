@@ -1,0 +1,1 @@
+export const blogCategories = ["Company", "Tutorial", "Product", "Engineering"] as const

@@ -77,6 +77,7 @@ model Blog {
   content    String
   tags       Json? // array of strings
   coverImage String? // nullable
+  published  Boolean  @default(false) // <-- added field
   createdAt  DateTime @default(now()) @db.Timestamp(6)
   updatedAt  DateTime @default(now()) @db.Timestamp(6)
 

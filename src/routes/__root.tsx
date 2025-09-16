@@ -19,6 +19,7 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  // TODO add a pending component
   loader: async () => await getThemeServerFn(),
   head: () => ({
     meta: [
@@ -31,6 +32,38 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
       {
         title: "Applift",
+      },
+      {
+        name: "keywords",
+        content: [
+          "Applift",
+          "Applift blog",
+          "Applift software solutions",
+          "Applift digital agency",
+          "Applift development company",
+          "digital transformation services",
+          "bespoke software development",
+          "custom web application development",
+          "mobile app development agency",
+          "enterprise software solutions",
+          "software consulting services",
+          "UI UX design agency",
+          "user experience design services",
+          "user interface design best practices",
+          "design systems and prototyping",
+          "responsive web design",
+          "blockchain app development",
+          "Web3 development services",
+          "AI-powered applications",
+          "cloud-native app development",
+          "SaaS product development",
+          "tech industry insights",
+          "web development trends",
+          "UI UX design trends",
+          "blockchain industry insights",
+          "digital innovation strategies",
+          "startup technology advice",
+        ].join(", "),
       },
       {
         property: "og:site_name",

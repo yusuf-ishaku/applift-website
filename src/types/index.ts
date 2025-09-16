@@ -1,10 +1,6 @@
-export interface BlogPost {
-  image: string;
-  title: string;
-  author: {
-    image: string;
-    name: string;
-  };
-  date: string;
-  id: string;
-}
+import type { Blog, User } from "@prisma-app/client";
+
+export type BlogPost = Omit<Blog, "tags"> & {
+  author: Pick<User, "name" | "image">;
+  tags: undefined | string[];
+};
