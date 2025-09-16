@@ -119,7 +119,7 @@ function RouteComponent() {
                 {formattedDate}
               </span>
             </div>
-            <ThemeToggle />
+            {/*<ThemeToggle />*/}
           </div>
         </div>
         <div className="mt-[32px]">
@@ -136,7 +136,7 @@ function RouteComponent() {
         <h2 className="font-medium text-[24px] leading-[30px] dark:text-[#E6F0F8]">
           Explore other Stories
         </h2>
-        <div className="grid grid-cols-3 items-start gap-y-[48px] gap-x-[40px] w-full">
+        <div className="grid md:grid-cols-3 items-start gap-y-[48px] gap-x-[40px] w-full">
           {blogPostMocks.slice(0, 3).map((post) => (
             <BlogCard key={post.id} post={post} />
           ))}
