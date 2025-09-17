@@ -1,9 +1,10 @@
 import BlogCard from "@/components/blog/blog-card";
 import BlogView from "@/components/global/blog-view";
 import { APP_URL } from "@/config";
-import { getBlogPostBySlug } from "@/functions/blog";
+import { getBlogPostBySlug, getPostRecommendations } from "@/functions/blog";
 import { blogPostMocks } from "@/mocks/blog-posts";
 import {
+  Await,
   createFileRoute,
   notFound,
   type AnyRouteMatch,
@@ -20,12 +21,19 @@ export const Route = createFileRoute("/_app/blog/$slug")({
     });
     if (!post.published) throw notFound();
   },
-  loader: ({ params }) =>
-    cachedFetch({
-      data: params,
-    }),
-  head: ({ loaderData: post }) => {
-    if (!post) return {};
+  loader: async ({ params }) => {
+    return {
+      post: await cachedFetch({
+        data: params,
+      }),
+      recommendationsPromise: getPostRecommendations({
+        data: params,
+      }),
+    };
+  },
+  head: ({ loaderData }) => {
+    if (!loaderData?.post) return {};
+    const { post } = loaderData;
     const optionalMeta: AnyRouteMatch["meta"] = [];
     if (post.coverImage) {
       optionalMeta.push(
@@ -94,20 +102,26 @@ export const Route = createFileRoute("/_app/blog/$slug")({
 });
 
 function RouteComponent() {
-  const post = Route.useLoaderData();
+  const { post, recommendationsPromise } = Route.useLoaderData();
   return (
     <div className="mb-[190px]">
       <BlogView post={post} />
-      <div className="mt-[69px] flex flex-col items-start gap-[24px]">
-        <h2 className="font-medium text-[24px] leading-[30px] dark:text-[#E6F0F8]">
-          Explore other Stories
-        </h2>
-        <div className="grid md:grid-cols-3 items-start gap-y-[48px] gap-x-[40px] w-full">
-          {blogPostMocks.slice(0, 3).map((post) => (
-            <BlogCard key={post.id} post={post} />
-          ))}
-        </div>
-      </div>
+      <Await promise={recommendationsPromise}>
+        {(recommendations) =>
+          recommendations.length > 0 && (
+            <div className="mt-[69px] flex flex-col items-start gap-[24px]">
+              <h2 className="font-medium text-[24px] leading-[30px] dark:text-[#E6F0F8]">
+                Explore other Stories
+              </h2>
+              <div className="grid md:grid-cols-3 items-start gap-y-[48px] gap-x-[40px] w-full">
+                {recommendations.map((post) => (
+                  <BlogCard key={post.id} post={post} />
+                ))}
+              </div>
+            </div>
+          )
+        }
+      </Await>
     </div>
   );
 }

@@ -103,6 +103,44 @@ export const getBlogPostBySlug = createServerFn({ method: "POST" })
     return serializablePost(post);
   });
 
+export const getPostRecommendations = createServerFn({ method: "GET" })
+  .validator(
+    zodValidator(
+      z.object({
+        slug: z.string(),
+      }),
+    ),
+  )
+  .handler(async ({ data }) => {
+    return await prisma.blog.findMany({
+      where: {
+        NOT: {
+          slug: data.slug,
+        },
+        published: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 3,
+      select: {
+        coverImage: true,
+        title: true,
+        createdAt: true,
+        category: true,
+        id: true,
+        slug: true,
+        tags: false,
+        author: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+  });
+
 export const getBlogPostById = createServerFn({ method: "POST" })
   .validator(
     zodValidator(

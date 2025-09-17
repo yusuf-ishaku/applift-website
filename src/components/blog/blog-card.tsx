@@ -2,14 +2,28 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import type { BlogPost } from "@/types";
 import { extractNameInitials, formatDate } from "@/utils/client";
+import { Link } from "@tanstack/react-router";
 
-const BlogCard = ({ post }: { post: BlogPost }) => {
+const BlogCard = ({
+  post,
+}: {
+  post: Pick<
+    BlogPost,
+    "coverImage" | "title" | "author" | "createdAt" | "slug"
+  >;
+}) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 min-h-[402px]">
-      <Avatar className="w-full h-[284px] rounded-[18.32px]">
-        <AvatarImage src={post.coverImage ?? "#"} draggable={false} />
-        <AvatarFallback>{post.title}</AvatarFallback>
-      </Avatar>
+    <Link
+      to="/blog/$slug"
+      params={{
+        slug: post.slug,
+      }}
+      className="flex flex-col items-center justify-center gap-4 min-h-[402px]"
+    >
+      <div
+        className="w-full h-[284px] rounded-[18.32px] !bg-center !bg-cover !bg-no-repeat !bg-muted"
+        style={{ background: `url(${post.coverImage})` }}
+      />
 
       <div className="flex flex-col items-start gap-3 w-full">
         <h3 className="font-medium text-lg sm:text-xl md:text-2xl leading-snug">
@@ -31,11 +45,11 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
             </span>
           </div>
           <span className="text-sm sm:text-base md:text-lg leading-snug dark:text-[#B7B7B7]">
-            {formatDate(post.updatedAt)}
+            {formatDate(post.createdAt)}
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
