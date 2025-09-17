@@ -76,7 +76,7 @@ export function LoginForm({
       });
     },
     onSuccess() {
-      toast.loading("Logged in", {
+      toast.success("Logged in", {
         id: toastId,
         description: "",
       });
@@ -86,7 +86,7 @@ export function LoginForm({
     },
     onError(error) {
       console.error("Error loggin in with GitHub", error);
-      toast.loading("Oops. Something went wrong.", {
+      toast.error("Oops. Something went wrong.", {
         id: toastId,
         description: error.message,
       });
