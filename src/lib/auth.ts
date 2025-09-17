@@ -21,4 +21,9 @@ export const auth = betterAuth({
   baseURL: APP_URL,
   // NOTE make sure this is the last plugin in the array
   plugins: [reactStartCookies()],
+  trustedOrigins: [
+    "http://localhost:3000",
+    "https://liftblog.vercel.app",
+    "https://liftblog-omega.vercel.app",
+  ],
 });

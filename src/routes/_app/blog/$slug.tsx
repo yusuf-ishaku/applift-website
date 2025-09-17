@@ -2,7 +2,6 @@ import BlogCard from "@/components/blog/blog-card";
 import BlogView from "@/components/global/blog-view";
 import { APP_URL } from "@/config";
 import { getBlogPostBySlug, getPostRecommendations } from "@/functions/blog";
-import { blogPostMocks } from "@/mocks/blog-posts";
 import {
   Await,
   createFileRoute,

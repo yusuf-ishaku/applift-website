@@ -2,7 +2,7 @@ import appliftLogo from "@/assets/images/logo-xl.png";
 import { Link, linkOptions } from "@tanstack/react-router";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -10,6 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
+import { authClient } from "@/lib/auth-client";
 
 const links = linkOptions([
   {
@@ -32,6 +33,7 @@ const links = linkOptions([
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = authClient.useSession();
   return (
     <>
       <nav className="sticky top-4 z-50">
@@ -54,12 +56,20 @@ const Navbar = () => {
                   className: "text-primary-50-dark",
                 }}
                 inactiveProps={{
-                  className: "dark:text-neutral-100",
+                  className: "dark:text-[#cfcfcf]",
                 }}
               >
                 {link.label}
               </Link>
             ))}
+            {session && (
+              <Link
+                to="/editor/new"
+                className="text-[16px] leading-[20px] dark:text-[#cfcfcf]"
+              >
+                Editor
+              </Link>
+            )}
           </div>
           <div className="">
             <Button asChild className="hidden lg:flex">
@@ -99,6 +109,15 @@ const Navbar = () => {
                       {link.label}
                     </Link>
                   ))}
+                  {session && (
+                    <Link
+                      to="/editor/new"
+                      className="text-base font-medium text-primary"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Editor
+                    </Link>
+                  )}
                   <div className="pt-4 border-t">
                     <Button asChild className="w-full">
                       <a

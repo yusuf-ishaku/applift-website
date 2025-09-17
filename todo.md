@@ -10,3 +10,4 @@
 - Restricted login
 - Draggable false to ever image
 - Remove /classnames
+- SEO for the different pages
