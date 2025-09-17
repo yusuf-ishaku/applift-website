@@ -9,16 +9,59 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useRouterState } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
 import { zfd } from "zod-form-data";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import BlogView from "@/components/global/blog-view";
+import { authClient } from "@/lib/auth-client";
 
 export const Route = createFileRoute("/editor/_auth/new")({
   component: BlogEditor,
 });
 
 const toastId = "PUBLISH-TOAST";
+
+function QuickPreview() {
+  const { data: session } = authClient.useSession();
+  const form = useFormContext<BlogForm>();
+  const slug = useWatch({ control: form.control, name: "slug" });
+  const title = useWatch({ control: form.control, name: "title" });
+  const excerpt = useWatch({ control: form.control, name: "excerpt" });
+  const coverImage = useWatch({ control: form.control, name: "coverImage" });
+  const category = useWatch({ control: form.control, name: "category" });
+  const id = useWatch({ control: form.control, name: "id" });
+  const published = useWatch({ control: form.control, name: "published" });
+  const content = useWatch({ control: form.control, name: "content" });
+  const tags = useWatch({ control: form.control, name: "tags" });
+  const now = new Date();
+  return (
+    <BlogView
+      post={{
+        author: {
+          image: session?.user.image ?? null,
+          name: session?.user.name ?? "<Author/>",
+        },
+        authorId: session?.user.id ?? "ID",
+        category,
+        content,
+        coverImage:
+          coverImage instanceof Blob
+            ? URL.createObjectURL(coverImage)
+            : (coverImage ?? null),
+        createdAt: now,
+        excerpt: excerpt ?? "",
+        id: id ?? "",
+        published,
+        slug,
+        title,
+        updatedAt: now,
+        tags,
+      }}
+    />
+  );
+}
 
 function BlogEditor() {
   const draft = useRouterState({
@@ -101,31 +144,41 @@ function BlogEditor() {
   return (
     <div className="max-w-7xl mx-auto py-6">
       <h1 className="text-3xl font-bold mb-6">Blog Editor</h1>
-
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit((values) =>
-            publishMutation.mutate(values),
-          )}
-        >
-          <fieldset
-            className="grid grid-cols-1 lg:grid-cols-3 gap-6"
-            disabled={publishMutation.isPending}
-          >
-            {/* Main content */}
-            <div className="lg:col-span-2 space-y-6">
-              <PostDetailsCard />
-              <ContentEditorCard />
-            </div>
+        <Tabs defaultValue="editor">
+          <TabsList className="w-full">
+            <TabsTrigger value="editor">Editor</TabsTrigger>
+            <TabsTrigger value="preview">Preview</TabsTrigger>
+          </TabsList>
+          <TabsContent value="preview">
+            <QuickPreview />
+          </TabsContent>
+          <TabsContent value="editor">
+            <form
+              onSubmit={form.handleSubmit((values) =>
+                publishMutation.mutate(values),
+              )}
+            >
+              <fieldset
+                className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+                disabled={publishMutation.isPending}
+              >
+                {/* Main content */}
+                <div className="lg:col-span-2 space-y-6">
+                  <PostDetailsCard />
+                  <ContentEditorCard />
+                </div>
 
-            {/* Sidebar */}
-            <div className="space-y-6">
-              <EditorPane />
-              {/* ✅ OG Preview */}
-              <BlogOgPreview />
-            </div>
-          </fieldset>
-        </form>
+                {/* Sidebar */}
+                <div className="space-y-6">
+                  <EditorPane />
+                  {/* ✅ OG Preview */}
+                  <BlogOgPreview />
+                </div>
+              </fieldset>
+            </form>
+          </TabsContent>
+        </Tabs>
       </Form>
     </div>
   );
