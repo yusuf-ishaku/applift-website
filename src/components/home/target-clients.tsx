@@ -9,7 +9,6 @@ type Client = {
 };
 
 const clients: Client[] = [
-  // TODO fetch icons for clients
   {
     icon: AfricanSMEs,
     title: "African SMEs & Established Businesses",

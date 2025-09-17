@@ -1,4 +1,4 @@
-// TODO DEAL WITH THIS!!!
+// TODO MAKE THIS RESPONSIVE FOR MOBILE IF POSSIBLE
 
 import clsx from "clsx";
 import { useLayoutEffect, useRef, useState, type FC } from "react";

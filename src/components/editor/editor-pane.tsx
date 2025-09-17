@@ -1,6 +1,6 @@
 import { blogCategories } from "@/constants/blog";
 import type { newBlogSchema } from "@/schemas";
-import { Plus, Save, Send, X } from "lucide-react";
+import { Plus, Save, Send, Trash, X } from "lucide-react";
 import { memo, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import type z from "zod";
@@ -22,11 +22,46 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useServerFn } from "@tanstack/react-start";
+import { deleteBlogPost } from "@/functions/blog";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useRouter } from "@tanstack/react-router";
 
 function EditorPaneComponent() {
   const form = useFormContext<z.infer<typeof newBlogSchema>>();
   const [newTag, setNewTag] = useState("");
   const submitBtn = useRef<HTMLButtonElement>(null);
+  const deleteFn = useServerFn(deleteBlogPost);
+  const router = useRouter();
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteFn,
+    onMutate: ({ data }) => {
+      toast.loading(`Deleting "${form.getValues("title")}"`, {
+        id: "id" in data ? data.id : data.slug,
+        description: "",
+      });
+    },
+    onSuccess: async (_, { data }) => {
+      toast.success(`Deleted successfully!`, {
+        id: "id" in data ? data.id : data.slug,
+        description: "",
+      });
+      form.reset();
+      await router.invalidate();
+    },
+    onError: async (error, { data }) => {
+      const item = form.getValues("published") ? "post" : "draft";
+      console.error(`Error deleting ${item}`, error);
+      toast.error(`Unable to delete ${item}`, {
+        id: "id" in data ? data.id : data.slug,
+        description: error.message,
+      });
+    },
+  });
+
+  const postId = form.getValues("id");
 
   const addTag = () => {
     const tag = newTag.trim();
@@ -44,7 +79,10 @@ function EditorPaneComponent() {
   };
 
   return (
-    <div className="space-y-6">
+    <fieldset
+      className="space-y-6"
+      disabled={deleteMutation.isPending || undefined}
+    >
       <button hidden type="submit" ref={submitBtn} />
       {/* Publish card */}
       <Card>
@@ -61,10 +99,9 @@ function EditorPaneComponent() {
               submitBtn.current?.click();
             }}
           >
-            <Save className="w-4 h-4 mr-2" />
+            <Save className="size-4 mr-2" />
             Save Draft
           </Button>
-
           <Button
             type="button"
             className="w-full"
@@ -73,9 +110,26 @@ function EditorPaneComponent() {
               submitBtn.current?.click();
             }}
           >
-            <Send className="w-4 h-4 mr-2" />
+            <Send className="size-4 mr-2" />
             Publish
           </Button>
+          {postId && (
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={() =>
+                // TODO use a dialog to confirm post deletion
+                deleteMutation.mutate({
+                  data: {
+                    id: postId,
+                  },
+                })
+              }
+            >
+              <Trash className="size-4 mr-2" />
+              Delete
+            </Button>
+          )}
         </CardContent>
       </Card>
 
@@ -124,7 +178,7 @@ function EditorPaneComponent() {
                 }
               />
               <Button variant="outline" size="icon" onClick={addTag}>
-                <Plus className="w-4 h-4" />
+                <Plus className="size-4" />
               </Button>
             </div>
 
@@ -145,9 +199,8 @@ function EditorPaneComponent() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </fieldset>
   );
 }
 
-// TODO add a button to delete drafts
 export const EditorPane = memo(EditorPaneComponent);

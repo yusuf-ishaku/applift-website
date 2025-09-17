@@ -2,3 +2,11 @@
 - Make all pages responsive
 - Add links on footer especially socials
 - Not found route
+- Post preview (use tabs)
+- Proper 404 page
+- Middleware to verify authenticated users on server functions
+- Password/email auth
+- Proper login page
+- Restricted login
+- Draggable false to ever image
+- Remove /classnames

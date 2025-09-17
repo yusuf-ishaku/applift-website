@@ -1,7 +1,7 @@
 import { getBlogPostById } from "@/functions/blog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_auth/editor/draft/$draftId")({
+export const Route = createFileRoute("/editor/_auth/draft/$draftId")({
   beforeLoad: async ({ params }) => {
     // TODO verify that only the post authors can access the post
     const post = await getBlogPostById({

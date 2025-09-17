@@ -4,11 +4,13 @@ import { redirectGuests } from "@/functions/auth";
 import { getUsersPosts } from "@/functions/blog";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_auth")({
+export const Route = createFileRoute("/editor/_auth")({
   component: RouteComponent,
   beforeLoad: () => redirectGuests(),
   // TODO defer this
-  loader: () => getUsersPosts(),
+  loader: () => ({
+    postsPromise: getUsersPosts(),
+  }),
 });
 
 function RouteComponent() {

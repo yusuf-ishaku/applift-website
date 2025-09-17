@@ -144,3 +144,40 @@ export const getUsersPosts = createServerFn({ method: "GET" }).handler(
     return posts.map(serializablePost);
   },
 );
+
+export const deleteBlogPost = createServerFn({ method: "POST" })
+  .validator(
+    zodValidator(
+      z
+        .object({
+          id: z.uuid(),
+        })
+        .or(
+          z.object({
+            slug: z.string(),
+          }),
+        ),
+    ),
+  )
+  .handler(async ({ data }) => {
+    const session = await auth.api.getSession({
+      headers: getTypesafeRequestHeaders(),
+    });
+    if (!session) throw new Error("Unauthorized!");
+    const authorId = session.user.id;
+    if ("id" in data) {
+      await prisma.blog.delete({
+        where: {
+          id: data.id,
+          authorId,
+        },
+      });
+    } else {
+      await prisma.blog.delete({
+        where: {
+          slug: data.slug,
+          authorId,
+        },
+      });
+    }
+  });

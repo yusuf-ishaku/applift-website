@@ -8,12 +8,13 @@ import { newBlogSchema, type BlogForm } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useRouterState } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
 import { zfd } from "zod-form-data";
 
-export const Route = createFileRoute("/_auth/editor/new")({
+export const Route = createFileRoute("/editor/_auth/new")({
   component: BlogEditor,
 });
 
@@ -31,7 +32,7 @@ function BlogEditor() {
   >({
     resolver: zodResolver(newBlogSchema),
     defaultValues: {
-      id: draft?.id ?? "",
+      id: draft?.id,
       title: draft?.title ?? "",
       slug: draft?.slug ?? "",
       excerpt: draft?.excerpt ?? "",
@@ -43,6 +44,8 @@ function BlogEditor() {
       published: draft?.published ?? false,
     },
   });
+  const publishFn = useServerFn(publishBlog);
+  const updateFn = useServerFn(updateBlog);
 
   const publishMutation = useMutation({
     mutationFn: async ({ tags, ...values }: BlogForm) => {
@@ -58,31 +61,37 @@ function BlogEditor() {
       tags?.forEach((tag) => formData.append("tags", tag));
       zfd.formData(newBlogSchema).parse(formData);
       if (values.id) {
-        await updateBlog({
+        await updateFn({
           data: formData,
         });
       } else {
-        await publishBlog({
+        await publishFn({
           data: formData,
         });
       }
     },
-    // TODO update these to reflect updates too
-    onMutate: ({ published }) => {
-      toast.loading(`${published ? "Publish" : "Draft"}ing post`, {
+    onMutate: ({ published, id }) => {
+      const action = id ? "Updating" : "Creating";
+      const item = published ? "post" : "draft";
+      toast.loading(`${action} ${item}`, {
         id: toastId,
         description: "",
       });
     },
-    onSuccess: (_, { published }) => {
-      toast.success(`Post ${published ? "publish" : "draft"}ed!`, {
+    onSuccess: (_, { published, id }) => {
+      const action = id ? "updated" : "created";
+      const item = published ? "Post" : "Draft";
+      toast.success(`${item} ${action}`, {
         id: toastId,
         description: "",
       });
     },
-    onError: (error, { published }) => {
-      console.error(error);
-      toast.error(`Failed to ${published ? "publish" : "draft"} post`, {
+    onError: (error, { published, id }) => {
+      const action = id ? "update" : "create";
+      const item = published ? "post" : "draft";
+      const msg = `Failed to ${action} ${item}`;
+      console.error(error, error);
+      toast.error(msg, {
         id: toastId,
         description: error.message,
       });

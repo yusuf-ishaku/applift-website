@@ -2,7 +2,7 @@ import BlogView from "@/components/global/blog-view";
 import { getBlogPostBySlug } from "@/functions/blog";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_auth/editor/published/$slug")({
+export const Route = createFileRoute("/editor/_auth/published/$slug")({
   component: RouteComponent,
   loader: ({ params }) =>
     getBlogPostBySlug({

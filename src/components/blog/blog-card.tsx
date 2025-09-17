@@ -1,13 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import type { BlogPost } from "@/types";
-import { extractNameInitials } from "@/utils/client";
+import { extractNameInitials, formatDate } from "@/utils/client";
 
 const BlogCard = ({ post }: { post: BlogPost }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-4 min-h-[402px]">
       <Avatar className="w-full h-[284px] rounded-[18.32px]">
-        <AvatarImage src={post.image} draggable={false} />
+        <AvatarImage src={post.coverImage ?? "#"} draggable={false} />
         <AvatarFallback>{post.title}</AvatarFallback>
       </Avatar>
 
@@ -21,7 +21,7 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
             <Avatar className="size-8">
-              <AvatarImage src={post.author.image} draggable={false} />
+              <AvatarImage src={post.author.image ?? "#"} draggable={false} />
               <AvatarFallback>
                 {extractNameInitials(post.author.name)}
               </AvatarFallback>
@@ -31,7 +31,7 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
             </span>
           </div>
           <span className="text-sm sm:text-base md:text-lg leading-snug dark:text-[#B7B7B7]">
-            {post.date}
+            {formatDate(post.updatedAt)}
           </span>
         </div>
       </div>

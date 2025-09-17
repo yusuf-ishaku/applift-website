@@ -30,8 +30,6 @@ const links = linkOptions([
   },
 ]);
 
-// TODO add sheet for navbar
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (

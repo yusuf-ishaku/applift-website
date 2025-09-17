@@ -8,34 +8,36 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
 import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexxRouteImport } from './routes/indexx'
-import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
-import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as EditorLoginRouteImport } from './routes/editor/login'
 import { Route as AppWorkRouteImport } from './routes/_app/work'
 import { Route as AppContactRouteImport } from './routes/_app/contact'
 import { Route as AppCompanyRouteImport } from './routes/_app/company'
+import { Route as EditorAuthRouteRouteImport } from './routes/editor/_auth/route'
 import { Route as AppBlogIndexRouteImport } from './routes/_app/blog/index'
-import { Route as BlogBlogxSlugRouteImport } from './routes/_blog/blogx/$slug'
-import { Route as AuthEditorNewRouteImport } from './routes/_auth/editor/new'
+import { Route as EditorAuthNewRouteImport } from './routes/editor/_auth/new'
 import { Route as AppBlogSlugRouteImport } from './routes/_app/blog/$slug'
-import { Route as AuthEditorPublishedSlugRouteImport } from './routes/_auth/editor/published/$slug'
-import { Route as AuthEditorDraftDraftIdRouteImport } from './routes/_auth/editor/draft/$draftId'
+import { Route as EditorAuthPublishedSlugRouteImport } from './routes/editor/_auth/published/$slug'
+import { Route as EditorAuthDraftDraftIdRouteImport } from './routes/editor/_auth/draft/$draftId'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
+const EditorRouteImport = createFileRoute('/editor')()
 const rootServerRouteImport = createServerRootRoute()
 
+const EditorRoute = EditorRouteImport.update({
+  id: '/editor',
+  path: '/editor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexxRoute = IndexxRouteImport.update({
   id: '/indexx',
   path: '/indexx',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRouteRoute = AuthRouteRouteImport.update({
-  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRouteRoute = AppRouteRouteImport.update({
@@ -47,10 +49,10 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/auth/login',
-  path: '/auth/login',
-  getParentRoute: () => rootRouteImport,
+const EditorLoginRoute = EditorLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => EditorRoute,
 } as any)
 const AppWorkRoute = AppWorkRouteImport.update({
   id: '/work',
@@ -67,35 +69,34 @@ const AppCompanyRoute = AppCompanyRouteImport.update({
   path: '/company',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const EditorAuthRouteRoute = EditorAuthRouteRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => EditorRoute,
+} as any)
 const AppBlogIndexRoute = AppBlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const BlogBlogxSlugRoute = BlogBlogxSlugRouteImport.update({
-  id: '/_blog/blogx/$slug',
-  path: '/blogx/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthEditorNewRoute = AuthEditorNewRouteImport.update({
-  id: '/editor/new',
-  path: '/editor/new',
-  getParentRoute: () => AuthRouteRoute,
+const EditorAuthNewRoute = EditorAuthNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => EditorAuthRouteRoute,
 } as any)
 const AppBlogSlugRoute = AppBlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AuthEditorPublishedSlugRoute = AuthEditorPublishedSlugRouteImport.update({
-  id: '/editor/published/$slug',
-  path: '/editor/published/$slug',
-  getParentRoute: () => AuthRouteRoute,
+const EditorAuthPublishedSlugRoute = EditorAuthPublishedSlugRouteImport.update({
+  id: '/published/$slug',
+  path: '/published/$slug',
+  getParentRoute: () => EditorAuthRouteRoute,
 } as any)
-const AuthEditorDraftDraftIdRoute = AuthEditorDraftDraftIdRouteImport.update({
-  id: '/editor/draft/$draftId',
-  path: '/editor/draft/$draftId',
-  getParentRoute: () => AuthRouteRoute,
+const EditorAuthDraftDraftIdRoute = EditorAuthDraftDraftIdRouteImport.update({
+  id: '/draft/$draftId',
+  path: '/draft/$draftId',
+  getParentRoute: () => EditorAuthRouteRoute,
 } as any)
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: '/api/auth/$',
@@ -105,102 +106,100 @@ const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/indexx': typeof IndexxRoute
+  '/editor': typeof EditorAuthRouteRouteWithChildren
   '/company': typeof AppCompanyRoute
   '/contact': typeof AppContactRoute
   '/work': typeof AppWorkRoute
-  '/auth/login': typeof AuthLoginRoute
+  '/editor/login': typeof EditorLoginRoute
   '/': typeof AppIndexRoute
   '/blog/$slug': typeof AppBlogSlugRoute
-  '/editor/new': typeof AuthEditorNewRoute
-  '/blogx/$slug': typeof BlogBlogxSlugRoute
+  '/editor/new': typeof EditorAuthNewRoute
   '/blog': typeof AppBlogIndexRoute
-  '/editor/draft/$draftId': typeof AuthEditorDraftDraftIdRoute
-  '/editor/published/$slug': typeof AuthEditorPublishedSlugRoute
+  '/editor/draft/$draftId': typeof EditorAuthDraftDraftIdRoute
+  '/editor/published/$slug': typeof EditorAuthPublishedSlugRoute
 }
 export interface FileRoutesByTo {
   '/indexx': typeof IndexxRoute
+  '/editor': typeof EditorAuthRouteRouteWithChildren
   '/company': typeof AppCompanyRoute
   '/contact': typeof AppContactRoute
   '/work': typeof AppWorkRoute
-  '/auth/login': typeof AuthLoginRoute
+  '/editor/login': typeof EditorLoginRoute
   '/': typeof AppIndexRoute
   '/blog/$slug': typeof AppBlogSlugRoute
-  '/editor/new': typeof AuthEditorNewRoute
-  '/blogx/$slug': typeof BlogBlogxSlugRoute
+  '/editor/new': typeof EditorAuthNewRoute
   '/blog': typeof AppBlogIndexRoute
-  '/editor/draft/$draftId': typeof AuthEditorDraftDraftIdRoute
-  '/editor/published/$slug': typeof AuthEditorPublishedSlugRoute
+  '/editor/draft/$draftId': typeof EditorAuthDraftDraftIdRoute
+  '/editor/published/$slug': typeof EditorAuthPublishedSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
-  '/_auth': typeof AuthRouteRouteWithChildren
   '/indexx': typeof IndexxRoute
+  '/editor': typeof EditorRouteWithChildren
+  '/editor/_auth': typeof EditorAuthRouteRouteWithChildren
   '/_app/company': typeof AppCompanyRoute
   '/_app/contact': typeof AppContactRoute
   '/_app/work': typeof AppWorkRoute
-  '/auth/login': typeof AuthLoginRoute
+  '/editor/login': typeof EditorLoginRoute
   '/_app/': typeof AppIndexRoute
   '/_app/blog/$slug': typeof AppBlogSlugRoute
-  '/_auth/editor/new': typeof AuthEditorNewRoute
-  '/_blog/blogx/$slug': typeof BlogBlogxSlugRoute
+  '/editor/_auth/new': typeof EditorAuthNewRoute
   '/_app/blog/': typeof AppBlogIndexRoute
-  '/_auth/editor/draft/$draftId': typeof AuthEditorDraftDraftIdRoute
-  '/_auth/editor/published/$slug': typeof AuthEditorPublishedSlugRoute
+  '/editor/_auth/draft/$draftId': typeof EditorAuthDraftDraftIdRoute
+  '/editor/_auth/published/$slug': typeof EditorAuthPublishedSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/indexx'
+    | '/editor'
     | '/company'
     | '/contact'
     | '/work'
-    | '/auth/login'
+    | '/editor/login'
     | '/'
     | '/blog/$slug'
     | '/editor/new'
-    | '/blogx/$slug'
     | '/blog'
     | '/editor/draft/$draftId'
     | '/editor/published/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/indexx'
+    | '/editor'
     | '/company'
     | '/contact'
     | '/work'
-    | '/auth/login'
+    | '/editor/login'
     | '/'
     | '/blog/$slug'
     | '/editor/new'
-    | '/blogx/$slug'
     | '/blog'
     | '/editor/draft/$draftId'
     | '/editor/published/$slug'
   id:
     | '__root__'
     | '/_app'
-    | '/_auth'
     | '/indexx'
+    | '/editor'
+    | '/editor/_auth'
     | '/_app/company'
     | '/_app/contact'
     | '/_app/work'
-    | '/auth/login'
+    | '/editor/login'
     | '/_app/'
     | '/_app/blog/$slug'
-    | '/_auth/editor/new'
-    | '/_blog/blogx/$slug'
+    | '/editor/_auth/new'
     | '/_app/blog/'
-    | '/_auth/editor/draft/$draftId'
-    | '/_auth/editor/published/$slug'
+    | '/editor/_auth/draft/$draftId'
+    | '/editor/_auth/published/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AppRouteRoute: typeof AppRouteRouteWithChildren
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   IndexxRoute: typeof IndexxRoute
-  AuthLoginRoute: typeof AuthLoginRoute
-  BlogBlogxSlugRoute: typeof BlogBlogxSlugRoute
+  EditorRoute: typeof EditorRouteWithChildren
 }
 export interface FileServerRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatServerRoute
@@ -226,18 +225,18 @@ export interface RootServerRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/editor': {
+      id: '/editor'
+      path: '/editor'
+      fullPath: '/editor'
+      preLoaderRoute: typeof EditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/indexx': {
       id: '/indexx'
       path: '/indexx'
       fullPath: '/indexx'
       preLoaderRoute: typeof IndexxRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -254,12 +253,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/auth/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof rootRouteImport
+    '/editor/login': {
+      id: '/editor/login'
+      path: '/login'
+      fullPath: '/editor/login'
+      preLoaderRoute: typeof EditorLoginRouteImport
+      parentRoute: typeof EditorRoute
     }
     '/_app/work': {
       id: '/_app/work'
@@ -282,6 +281,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCompanyRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/editor/_auth': {
+      id: '/editor/_auth'
+      path: '/editor'
+      fullPath: '/editor'
+      preLoaderRoute: typeof EditorAuthRouteRouteImport
+      parentRoute: typeof EditorRoute
+    }
     '/_app/blog/': {
       id: '/_app/blog/'
       path: '/blog'
@@ -289,19 +295,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBlogIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_blog/blogx/$slug': {
-      id: '/_blog/blogx/$slug'
-      path: '/blogx/$slug'
-      fullPath: '/blogx/$slug'
-      preLoaderRoute: typeof BlogBlogxSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_auth/editor/new': {
-      id: '/_auth/editor/new'
-      path: '/editor/new'
+    '/editor/_auth/new': {
+      id: '/editor/_auth/new'
+      path: '/new'
       fullPath: '/editor/new'
-      preLoaderRoute: typeof AuthEditorNewRouteImport
-      parentRoute: typeof AuthRouteRoute
+      preLoaderRoute: typeof EditorAuthNewRouteImport
+      parentRoute: typeof EditorAuthRouteRoute
     }
     '/_app/blog/$slug': {
       id: '/_app/blog/$slug'
@@ -310,19 +309,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBlogSlugRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_auth/editor/published/$slug': {
-      id: '/_auth/editor/published/$slug'
-      path: '/editor/published/$slug'
+    '/editor/_auth/published/$slug': {
+      id: '/editor/_auth/published/$slug'
+      path: '/published/$slug'
       fullPath: '/editor/published/$slug'
-      preLoaderRoute: typeof AuthEditorPublishedSlugRouteImport
-      parentRoute: typeof AuthRouteRoute
+      preLoaderRoute: typeof EditorAuthPublishedSlugRouteImport
+      parentRoute: typeof EditorAuthRouteRoute
     }
-    '/_auth/editor/draft/$draftId': {
-      id: '/_auth/editor/draft/$draftId'
-      path: '/editor/draft/$draftId'
+    '/editor/_auth/draft/$draftId': {
+      id: '/editor/_auth/draft/$draftId'
+      path: '/draft/$draftId'
       fullPath: '/editor/draft/$draftId'
-      preLoaderRoute: typeof AuthEditorDraftDraftIdRouteImport
-      parentRoute: typeof AuthRouteRoute
+      preLoaderRoute: typeof EditorAuthDraftDraftIdRouteImport
+      parentRoute: typeof EditorAuthRouteRoute
     }
   }
 }
@@ -360,28 +359,39 @@ const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
   AppRouteRouteChildren,
 )
 
-interface AuthRouteRouteChildren {
-  AuthEditorNewRoute: typeof AuthEditorNewRoute
-  AuthEditorDraftDraftIdRoute: typeof AuthEditorDraftDraftIdRoute
-  AuthEditorPublishedSlugRoute: typeof AuthEditorPublishedSlugRoute
+interface EditorAuthRouteRouteChildren {
+  EditorAuthNewRoute: typeof EditorAuthNewRoute
+  EditorAuthDraftDraftIdRoute: typeof EditorAuthDraftDraftIdRoute
+  EditorAuthPublishedSlugRoute: typeof EditorAuthPublishedSlugRoute
 }
 
-const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthEditorNewRoute: AuthEditorNewRoute,
-  AuthEditorDraftDraftIdRoute: AuthEditorDraftDraftIdRoute,
-  AuthEditorPublishedSlugRoute: AuthEditorPublishedSlugRoute,
+const EditorAuthRouteRouteChildren: EditorAuthRouteRouteChildren = {
+  EditorAuthNewRoute: EditorAuthNewRoute,
+  EditorAuthDraftDraftIdRoute: EditorAuthDraftDraftIdRoute,
+  EditorAuthPublishedSlugRoute: EditorAuthPublishedSlugRoute,
 }
 
-const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
-  AuthRouteRouteChildren,
+const EditorAuthRouteRouteWithChildren = EditorAuthRouteRoute._addFileChildren(
+  EditorAuthRouteRouteChildren,
 )
+
+interface EditorRouteChildren {
+  EditorAuthRouteRoute: typeof EditorAuthRouteRouteWithChildren
+  EditorLoginRoute: typeof EditorLoginRoute
+}
+
+const EditorRouteChildren: EditorRouteChildren = {
+  EditorAuthRouteRoute: EditorAuthRouteRouteWithChildren,
+  EditorLoginRoute: EditorLoginRoute,
+}
+
+const EditorRouteWithChildren =
+  EditorRoute._addFileChildren(EditorRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AppRouteRoute: AppRouteRouteWithChildren,
-  AuthRouteRoute: AuthRouteRouteWithChildren,
   IndexxRoute: IndexxRoute,
-  AuthLoginRoute: AuthLoginRoute,
-  BlogBlogxSlugRoute: BlogBlogxSlugRoute,
+  EditorRoute: EditorRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
