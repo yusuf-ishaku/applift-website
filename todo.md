@@ -5,9 +5,9 @@
 - Post preview (use tabs)
 - Proper 404 page
 - Middleware to verify authenticated users on server functions
-- Password/email auth
-- Proper login page
 - Restricted login
-- Draggable false to ever image
+- Draggable false to every image
 - Remove /classnames
-- SEO for the different pages
+- Link for sharing to public and other editors
+- Button to copy live link
+- Proper image for OG previews

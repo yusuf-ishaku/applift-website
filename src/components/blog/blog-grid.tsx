@@ -26,7 +26,6 @@ const BlogGrid = () => {
   return (
     <>
       <div className="mt-8 flex flex-wrap items-center max-md:justify-center gap-3 sm:gap-6">
-        {/*TODO only show tabs with posts*/}
         {tabs.length > 2 &&
           tabs.map((tab) => (
             <Button

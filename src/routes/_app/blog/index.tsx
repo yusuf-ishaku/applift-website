@@ -31,8 +31,30 @@ const pageLoader = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 export const Route = createFileRoute("/_app/blog/")({
-  component: RouteComponent,
   loader: () => pageLoader(),
+  head: () => ({
+    title: "Blogs | Applift",
+    meta: [
+      {
+        name: "description",
+        content:
+          "Read the latest blog posts from Applift — insights, tutorials, and stories about building and scaling modern web applications.",
+      },
+      { property: "og:title", content: "Blogs | Applift" },
+      {
+        property: "og:description",
+        content:
+          "Read the latest blog posts from Applift — insights, tutorials, and stories about building and scaling modern web applications.",
+      },
+      { name: "twitter:title", content: "Blogs | Applift" },
+      {
+        name: "twitter:description",
+        content:
+          "Read the latest blog posts from Applift — insights, tutorials, and stories about building and scaling modern web applications.",
+      },
+    ],
+  }),
+  component: RouteComponent,
 });
 
 function RouteComponent() {

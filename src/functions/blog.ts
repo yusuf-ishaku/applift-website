@@ -1,22 +1,18 @@
-import { getTypesafeRequestHeaders } from "@/helpers/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { authMiddleware } from "@/middlewares";
 import { newBlogSchema } from "@/schemas";
 import { blobToDataURL, serializablePost } from "@/utils/server";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { zfd } from "zod-form-data";
 import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
+import { zfd } from "zod-form-data";
 
 export const publishBlog = createServerFn({ method: "POST" })
   .validator(zodValidator(zfd.formData(newBlogSchema)))
-  .handler(async ({ data }) => {
-    const session = await auth.api.getSession({
-      headers: getTypesafeRequestHeaders(),
-    });
-    if (!session) throw new Error("Unauthorized!");
-    const authorId = session.user.id;
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const authorId = context.session.user.id;
     const { slug } = await prisma.blog.create({
       data: {
         ...data,
@@ -48,12 +44,9 @@ export const updateBlog = createServerFn({ method: "POST" })
       ),
     ),
   )
-  .handler(async ({ data: { id, ...update } }) => {
-    const session = await auth.api.getSession({
-      headers: getTypesafeRequestHeaders(),
-    });
-    if (!session) throw new Error("Unauthorized!");
-    const authorId = session.user.id;
+  .middleware([authMiddleware])
+  .handler(async ({ data: { id, ...update }, context }) => {
+    const authorId = context.session.user.id;
     await prisma.blog.update({
       where: {
         id,
@@ -68,12 +61,7 @@ export const updateBlog = createServerFn({ method: "POST" })
             : update.coverImage
               ? await blobToDataURL(update.coverImage)
               : undefined,
-      },
-    });
-    throw redirect({
-      to: "/editor/draft/$draftId",
-      params: {
-        draftId: id,
+        updatedAt: new Date(),
       },
     });
   });
@@ -149,10 +137,12 @@ export const getBlogPostById = createServerFn({ method: "POST" })
       }),
     ),
   )
-  .handler(async ({ data }) => {
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
     const post = await prisma.blog.findUniqueOrThrow({
       where: {
         id: data.id,
+        authorId: context.session.user.id,
       },
       include: {
         author: {
@@ -166,13 +156,10 @@ export const getBlogPostById = createServerFn({ method: "POST" })
     return serializablePost(post);
   });
 
-export const getUsersPosts = createServerFn({ method: "GET" }).handler(
-  async () => {
-    const session = await auth.api.getSession({
-      headers: getTypesafeRequestHeaders(),
-    });
-    if (!session) throw new Error("Unauthorized!");
-    const authorId = session.user.id;
+export const getUsersPosts = createServerFn({ method: "GET" })
+  .middleware([authMiddleware])
+  .handler(async ({ context }) => {
+    const authorId = context.session.user.id;
     // TODO fetch published, drafted and paginate
     const posts = await prisma.blog.findMany({
       where: {
@@ -180,8 +167,7 @@ export const getUsersPosts = createServerFn({ method: "GET" }).handler(
       },
     });
     return posts.map(serializablePost);
-  },
-);
+  });
 
 export const deleteBlogPost = createServerFn({ method: "POST" })
   .validator(
@@ -197,12 +183,9 @@ export const deleteBlogPost = createServerFn({ method: "POST" })
         ),
     ),
   )
-  .handler(async ({ data }) => {
-    const session = await auth.api.getSession({
-      headers: getTypesafeRequestHeaders(),
-    });
-    if (!session) throw new Error("Unauthorized!");
-    const authorId = session.user.id;
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const authorId = context.session.user.id;
     if ("id" in data) {
       await prisma.blog.delete({
         where: {

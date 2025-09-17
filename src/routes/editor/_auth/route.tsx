@@ -7,7 +7,6 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 export const Route = createFileRoute("/editor/_auth")({
   component: RouteComponent,
   beforeLoad: () => redirectGuests(),
-  // TODO defer this
   loader: () => ({
     postsPromise: getUsersPosts(),
   }),

@@ -1,8 +1,9 @@
 import appliftLogo from "@/assets/images/logo-xl.png";
+import { authClient } from "@/lib/auth-client";
 import { Link, linkOptions } from "@tanstack/react-router";
-import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Button } from "../ui/button";
 import {
   Sheet,
   SheetContent,
@@ -10,7 +11,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { authClient } from "@/lib/auth-client";
 
 const links = linkOptions([
   {

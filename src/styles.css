@@ -344,7 +344,7 @@ body {
     }
 
     p {
-      @apply leading-7 [&:not(:first-child)]:mt-6;
+      @apply leading-7 [&:not(:first-child):not(p+p)]:mt-6;
     }
 
     blockquote {

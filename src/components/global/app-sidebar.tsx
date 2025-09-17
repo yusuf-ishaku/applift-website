@@ -46,8 +46,8 @@ const Posts = ({ posts }: { posts: Omit<Blog, "tags">[] }) => {
               {publishedPosts.map((post) => (
                 <Link
                   key={post.id}
-                  to="/editor/published/$slug"
-                  params={{ slug: post.slug }}
+                  to="/editor/$postId"
+                  params={{ postId: post.id }}
                 >
                   {({ isActive }) => (
                     <SidebarMenuButton
@@ -73,8 +73,8 @@ const Posts = ({ posts }: { posts: Omit<Blog, "tags">[] }) => {
               {drafts.map((post) => (
                 <Link
                   key={post.id}
-                  to="/editor/draft/$draftId"
-                  params={{ draftId: post.id }}
+                  to="/editor/$postId"
+                  params={{ postId: post.id }}
                 >
                   {/* TODO add a button to delete drafts*/}
                   {({ isActive }) => (

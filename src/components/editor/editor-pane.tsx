@@ -1,8 +1,13 @@
 import { blogCategories } from "@/constants/blog";
+import { deleteBlogPost } from "@/functions/blog";
 import type { newBlogSchema } from "@/schemas";
-import { Plus, Save, Send, Trash, X } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { Loader, Plus, Save, Send, Trash, X } from "lucide-react";
 import { memo, useRef, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
+import { toast } from "sonner";
 import type z from "zod";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -22,11 +27,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useServerFn } from "@tanstack/react-start";
-import { deleteBlogPost } from "@/functions/blog";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { useRouter } from "@tanstack/react-router";
 
 function EditorPaneComponent() {
   const form = useFormContext<z.infer<typeof newBlogSchema>>();
@@ -61,7 +61,7 @@ function EditorPaneComponent() {
     },
   });
 
-  const postId = form.getValues("id");
+  const postId = useWatch({ control: form.control, name: "id" });
 
   const addTag = () => {
     const tag = newTag.trim();
@@ -100,7 +100,7 @@ function EditorPaneComponent() {
             }}
           >
             <Save className="size-4 mr-2" />
-            Save Draft
+            {postId ? "Convert to draft" : "Save as draft"}
           </Button>
           <Button
             type="button"
@@ -111,12 +111,26 @@ function EditorPaneComponent() {
             }}
           >
             <Send className="size-4 mr-2" />
-            Publish
+            {postId ? "Update" : "Publish"}
           </Button>
+          {!postId && (
+            <Button
+              type="reset"
+              className="w-full"
+              variant="destructive"
+              onClick={() => {
+                form.reset();
+              }}
+            >
+              <Loader className="size-4 mr-2" />
+              Reset
+            </Button>
+          )}
           {postId && (
             <Button
               type="button"
               variant="destructive"
+              className="w-full"
               onClick={() =>
                 // TODO use a dialog to confirm post deletion
                 deleteMutation.mutate({

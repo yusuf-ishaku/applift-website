@@ -1,7 +1,7 @@
 import appliftlogo from "@/assets/images/applift-logo.png";
 import clsx from "clsx";
 import { Circle } from "lucide-react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Separator } from "../ui/separator";
 
 type Card = {
@@ -49,7 +49,9 @@ const WhatWeDo = () => {
   const refB = useRef<HTMLDivElement>(null);
   const [distance, setDistance] = useState<number | null>(null);
 
-  useLayoutEffect(() => {
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
     const calculateDistance = () => {
       if (refA.current && refB.current) {
         const rectA = refA.current.getBoundingClientRect();
@@ -66,11 +68,12 @@ const WhatWeDo = () => {
     window.addEventListener("resize", calculateDistance, {
       signal: controller.signal,
     }); // recalc on resize
+    window.addEventListener("load", calculateDistance, {
+      signal: controller.signal,
+    });
 
     return () => controller.abort();
   }, []);
-
-  const [step, setStep] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -27,6 +27,7 @@ export const BlogOgPreview = memo(function BlogOgPreview() {
     if (coverImage instanceof File) {
       return URL.createObjectURL(coverImage);
     }
+    if (typeof coverImage === "string") return coverImage;
     return "https://placehold.co/1200x630?text=Image+Preview";
   }, [coverImage]);
 
