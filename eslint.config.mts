@@ -1,42 +1,34 @@
-import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
 import { defineConfig, globalIgnores } from "eslint/config";
-import reactHooks from "eslint-plugin-react-hooks";
-import pluginRouter from "@tanstack/eslint-plugin-router";
+import tseslint from "typescript-eslint";
+
+import { FlatCompat } from "@eslint/eslintrc";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
 
 export default defineConfig([
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-    plugins: { js },
-    extends: ["js/recommended"],
-    languageOptions: { globals: { ...globals.browser, ...globals.node } },
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
   },
   tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  reactHooks.configs["recommended-latest"],
-  ...pluginRouter.configs["flat/recommended"],
-  {
-    settings: {
-      react: {
-        version: "19.0.0",
-      },
-    },
-  },
   {
     rules: {
       "no-console": ["warn", { allow: ["error"] }],
-      "react/react-in-jsx-scope": "off",
+      "no-restricted-syntax": "error",
     },
   },
-  globalIgnores([
-    ".nitro",
-    ".tanstack",
-    ".output",
-    ".vinxi",
-    "node_modules",
-    "src/routeTree.gen.ts",
-    ".vercel",
-  ]),
+  globalIgnores([".vercel"]),
 ]);
