@@ -35,7 +35,7 @@ export const DraftedPosts = () => {
         <SidebarGroupContent>
           <SidebarMenu>
             {drafts.map((post) => {
-              const path = `/editor/${post.id}`;
+              const path = `/editor/${post.id}/edit`;
               return (
                 <Link key={post.id} href={path}>
                   <SidebarMenuButton
@@ -64,7 +64,7 @@ export const PublishedPosts = () => {
         <SidebarGroupContent>
           <SidebarMenu>
             {drafts.map((post) => {
-              const path = `/editor/${post.id}`;
+              const path = `/editor/${post.id}/edit`;
               return (
                 <Link key={post.id} href={path}>
                   <SidebarMenuButton

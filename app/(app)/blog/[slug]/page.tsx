@@ -60,8 +60,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-async function Recommendations({ slug }: { slug: string }) {
-  const recommendations = await getPostRecommendations(slug);
+async function Recommendations(
+  ...args: Parameters<typeof getPostRecommendations>
+) {
+  const recommendations = await getPostRecommendations(...args);
+  if (!recommendations.length) return null;
   return (
     <div className="mt-[69px] flex flex-col items-start gap-[24px]">
       <h2 className="font-medium text-[24px] leading-[30px] dark:text-[#E6F0F8]">
@@ -83,7 +86,7 @@ export default async function BlogSlugPage({ params }: Props) {
     <div className="mb-[190px]">
       <BlogView post={post} />
       <Suspense key={`blog-${slug}`}>
-        <Recommendations slug={slug} />
+        <Recommendations slug={slug} authorId={post.authorId} />
       </Suspense>
     </div>
   );

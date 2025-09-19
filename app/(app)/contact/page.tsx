@@ -8,6 +8,7 @@ export const metadata: Metadata = seo({
   title: "Contact Us",
   description:
     "Get in touch with Applift. Have a project in mind? We're here to support your business growth and answer your questions.",
+  pathname: "/contact",
 });
 
 const cardData = [

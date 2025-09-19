@@ -43,7 +43,7 @@ const TargetClients = () => {
           <div
             className="bg-center bg-no-repeat bg-contain size-72 mx-auto lg:mx-0 lg:size-[496px]"
             style={{
-              backgroundImage: `url(${torusknot})`,
+              backgroundImage: `url(${torusknot.src})`,
             }}
           />
           <div className="flex flex-col items-start gap-6 sm:gap-8">
@@ -55,7 +55,7 @@ const TargetClients = () => {
               {clients.map((client, index) => (
                 <div
                   key={index}
-                  className="border-t border-[#012D51] flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 pt-6 sm:pt-6 w-full"
+                  className="border-t border-[#012D51] flex flex-col sm:flex-row items-start gap-4 sm:gap-6 pt-6 sm:pt-6 w-full"
                 >
                   <client.icon />
                   <div className="flex flex-col items-start gap-4 sm:gap-4">

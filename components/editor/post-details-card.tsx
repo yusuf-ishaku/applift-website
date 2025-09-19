@@ -1,3 +1,5 @@
+"use client"
+
 import { newBlogSchema } from "@/schemas";
 import React from "react";
 import { useFormContext } from "react-hook-form";

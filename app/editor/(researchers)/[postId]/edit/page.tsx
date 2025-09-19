@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: post.excerpt ?? `Editing your blog post: ${post.title}`,
     robots: { index: false, follow: false },
     // TODO add a trailing /edit to this route
-    pathname: `/editor/${post.id}`,
+    pathname: `/editor/${post.id}/edit`,
   });
 }
 

@@ -30,5 +30,5 @@ export default defineConfig([
       "no-restricted-syntax": "error",
     },
   },
-  globalIgnores([".vercel"]),
+  globalIgnores([".vercel", "note.ts"]),
 ]);

@@ -14,4 +14,4 @@
 - Use a proper top loader or a pending component
 - Add infinite queries on sidebar for drafts and published posts https://tanstack.com/query/v5/docs/framework/react/guides/infinite-queries
 
-Add pathname for all routes
+next top loader

@@ -1,12 +1,13 @@
 import bentlight from "@/assets/images/bent-light.png";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const HomeHero = () => {
   return (
     <>
       <div>
         <div className="hero flex items-center relative overflow-y-hidden">
-          <div className="flex flex-col items-center gap-[40px] max-w-4xl lg:min-h-[218px] mx-auto px-2">
+          <div className="flex flex-col items-center gap-[40px] max-w-4xl lg:min-h-[218px] mx-auto px-2 relative z-10">
             <div className="flex items-center flex-col gap-[28px]">
               <div className="flex flex-col gap-6 sm:gap-7">
                 <h2 className="font-medium text-3xl sm:text-4xl md:text-5xl text-[#FAFAFA] text-center">
@@ -18,15 +19,17 @@ const HomeHero = () => {
                 </p>
               </div>
 
-              <Button
-                variant="outline"
-                className="px-6 py-3 rounded-[10px] border-2 !border-[#0264B5] text-[#0264B5] text-sm sm:text-base !bg-transparent"
-              >
-                See Our Projects
-              </Button>
+              <Link href="/contact">
+                <Button
+                  variant="outline"
+                  className="px-6 py-3 rounded-[10px] border-2 !border-[#0264B5] text-[#0264B5] text-sm sm:text-base !bg-transparent"
+                >
+                  See Our Projects
+                </Button>
+              </Link>
             </div>
           </div>
-          <div className="flex h-full absolute lg:bottom-0 w-full justify-end">
+          <div className="flex h-full absolute lg:bottom-0 w-full justify-end z-0">
             <div
               className="basis-1/2 [background-size:100%] bg-center translate-y-[47%] bg-no-repeat"
               style={{

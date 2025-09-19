@@ -8,6 +8,7 @@ export const metadata: Metadata = seo({
   title: "Our Work",
   description:
     "Explore Applift's portfolio — discover the impactful projects we've delivered and how we help brands succeed.",
+  pathname: "/work",
 });
 
 export default function WorkPage() {

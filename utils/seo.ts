@@ -13,11 +13,10 @@ export function seo({
   title: NonNullable<Metadata["title"]>;
   description: string;
   image?: string;
-  pathname?: string;
+  pathname?: `/${string}`;
 }): Metadata {
   let url = APP_URL;
   if (pathname?.startsWith("/")) url += pathname;
-  if (pathname && !pathname.startsWith("/")) url += "/" + pathname;
   return {
     ...metadata,
     title,

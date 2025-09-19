@@ -10,6 +10,7 @@ export const metadata: Metadata = seo({
   title: "About Us",
   description:
     "Learn about Applift — our mission, our team, and how we work together to build innovative solutions.",
+  pathname: "/company",
 });
 
 export default function CompanyPage() {

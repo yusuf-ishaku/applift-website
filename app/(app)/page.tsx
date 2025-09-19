@@ -4,10 +4,9 @@ import TargetClients from "@/components/home/target-clients";
 import WhatWeDo from "@/components/home/what-we-do";
 import WhyApplift from "@/components/home/why-applift";
 import { Logo1, Logo2, Logo3, Logo4 } from "@/components/svgs";
-import dynamic from "next/dynamic";
+import Marquee from "react-fast-marquee";
 
 // TODO CHECK IF SSR NEEDS TO BE TURNED OFF
-const Marquee = dynamic(() => import("react-fast-marquee"));
 
 export default function HomePage() {
   return (

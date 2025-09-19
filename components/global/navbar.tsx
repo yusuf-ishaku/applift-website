@@ -1,3 +1,5 @@
+"use client";
+
 import appliftLogo from "@/assets/images/logo-xl.png";
 import { authClient } from "@/lib/auth-client";
 import { Menu } from "lucide-react";
@@ -76,7 +78,10 @@ const Navbar = () => {
           </div>
           <div className="">
             <Button asChild className="hidden lg:flex">
-              <a href="#" className="font-semibold text-[14px] leading-[18px]">
+              <a
+                href="/contact"
+                className="font-semibold text-[14px] leading-[18px]"
+              >
                 Start a Project
               </a>
             </Button>

@@ -20,13 +20,20 @@ export async function getPostBySlug(slug: string) {
   });
 }
 
-export async function getPostRecommendations(slug: string) {
+export async function getPostRecommendations({
+  authorId,
+  slug,
+}: {
+  slug: string;
+  authorId: string;
+}) {
   return await prisma.blog.findMany({
     where: {
       NOT: {
         slug,
       },
       published: true,
+      authorId,
     },
     orderBy: {
       createdAt: "desc",

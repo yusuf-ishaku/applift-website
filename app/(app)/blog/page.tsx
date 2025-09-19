@@ -7,6 +7,7 @@ export const metadata: Metadata = seo({
   title: "Blogs",
   description:
     "Read the latest blog posts from Applift — insights, tutorials, and stories about building and scaling modern web applications.",
+  pathname: "/blogs",
 });
 
 export default async function BlogPage() {
