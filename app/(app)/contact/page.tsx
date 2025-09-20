@@ -1,4 +1,4 @@
-import HelpForm from "@/components/global/help-form";
+import InquiryForm from "@/components/global/inquiry-form";
 import { Separator } from "@/components/ui/separator";
 import { seo } from "@/utils/seo";
 import type { Metadata } from "next";
@@ -73,7 +73,7 @@ export default function ContactPage() {
           ))}
         </div>
       </div>
-      <HelpForm className="md:-translate-y-6 lg:-translate-y-8" />
+      <InquiryForm className="md:-translate-y-6 lg:-translate-y-8" />
     </div>
   );
 }

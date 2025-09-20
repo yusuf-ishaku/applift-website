@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { newBlogSchema } from "@/schemas";
+import { inquirySchema, newBlogSchema } from "@/schemas";
 import { blobToDataURL } from "@/utils/server";
 import z from "zod";
 import { zfd } from "zod-form-data";
@@ -27,7 +27,7 @@ export async function getUsersPublishedPosts() {
   });
 }
 
-export const deleteBlogPost = z
+export const deleteBlogPostFn = z
   .function({
     input: [
       z
@@ -60,6 +60,12 @@ export const deleteBlogPost = z
       });
     }
   });
+
+export async function deleteBlogPost(
+  args: Parameters<typeof deleteBlogPostFn>[0],
+) {
+  return await deleteBlogPostFn(args);
+}
 
 const updateBlogFn = z
   .function({
@@ -94,8 +100,8 @@ const updateBlogFn = z
     });
   });
 
-export async function updateBlog(...args: Parameters<typeof updateBlogFn>) {
-  return await updateBlogFn(...args);
+export async function updateBlog(args: Parameters<typeof updateBlogFn>[0]) {
+  return await updateBlogFn(args);
 }
 
 const publishBlogFn = z
@@ -122,9 +128,9 @@ const publishBlogFn = z
   });
 
 export async function publishBlog(
-  ...args: Parameters<typeof publishBlogFn>
+  args: Parameters<typeof publishBlogFn>[0],
 ): Promise<ReturnType<typeof publishBlogFn>> {
-  return await publishBlogFn(...args);
+  return await publishBlogFn(args);
 }
 
 export async function getBlogPostById(postId: string) {
@@ -143,4 +149,20 @@ export async function getBlogPostById(postId: string) {
       },
     },
   });
+}
+
+const newInquiryFn = z
+  .function({
+    input: [inquirySchema],
+  })
+  .implementAsync(async ({helpWith, ...inquiry}) => {
+    await prisma.inquiry.create({
+      data: { ...inquiry, help_with: helpWith },
+    });
+  });
+
+export async function makeNewEnquiry(
+  args: Parameters<typeof newInquiryFn>[0],
+): Promise<ReturnType<typeof newInquiryFn>> {
+  return await newInquiryFn(args);
 }

@@ -1,3 +1,4 @@
+import { inquiryBudget, inquiryHelpWith } from "@/constants";
 import { blogCategories } from "@/constants/blog";
 import { makeSlug } from "@/utils/client";
 import z from "zod";
@@ -45,4 +46,17 @@ export const blogSlugFn = z.function({
       blogSlug: z.string(),
     }),
   ],
+});
+
+export const inquirySchema = z.object({
+  helpWith: z
+    .enum(inquiryHelpWith)
+    .array()
+    .min(1, "Please select at least one option"),
+  budget: z.enum(inquiryBudget),
+  name: z.string().min(1, "Name is required").max(100),
+  email: z.email("Invalid email address"),
+  overview: z
+    .string()
+    .min(10, "Project overview should be at least 10 characters"),
 });

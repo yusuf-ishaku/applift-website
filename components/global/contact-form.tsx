@@ -3,7 +3,7 @@
 import gradientGlass from "@/assets/images/gradient-glass.png";
 import { contactFormEclipeDataUrl } from "@/constants";
 import Image from "next/image";
-import HelpForm from "./help-form";
+import InquiryForm from "./inquiry-form";
 import { usePathname } from "next/navigation";
 
 const ContactForm = () => {
@@ -41,7 +41,7 @@ const ContactForm = () => {
           </div>
 
           {/* Right side form */}
-          <HelpForm />
+          <InquiryForm />
         </div>
       </section>
     </section>

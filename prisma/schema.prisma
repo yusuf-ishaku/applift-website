@@ -85,3 +85,15 @@ model Blog {
 
   @@map("blog")
 }
+
+model Inquiry {
+  id          String   @id @default(cuid())
+  help_with   String[] // e.g. ["MVP Build", "AI Integration"]
+  budget      String   // e.g. "Under $5K"
+  name        String
+  email       String
+  overview    String   // Project overview text
+  created_at   DateTime @default(now())
+
+  @@map("inquiry")
+}
