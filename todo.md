@@ -15,3 +15,4 @@
 - Add infinite queries on sidebar for drafts and published posts https://tanstack.com/query/v5/docs/framework/react/guides/infinite-queries
 
 next top loader
+collect responses on help-form

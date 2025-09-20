@@ -1,5 +1,5 @@
-import { getBlogPostById } from "@/loaders/blogs";
-import { BlogEditor } from "@/pages/blog-editor";
+import { getBlogPostById } from "@/actions/blog";
+import { BlogEditor } from "@/components/blog/blog-editor";
 import { seo } from "@/utils/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";

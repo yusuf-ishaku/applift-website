@@ -2,7 +2,7 @@ import { getQueryClient } from "@/app/get-query-client";
 import AppSidebar from "@/components/global/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { draftedPostOptions, publishedPostOptions } from "@/lib/query-options";
-import { redirectGuests } from "@/loaders/blogs";
+import { redirectGuests } from "@/actions";
 import type { ParentProps } from "@/types";
 
 export default async function ResearchersLayout({ children }: ParentProps) {

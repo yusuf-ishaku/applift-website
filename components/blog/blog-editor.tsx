@@ -20,6 +20,8 @@ import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
 import { zfd } from "zod-form-data";
+import { useParams } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 const toastId = "PUBLISH-TOAST";
 
@@ -86,6 +88,10 @@ export const BlogEditor = ({ postToEdit }: { postToEdit?: BlogPost }) => {
       published: postToEdit?.published ?? false,
     },
   });
+  const router = useRouter();
+  const params = useParams<{
+    postId: string;
+  }>();
 
   const publishMutation = useMutation({
     mutationFn: async ({ tags, ...values }: BlogForm) => {
@@ -103,7 +109,10 @@ export const BlogEditor = ({ postToEdit }: { postToEdit?: BlogPost }) => {
       if (values.id) {
         await updateFn(formData);
       } else {
-        await publishFn(formData);
+        const { id } = await publishFn(formData);
+        if (id !== params?.postId) {
+          router.replace(`/editor/${id}/edit`);
+        }
       }
     },
     onMutate: ({ published, id }) => {

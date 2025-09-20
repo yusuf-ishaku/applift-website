@@ -1,16 +1,14 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { authenticate, authorize } from "@/loaders/blogs";
 import { newBlogSchema } from "@/schemas";
 import { blobToDataURL } from "@/utils/server";
-import { redirect, unauthorized } from "next/navigation";
 import z from "zod";
 import { zfd } from "zod-form-data";
+import { authorize } from ".";
 
 export async function getUsersDraftedPosts() {
-  const session = await authenticate();
-  if (!session) unauthorized();
+  const session = await authorize();
   return await prisma.blog.findMany({
     where: {
       authorId: session.user.id,
@@ -20,8 +18,7 @@ export async function getUsersDraftedPosts() {
 }
 
 export async function getUsersPublishedPosts() {
-  const session = await authenticate();
-  if (!session) unauthorized();
+  const session = await authorize();
   return await prisma.blog.findMany({
     where: {
       authorId: session.user.id,
@@ -104,11 +101,12 @@ export async function updateBlog(...args: Parameters<typeof updateBlogFn>) {
 const publishBlogFn = z
   .function({
     input: [zfd.formData(newBlogSchema)],
+    output: z.custom<{ id: string }>(),
   })
   .implementAsync(async (data) => {
     const session = await authorize();
     const authorId = session.user.id;
-    const { slug } = await prisma.blog.create({
+    const { id } = await prisma.blog.create({
       data: {
         ...data,
         authorId,
@@ -120,9 +118,29 @@ const publishBlogFn = z
               : undefined,
       },
     });
-    redirect(`/blog/${slug}`);
+    return { id };
   });
 
-export async function publishBlog(...args: Parameters<typeof publishBlogFn>) {
+export async function publishBlog(
+  ...args: Parameters<typeof publishBlogFn>
+): Promise<ReturnType<typeof publishBlogFn>> {
   return await publishBlogFn(...args);
+}
+
+export async function getBlogPostById(postId: string) {
+  const session = await authorize();
+  return await prisma.blog.findUnique({
+    where: {
+      id: postId,
+      authorId: session.user.id,
+    },
+    include: {
+      author: {
+        select: {
+          name: true,
+          image: true,
+        },
+      },
+    },
+  });
 }

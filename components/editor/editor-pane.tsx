@@ -4,7 +4,7 @@ import { deleteBlogPost as deleteFn } from "@/actions/blog";
 import { blogCategories } from "@/constants/blog";
 import { draftedPostOptions, publishedPostOptions } from "@/lib/query-options";
 import type { newBlogSchema } from "@/schemas";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader, Plus, Save, Send, Trash, X } from "lucide-react";
 import { memo, useRef, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -28,23 +28,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useRouter } from "nextjs-toploader/app";
 
 function EditorPaneComponent() {
   const form = useFormContext<z.infer<typeof newBlogSchema>>();
   const [newTag, setNewTag] = useState("");
   const submitBtn = useRef<HTMLButtonElement>(null);
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const title = useWatch({ control: form.control, name: "title" });
 
   const deleteMutation = useMutation({
     mutationFn: deleteFn,
     onMutate: (data) => {
-      toast.loading(`Deleting "${form.getValues("title")}"`, {
+      toast.loading(`Deleting "${title}"`, {
         id: "id" in data ? data.id : data.slug,
         description: "",
       });
       return { isDraft: !form.getValues("published") };
     },
-    onSuccess: async (_, data, ctx, { client }) => {
-      toast.success(`Deleted successfully!`, {
+    onSuccess: async (_, data, ctx /*_, data, ctx, { client }*/) => {
+      toast.success(`Deleted "${title}" successfully!`, {
         id: "id" in data ? data.id : data.slug,
         description: "",
       });
@@ -53,7 +58,7 @@ function EditorPaneComponent() {
         const { queryKey } = ctx.isDraft
           ? draftedPostOptions
           : publishedPostOptions;
-        client.setQueryData(queryKey, (posts) =>
+        queryClient.setQueryData(queryKey, (posts) =>
           (posts ?? []).filter((post) => {
             if ("id" in data) {
               return post.id != data.id;
@@ -63,11 +68,12 @@ function EditorPaneComponent() {
           }),
         );
       }
+      router.replace("/editor/new");
     },
     onError: async (error, data) => {
-      const item = form.getValues("published") ? "post" : "draft";
-      console.error(`Error deleting ${item}`, error);
-      toast.error(`Unable to delete ${item}`, {
+      const item = isPublished ? "post" : "draft";
+      console.error(`Error deleting "${title}"`, error);
+      toast.error(`Unable to delete ${item}: "${title}"`, {
         id: "id" in data ? data.id : data.slug,
         description: error.message,
       });
@@ -75,20 +81,19 @@ function EditorPaneComponent() {
   });
 
   const postId = useWatch({ control: form.control, name: "id" });
+  const isPublished = useWatch({ control: form.control, name: "published" });
+  const existingTags = useWatch({ control: form.control, name: "tags" });
 
   const addTag = () => {
     const tag = newTag.trim();
-    if (tag && !form.getValues("tags")?.includes(tag)) {
-      form.setValue("tags", [...(form.getValues("tags") || []), tag]);
+    if (tag && !existingTags?.includes(tag)) {
+      form.setValue("tags", [...(existingTags || []), tag]);
       setNewTag("");
     }
   };
 
   const removeTag = (tag: string) => {
-    form.setValue(
-      "tags",
-      form.getValues("tags")?.filter((t) => t !== tag) || [],
-    );
+    form.setValue("tags", existingTags?.filter((t) => t !== tag) || []);
   };
 
   return (
@@ -113,7 +118,11 @@ function EditorPaneComponent() {
             }}
           >
             <Save className="size-4 mr-2" />
-            {postId ? "Convert to draft" : "Save as draft"}
+            {isPublished
+              ? "Convert to Draft"
+              : postId
+                ? "Update Draft"
+                : "Save as Draft"}
           </Button>
           <Button
             type="button"
@@ -124,7 +133,7 @@ function EditorPaneComponent() {
             }}
           >
             <Send className="size-4 mr-2" />
-            {postId ? "Update" : "Publish"}
+            {isPublished ? "Update Post" : "Publish Post"}
           </Button>
           {!postId && (
             <Button
@@ -208,7 +217,7 @@ function EditorPaneComponent() {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {form.getValues("tags")?.map((tag) => (
+              {existingTags?.map((tag) => (
                 <Badge
                   key={tag}
                   variant="secondary"

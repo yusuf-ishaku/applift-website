@@ -1,21 +1,21 @@
 "use client";
 
 import appliftLogo from "@/assets/images/logo-xl.png";
-import { authClient } from "@/lib/auth-client";
+import clsx from "clsx";
 import { Menu } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
 } from "../ui/sheet";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import clsx from "clsx";
+import { authClient } from "@/lib/auth-client";
 
 const links = [
   {

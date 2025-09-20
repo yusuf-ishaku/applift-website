@@ -1,4 +1,4 @@
-import { BlogEditor } from "@/pages/blog-editor";
+import { BlogEditor } from "@/components/blog/blog-editor";
 import { seo } from "@/utils/seo";
 import type { Metadata } from "next";
 

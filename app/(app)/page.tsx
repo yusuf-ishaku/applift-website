@@ -12,8 +12,8 @@ export default function HomePage() {
   return (
     <>
       <HomeHero />
-      <WhatWeDo />
       <WhyApplift />
+      <WhatWeDo />
       <TargetClients />
       <Real />
       <Marquee

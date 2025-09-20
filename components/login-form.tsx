@@ -27,7 +27,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 const loginSchema = z.object({
   email: z.email(),

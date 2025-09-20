@@ -3,11 +3,12 @@ import { seo } from "@/utils/seo";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
+import ogcardImg from "@/assets/images/og-card.jpg";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 // @ts-expect-error I'll handle this later
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme-provider";
-import ogcardImg from "@/assets/images/og-card.jpg";
 import Providers from "./providers";
 
 const inter = Inter({
@@ -83,6 +84,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <NextTopLoader />
             {children}
             <Toaster />
           </ThemeProvider>

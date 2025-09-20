@@ -1,8 +1,8 @@
-import { reactStartCookies } from "better-auth/react-start";
 import { APP_URL } from "@/config";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
+import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -18,8 +18,7 @@ export const auth = betterAuth({
     },
   },
   baseURL: APP_URL,
-  // NOTE make sure this is the last plugin in the array
-  plugins: [reactStartCookies()],
+  plugins: [nextCookies()], // make sure this is the last plugin in the array
   trustedOrigins: [
     "http://localhost:3000",
     "https://liftblog.vercel.app",
