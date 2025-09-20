@@ -75,6 +75,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <body
+        suppressHydrationWarning
         className={clsx("antialiased", inter.variable, jakartaSans.variable)}
       >
         <Providers>
@@ -84,7 +85,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <NextTopLoader />
+            <NextTopLoader showSpinner={false} />
             {children}
             <Toaster />
           </ThemeProvider>

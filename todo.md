@@ -16,3 +16,7 @@
 
 next top loader
 collect responses on help-form
+increase server action payload limit
+get eslint rule to stop passing objects to template literals
+change winneredwin/liftblog preset to nextjs
+vercel --prod nextjs to winneredwin/liftblog

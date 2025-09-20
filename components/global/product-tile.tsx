@@ -75,6 +75,7 @@ const ProductTile = ({ product }: { product: Product }) => {
           <Separator className="!bg-[#012D51] w-full" />
 
           <div className="flex flex-col gap-8 lg:gap-16 w-full">
+            {/*TODO MERGE INTO ONE TILE*/}
             <StatGrid
               item1={{ title: "Time to MVP", value: product.timeToMVP }}
               item2={{ title: "Industry", value: product.industry }}

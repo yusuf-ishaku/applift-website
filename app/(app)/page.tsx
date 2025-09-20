@@ -1,10 +1,9 @@
 import HomeHero from "@/components/home/home-hero";
 import Real from "@/components/home/real";
 import TargetClients from "@/components/home/target-clients";
+import Testimonials from "@/components/home/testimonials";
 import WhatWeDo from "@/components/home/what-we-do";
 import WhyApplift from "@/components/home/why-applift";
-import { Logo1, Logo2, Logo3, Logo4 } from "@/components/svgs";
-import Marquee from "react-fast-marquee";
 
 // TODO CHECK IF SSR NEEDS TO BE TURNED OFF
 
@@ -16,7 +15,8 @@ export default function HomePage() {
       <WhatWeDo />
       <TargetClients />
       <Real />
-      <Marquee
+      <Testimonials />
+      {/*<Marquee
         autoFill
         pauseOnHover
         speed={50}
@@ -27,7 +27,7 @@ export default function HomePage() {
         <Logo2 />
         <Logo3 />
         <Logo4 />
-      </Marquee>
+      </Marquee>*/}
       <div className="mb-[250px]" />
     </>
   );
