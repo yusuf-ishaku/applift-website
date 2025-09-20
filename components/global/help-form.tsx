@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -29,9 +30,14 @@ const FormSection = ({
   );
 };
 
-const HelpForm = () => {
+const HelpForm = ({ className }: { className?: string }) => {
   return (
-    <div className="bg-[linear-gradient(270deg,rgba(0,11,20,0.2)_0%,rgba(1,73,132,0)_100%)] rounded-lg w-full max-w-md sm:max-w-lg lg:max-w-[594px] p-4 sm:p-6 lg:p-8 mx-auto">
+    <div
+      className={clsx(
+        "bg-[linear-gradient(270deg,rgba(0,11,20,0.2)_0%,rgba(1,73,132,0)_100%)] rounded-lg w-full max-w-md sm:max-w-lg lg:max-w-[594px] p-4 sm:p-6 lg:p-8 mx-auto",
+        className,
+      )}
+    >
       <div className="flex flex-col items-center gap-6 sm:gap-8">
         <div className="flex flex-col items-start gap-6 sm:gap-8 w-full">
           <FormSection

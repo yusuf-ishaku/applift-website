@@ -1,9 +1,14 @@
+"use client";
+
 import gradientGlass from "@/assets/images/gradient-glass.png";
 import { contactFormEclipeDataUrl } from "@/constants";
 import Image from "next/image";
 import HelpForm from "./help-form";
+import { usePathname } from "next/navigation";
 
 const ContactForm = () => {
+  const pathname = usePathname();
+  if (pathname === "/contact") return null;
   return (
     <section
       className="bg-no-repeat bg-top md:bg-left"
