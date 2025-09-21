@@ -23,8 +23,8 @@ const jakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = seo({
   title: {
-    default: "Applift",
-    template: "%s | Applift",
+    default: "Engineering For Humans - Applift Labs",
+    template: "%s | Applift Labs",
   },
   description:
     "Explore the Applift Blog for expert insights on digital transformation, bespoke software solutions, web & mobile development, UI/UX design, blockchain innovation, and more. Stay informed, inspired, and ahead in the digital landscape with Applift.",
