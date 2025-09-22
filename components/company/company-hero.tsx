@@ -2,7 +2,7 @@ import { Button } from "../ui/button";
 
 const CompanyHero = () => {
   return (
-    <section className="hero pb-16 md:pb-24 !mx-0 rounded-[60px] md:rounded-[100px]">
+    <section className="hero pb-16 md:pb-24 !mx-0">
       <div className="flex flex-col items-center gap-8 md:gap-[40px] max-w-[881px] mx-auto mt-16 md:mt-[115px] px-2 text-center">
         <div className="flex flex-col items-center gap-6 md:gap-[28px]">
           <h2 className="font-medium text-3xl leading-[42px] md:text-[48px] md:leading-[60px] text-[#FAFAFA]">

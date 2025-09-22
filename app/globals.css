@@ -420,12 +420,12 @@ body {
       @apply bg-border shrink-0 h-px w-full;
     }
   }
-  .hero {
-    background-image: linear-gradient(180deg, #00060a, #00111e);
-    @apply box-border rounded-[20px] min-h-[380px] md:min-h-[468px];
-  }
+}
+.hero {
+  background-image: linear-gradient(180deg, #00060a, #00111e);
+  @apply box-border rounded-b-[60px] md:rounded-b-[100px] min-h-[380px] md:min-h-[468px];
 }
 
 * {
-  /*@apply border border-red-500 border-solid;*/
+  @apply border border-red-500 border-solid;
 }

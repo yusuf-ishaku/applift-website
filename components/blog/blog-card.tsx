@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import type { BlogPost } from "@/types";
 import { extractNameInitials, formatDate } from "@/utils/client";
+import Image from "next/image";
 import Link from "next/link";
 
 const BlogCard = ({ post }: { post: BlogPost }) => {
@@ -26,7 +27,15 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2">
               <Avatar className="size-8">
-                <AvatarImage src={post.author.image ?? "#"} draggable={false} />
+                <AvatarImage asChild src={post.author.image ?? "#"}>
+                  <Image
+                    src={post.author.image ?? "#"}
+                    draggable={false}
+                    alt={post.author.name}
+                    width={32}
+                    height={32}
+                  />
+                </AvatarImage>
                 <AvatarFallback>
                   {extractNameInitials(post.author.name)}
                 </AvatarFallback>

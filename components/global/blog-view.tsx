@@ -5,6 +5,7 @@ import type { BlogPost } from "@/types";
 import { extractNameInitials } from "@/utils/client";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Image from "next/image";
 
 const BlogView = ({ post }: { post: BlogPost }) => {
   // Setup a read-only Tiptap editor
@@ -31,11 +32,15 @@ const BlogView = ({ post }: { post: BlogPost }) => {
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-[8px]">
               <Avatar className="size-[28px]">
-                <AvatarImage
-                  src={post.author.image ?? "#"}
-                  draggable={false}
-                  alt={post.author.name}
-                />
+                <AvatarImage asChild src={post.author.image ?? "#"}>
+                  <Image
+                    src={post.author.image ?? "#"}
+                    draggable={false}
+                    alt={post.author.name}
+                    width={28}
+                    height={28}
+                  />
+                </AvatarImage>
                 <AvatarFallback>
                   {extractNameInitials(post.author.name)}
                 </AvatarFallback>

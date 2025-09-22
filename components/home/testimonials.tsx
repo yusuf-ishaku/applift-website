@@ -18,6 +18,7 @@ import {
 } from "../ui/carousel";
 import ceo2 from "@/assets/images/testimonial-1.png";
 import thumbnail2 from "@/assets/images/thumbnail2.png";
+import Image from "next/image";
 
 type Testimonial = {
   author: {
@@ -125,7 +126,14 @@ const Testimonials = () => {
                 {/* Author card */}
                 <div className="flex items-center gap-4 md:gap-6 rounded-[10px] border border-white/10 bg-white/5 backdrop-blur-xs px-4 md:px-6 py-3 md:py-4 min-w-[250px] md:min-w-[300px] lg:min-w-[375px]">
                   <Avatar className="size-[60px] md:size-[80px] lg:size-[100px]">
-                    <AvatarImage src={item.author.image.src} />
+                    <AvatarImage asChild src={item.author.image.src}>
+                      <Image
+                        src={item.author.image.src}
+                        alt={item.author.name}
+                        width={100}
+                        height={100}
+                      />
+                    </AvatarImage>
                     <AvatarFallback>
                       {item.author.name.charAt(0)}
                     </AvatarFallback>
