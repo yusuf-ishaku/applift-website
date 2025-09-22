@@ -5,11 +5,16 @@ import { extractNameInitials, formatDate } from "@/utils/client";
 import Image from "next/image";
 import Link from "next/link";
 
-const BlogCard = ({ post }: { post: BlogPost }) => {
+const BlogCard = ({
+  post,
+}: {
+  post: Pick<BlogPost, "coverImage" | "title" | "createdAt"> &
+    Partial<Pick<BlogPost, "slug" | "author">>;
+}) => {
   return (
     <>
       <Link
-        href={`/blog/${post.slug}`}
+        href={post.slug ? `/blog/${post.slug}` : "#"}
         className="flex flex-col items-center justify-center gap-4 min-h-[402px]"
       >
         <div
@@ -25,25 +30,27 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
           <Separator />
 
           <div className="flex items-center justify-between w-full">
-            <div className="flex items-center gap-2">
-              <Avatar className="size-8">
-                <AvatarImage asChild src={post.author.image ?? "#"}>
-                  <Image
-                    src={post.author.image ?? "#"}
-                    draggable={false}
-                    alt={post.author.name}
-                    width={32}
-                    height={32}
-                  />
-                </AvatarImage>
-                <AvatarFallback>
-                  {extractNameInitials(post.author.name)}
-                </AvatarFallback>
-              </Avatar>
-              <span className="text-sm sm:text-base md:text-lg leading-snug dark:text-[#B7B7B7]">
-                {post.author.name}
-              </span>
-            </div>
+            {post.author && (
+              <div className="flex items-center gap-2">
+                <Avatar className="size-8">
+                  <AvatarImage asChild src={post.author.image ?? "#"}>
+                    <Image
+                      src={post.author.image ?? "#"}
+                      draggable={false}
+                      alt={post.author.name}
+                      width={32}
+                      height={32}
+                    />
+                  </AvatarImage>
+                  <AvatarFallback>
+                    {extractNameInitials(post.author.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-sm sm:text-base md:text-lg leading-snug dark:text-[#B7B7B7]">
+                  {post.author.name}
+                </span>
+              </div>
+            )}
             <span className="text-sm sm:text-base md:text-lg leading-snug dark:text-[#B7B7B7]">
               {formatDate(post.createdAt)}
             </span>

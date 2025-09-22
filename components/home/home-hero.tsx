@@ -22,7 +22,7 @@ const HomeHero = () => {
               <Link href="/contact">
                 <Button
                   variant="outline"
-                  className="px-6 py-3 rounded-[10px] border-2 !border-[#0264B5] text-[#0264B5] text-sm sm:text-base !bg-transparent"
+                  className="px-4 sm:px-6 py-2 rounded-lg border-1 !border-[#0264B5] text-[#0264B5] text-sm sm:text-base !bg-transparent"
                 >
                   See Our Projects
                 </Button>

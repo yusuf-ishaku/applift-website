@@ -24,7 +24,7 @@ const BlogView = ({ post }: { post: BlogPost }) => {
   const formattedDate = `${day}/${month}/${year}`;
   return (
     <>
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto max-md:px-4">
         <div className="flex flex-col items-start gap-[32px] ">
           <h1 className="font-medium text-[40px] leading-[50px]">
             {post.title}

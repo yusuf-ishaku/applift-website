@@ -15,7 +15,7 @@ interface AutoplayVideoProps {
 export const AutoplayVideo: FC<AutoplayVideoProps> = ({
   src,
   poster,
-  muted = true,
+  // muted = true,
   loop = true,
   className,
 }) => {

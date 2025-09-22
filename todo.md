@@ -60,3 +60,5 @@ export default function Background() {
     />
   )
 }
+
+Move post between drafts and published from query client after deleting, updating and publishing

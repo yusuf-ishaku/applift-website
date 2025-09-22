@@ -42,12 +42,12 @@ export const BlogOgPreview = memo(function BlogOgPreview() {
           <img
             src={image}
             alt={displayTitle}
-            className="w-full h-full object-cover rounded-sm"
+            className="size-full object-cover rounded-sm"
           />
         </div>
 
         {/* Right Content Section */}
-        <div className="sm:w-2/3 flex flex-col">
+        <div className="flex-1 flex flex-col">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs text-gray-500">
               {url}

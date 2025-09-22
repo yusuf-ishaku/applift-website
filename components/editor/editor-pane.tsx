@@ -43,14 +43,14 @@ function EditorPaneComponent() {
     mutationFn: deleteFn,
     onMutate: (data) => {
       toast.loading(`Deleting "${title}"`, {
-        id: "id" in data ? data.id : data.slug,
+        id: data.id,
         description: "",
       });
       return { isDraft: !form.getValues("published") };
     },
     onSuccess: async (_, data, ctx /*_, data, ctx, { client }*/) => {
       toast.success(`Deleted "${title}" successfully!`, {
-        id: "id" in data ? data.id : data.slug,
+        id: data.id,
         description: "",
       });
       form.reset();
@@ -58,15 +58,10 @@ function EditorPaneComponent() {
         const { queryKey } = ctx.isDraft
           ? draftedPostOptions
           : publishedPostOptions;
-        queryClient.setQueryData(queryKey, (posts) =>
-          (posts ?? []).filter((post) => {
-            if ("id" in data) {
-              return post.id != data.id;
-            } else {
-              return post.slug != data.slug;
-            }
-          }),
-        );
+        queryClient.setQueryData(queryKey, (posts) => {
+          if (!posts) return [];
+          return posts.filter((post) => post.id !== data.id);
+        });
       }
       router.replace("/editor/new");
     },
@@ -74,7 +69,7 @@ function EditorPaneComponent() {
       const item = isPublished ? "post" : "draft";
       console.error(`Error deleting "${title}"`, error);
       toast.error(`Unable to delete ${item}: "${title}"`, {
-        id: "id" in data ? data.id : data.slug,
+        id: data.id,
         description: error.message,
       });
     },

@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
-import { team } from "@/constants/team";
+import { teamMembers } from "@/constants/team";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
@@ -36,22 +36,22 @@ const Team = () => {
         {/* Scrollable Team Cards */}
         <ScrollArea className="w-full whitespace-nowrap">
           <div className="flex w-max space-x-4 py-4">
-            {team.map((member) => (
+            {teamMembers.map((member) => (
               <figure
                 key={member.name}
                 className="shrink-0 flex flex-col even:flex-col-reverse gap-6 items-center w-[250px] sm:w-[280px] md:w-[320px] lg:w-[338px] h-auto group"
               >
                 {/* Image */}
-                <div className="overflow-hidden rounded-xl w-full aspect-[338/359] relative mix-blend-luminosity">
+                <div className="overflow-hidden rounded-xl w-full aspect-[338/359] relative">
                   <Image
                     src={member.image}
                     alt={member.name}
                     fill
-                    className="object-cover rounded-xl size-full grayscale object-center"
+                    className="object-cover rounded-xl size-full mix-blend-luminosity object-center"
                   />
                   <div className="absolute bottom-5 inset-x-0">
                     <Link
-                      href={member.slug ? `/team/${member.slug}` : "#"}
+                      href={member.slug ? `/company/${member.slug}` : "#"}
                       className="size-14 sm:size-16 mx-auto block"
                     >
                       <Button
