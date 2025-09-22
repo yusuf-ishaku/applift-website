@@ -78,7 +78,7 @@ export const AutoplayVideo: FC<AutoplayVideoProps> = ({
       <video
         ref={videoRef}
         src={src}
-        muted={muted}
+        // muted={muted}
         loop={loop}
         playsInline
         controls={false}
