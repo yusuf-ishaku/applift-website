@@ -15,7 +15,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "../ui/sheet";
-import { authClient } from "@/lib/auth-client";
 
 const links = [
   {
@@ -38,7 +37,6 @@ const links = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: session } = authClient.useSession();
   const pathname = usePathname();
   return (
     <>
@@ -67,14 +65,6 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            {session && (
-              <Link
-                href="/editor/new"
-                className="text-[16px] leading-[20px] dark:text-[#cfcfcf]"
-              >
-                Editor
-              </Link>
-            )}
           </div>
           <div className="">
             <Button asChild className="hidden lg:flex">
@@ -115,15 +105,6 @@ const Navbar = () => {
                       {link.label}
                     </Link>
                   ))}
-                  {session && (
-                    <Link
-                      href="/editor/new"
-                      className="text-base font-medium text-primary"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Editor
-                    </Link>
-                  )}
                   <div className="pt-4 border-t">
                     <Button asChild className="w-full">
                       <Link
