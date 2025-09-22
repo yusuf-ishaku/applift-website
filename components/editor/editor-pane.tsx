@@ -133,7 +133,7 @@ function EditorPaneComponent() {
             }}
           >
             <Send className="size-4 mr-2" />
-            {isPublished ? "Update Post" : "Publish Post"}
+            {isPublished ? "Update Post" : "Publish as a Post"}
           </Button>
           {!postId && (
             <Button

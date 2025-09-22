@@ -11,13 +11,20 @@ export const newBlogSchema = z
     title: z.string().min(1, "Title is required"),
     slug: z.string(),
     excerpt: z.string().max(160).optional(),
-    category: z
-      .enum(blogCategories, {
-        error: "Category is required",
-      })
-      .catch("Company"),
+    category: z.enum(blogCategories, {
+      error: "Category is required",
+    }),
     content: z.string().min(1, "Content is required"),
-    tags: z.string().array().optional(),
+    tags: z
+      .string()
+      .array()
+      .optional()
+      .or(
+        z
+          .string()
+          .transform((str) => [str])
+          .optional(),
+      ),
     published: z.coerce.boolean<boolean | "true" | "false">(),
     coverImage: z.url().or(
       z
