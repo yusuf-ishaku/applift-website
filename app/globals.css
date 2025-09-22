@@ -427,5 +427,5 @@ body {
 }
 
 * {
-  @apply border border-red-500 border-solid;
+  /*@apply border border-red-500 border-solid;*/
 }
