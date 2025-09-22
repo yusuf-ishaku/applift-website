@@ -7,22 +7,30 @@ import z from "zod";
 import { zfd } from "zod-form-data";
 import { authorize } from ".";
 
-export async function getUsersDraftedPosts() {
+export async function getUsersDraftedPostsList() {
   const session = await authorize();
   return await prisma.blog.findMany({
     where: {
       authorId: session.user.id,
       published: false,
     },
+    select: {
+      id: true,
+      title: true,
+    },
   });
 }
 
-export async function getUsersPublishedPosts() {
+export async function getUsersPublishedPostsList() {
   const session = await authorize();
   return await prisma.blog.findMany({
     where: {
       authorId: session.user.id,
       published: true,
+    },
+    select: {
+      id: true,
+      title: true,
     },
   });
 }
@@ -30,35 +38,20 @@ export async function getUsersPublishedPosts() {
 export const deleteBlogPostFn = z
   .function({
     input: [
-      z
-        .object({
-          id: z.uuid(),
-        })
-        .or(
-          z.object({
-            slug: z.string(),
-          }),
-        ),
+      z.object({
+        id: z.uuid(),
+      }),
     ],
   })
   .implementAsync(async (data) => {
     const session = await authorize();
     const authorId = session.user.id;
-    if ("id" in data) {
-      await prisma.blog.delete({
-        where: {
-          id: data.id,
-          authorId,
-        },
-      });
-    } else {
-      await prisma.blog.delete({
-        where: {
-          slug: data.slug,
-          authorId,
-        },
-      });
-    }
+    await prisma.blog.delete({
+      where: {
+        id: data.id,
+        authorId,
+      },
+    });
   });
 
 export async function deleteBlogPost(
@@ -155,7 +148,7 @@ const newInquiryFn = z
   .function({
     input: [inquirySchema],
   })
-  .implementAsync(async ({helpWith, ...inquiry}) => {
+  .implementAsync(async ({ helpWith, ...inquiry }) => {
     await prisma.inquiry.create({
       data: { ...inquiry, help_with: helpWith },
     });

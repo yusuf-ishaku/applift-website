@@ -15,13 +15,15 @@ import { authClient } from "@/lib/auth-client";
 import { newBlogSchema, type BlogForm } from "@/schemas";
 import type { BlogPost } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
 import { zfd } from "zod-form-data";
 import { useParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
+import { draftedPostOptions, publishedPostOptions } from "@/lib/query-options";
+import { useCallback } from "react";
 
 const toastId = "PUBLISH-TOAST";
 
@@ -92,6 +94,44 @@ export const BlogEditor = ({ postToEdit }: { postToEdit?: BlogPost }) => {
   const params = useParams<{
     postId: string;
   }>();
+  const queryClient = useQueryClient();
+
+  const movePost = useCallback(
+    (
+      { id: postId, title }: { id: string; title: string },
+      direction: "drafts-to-published" | "published-to-drafts",
+    ) => {
+      const fromOptions =
+        direction === "drafts-to-published"
+          ? draftedPostOptions
+          : publishedPostOptions;
+
+      const toOptions =
+        direction === "drafts-to-published"
+          ? publishedPostOptions
+          : draftedPostOptions;
+
+      // remove from source
+      queryClient.setQueryData(fromOptions.queryKey, (posts) =>
+        posts ? posts.filter((post) => post.id !== postId) : [],
+      );
+
+      // add/update in destination
+      queryClient.setQueryData(toOptions.queryKey, (posts) => {
+        const newPosts = posts ? [...posts] : [];
+        const existing = newPosts.find((post) => post.id === postId);
+
+        if (existing) {
+          existing.title = title;
+        } else {
+          newPosts.push({ id: postId, title });
+        }
+
+        return newPosts;
+      });
+    },
+    [queryClient],
+  );
 
   const publishMutation = useMutation({
     mutationFn: async ({ tags, ...values }: BlogForm) => {
@@ -107,9 +147,24 @@ export const BlogEditor = ({ postToEdit }: { postToEdit?: BlogPost }) => {
       tags?.forEach((tag) => formData.append("tags", tag));
       zfd.formData(newBlogSchema).parse(formData);
       if (values.id) {
+        const postId = values.id;
         await updateFn(formData);
+        movePost(
+          {
+            id: postId,
+            title: values.title,
+          },
+          values.published ? "drafts-to-published" : "published-to-drafts",
+        );
       } else {
         const { id } = await publishFn(formData);
+        movePost(
+          {
+            id,
+            title: values.title,
+          },
+          "drafts-to-published",
+        );
         if (id !== params?.postId) {
           router.replace(`/editor/${id}/edit`);
         }
