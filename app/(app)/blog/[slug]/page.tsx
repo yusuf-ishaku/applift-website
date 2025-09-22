@@ -83,7 +83,7 @@ export default async function BlogSlugPage({ params }: Props) {
   const { slug } = await params;
   const post = await cachedGetPostBySlug(slug);
   return (
-    <div className="mb-[190px]">
+    <div className="mb-4">
       <BlogView post={post} />
       <Suspense key={`blog-${slug}`}>
         <Recommendations slug={slug} authorId={post.authorId} />

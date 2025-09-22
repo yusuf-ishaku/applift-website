@@ -21,7 +21,7 @@ const Team = () => {
       </div>
 
       {/* Team Section */}
-      <div className="space-y-12 md:space-y-16">
+      <div className="space-y-12 md:space-y-16 mt-6 md:mt-12">
         <div className="flex flex-col items-center gap-6 max-w-2xl mx-auto text-center">
           <div className="flex items-center justify-center min-h-[50px] px-6 bg-[#00060A] rounded-full">
             <h3 className="text-lg md:text-xl font-medium text-[#B3D1E9]">

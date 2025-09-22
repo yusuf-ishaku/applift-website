@@ -1,14 +1,14 @@
 "use client";
 
 import { blogCategories } from "@/constants/blog";
-import type { BlogPost } from "@/types";
+import type { PostPreview } from "@/types";
 import uniqBy from "lodash.uniqby";
 import { Check } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import BlogCard from "./blog-card";
 
-const BlogGrid = ({ posts }: { posts: BlogPost[] }) => {
+const BlogGrid = ({ posts }: { posts: PostPreview[] }) => {
   const existingTabs = useMemo(() => {
     const tabs = uniqBy(posts, (post) => post.category).map(
       (post) => post.category,

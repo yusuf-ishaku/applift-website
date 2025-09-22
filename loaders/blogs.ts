@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import type { PostPreview } from "@/types";
 
 export async function getPostBySlug(slug: string) {
   return await prisma.blog.findUnique({
@@ -58,7 +59,7 @@ export async function getAllPublishedPostSlugs() {
   });
 }
 
-export async function listPublishBlogPosts() {
+export async function listPublishBlogPosts(): Promise<PostPreview[]> {
   const posts = await prisma.blog.findMany({
     where: {
       published: true,
@@ -67,7 +68,13 @@ export async function listPublishBlogPosts() {
       createdAt: "desc",
     },
     take: 9,
-    include: {
+    select: {
+      coverImage: true,
+      title: true,
+      createdAt: true,
+      category: true,
+      id: true,
+      slug: true,
       author: {
         select: {
           name: true,

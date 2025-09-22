@@ -17,25 +17,19 @@ const CompanyHero = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-[16px] max-w-[380px] mx-auto w-full">
-          <Button
-            variant="outline"
-            className="flex-1 border-box !border-[#0264B5] rounded-[10px] !bg-transparent"
-          >
-            <a
-              href="#"
-              className="font-medium text-[14px] leading-[18px] text-center text-[#0264B5]"
+          <a target="_blank" href="#">
+            <Button
+              variant="outline"
+              className="px-4 sm:px-6 py-2 rounded-lg border-1 !border-[#0264B5] text-[#0264B5] text-sm sm:text-base !bg-transparent"
             >
               See Our Projects
-            </a>
-          </Button>
-          <Button className="flex-1 border-box rounded-[10px]">
-            <a
-              href="#"
-              className="font-medium text-[14px] leading-[18px] text-center"
-            >
+            </Button>
+          </a>
+          <a target="_blank" href="#">
+            <Button className="px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base">
               Lets Work Together
-            </a>
-          </Button>
+            </Button>
+          </a>
         </div>
       </div>
     </section>

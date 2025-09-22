@@ -2,7 +2,6 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { BlogPost } from "@/types";
-import { extractNameInitials } from "@/utils/client";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "next/image";
@@ -41,9 +40,7 @@ const BlogView = ({ post }: { post: BlogPost }) => {
                     height={28}
                   />
                 </AvatarImage>
-                <AvatarFallback>
-                  {extractNameInitials(post.author.name)}
-                </AvatarFallback>
+                <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <span className="text-[16px] leading-[20px] dark:text-[#B7B7B7]">
                 {post.author.name}
@@ -57,9 +54,12 @@ const BlogView = ({ post }: { post: BlogPost }) => {
         </div>
         <div className="mt-[32px]">
           {post.coverImage && (
-            <div
-              className="rounded-lg mb-8 mx-auto h-96 w-full bg-no-repeat bg-center bg-cover"
-              style={{ backgroundImage: `url(${post.coverImage})` }}
+            <Image
+              src={post.coverImage}
+              height={384}
+              width={768}
+              className="rounded-lg mb-8 mx-auto h-96 w-full object-center object-cover"
+              alt="Cover Image"
             />
           )}
           <EditorContent editor={editor} />

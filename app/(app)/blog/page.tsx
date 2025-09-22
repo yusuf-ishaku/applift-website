@@ -13,7 +13,7 @@ export const metadata: Metadata = seo({
 export default async function BlogPage() {
   const posts = await listPublishBlogPosts();
   return (
-    <div className="mb-[228px]">
+    <div className="mb-4">
       <h2 className="text-[48px] leading-[60px] font-medium text-white">
         Blogs
       </h2>
