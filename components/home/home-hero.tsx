@@ -1,6 +1,7 @@
 import bentlight from "@/assets/images/bent-light.png";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 const HomeHero = () => {
   return (
@@ -29,18 +30,18 @@ const HomeHero = () => {
               </Link>
             </div>
           </div>
-          <div className="flex h-full absolute lg:bottom-0 w-full justify-end z-0">
-            <div
-              className="basis-1/2 [background-size:100%] bg-center translate-y-[47%] bg-no-repeat"
-              style={{
-                backgroundImage: `url(${bentlight.src})`,
-              }}
+          <div className="flex h-full overflow-hidden absolute lg:bottom-0 w-full justify-end z-0">
+            <Image
+              src={bentlight}
+              alt=""
+              draggable={false}
+              className="basis-1/2 object-cover max-md:translate-x-1/2 object-center translate-y-[45%]"
             />
-            <div
-              className="basis-1/2 [background-size:100%] bg-center translate-y-[47%] -scale-x-100 bg-no-repeat"
-              style={{
-                backgroundImage: `url(${bentlight.src})`,
-              }}
+            <Image
+              src={bentlight}
+              alt=""
+              draggable={false}
+              className="basis-1/2 object-cover max-md:translate-x-1/2 object-center translate-y-[45%] -scale-x-100"
             />
           </div>
         </div>

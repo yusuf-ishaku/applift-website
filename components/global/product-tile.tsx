@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import Image from "next/image";
 
 export type Product = {
   title: string;
@@ -45,12 +46,13 @@ const ProductTile = ({ product }: { product: Product }) => {
       {/* Image */}
       <div className="w-full basis-1/2 h-[486px] lg:w-[598px] /h-auto bg-[#CCE0F0] rounded-[10px] overflow-hidden">
         {/*TODO SORT THIS OUT*/}
-        {/*eslint-disable-next-line @next/next/no-img-element*/}
-        <img
+        <Image
           src={product.image}
           draggable={false}
           className="w-full h-full object-cover aspect-video rounded-[10px]"
           alt={product.title}
+          width={598}
+          height={486}
         />
       </div>
 

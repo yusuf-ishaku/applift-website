@@ -6,6 +6,7 @@ import work4 from "@/assets/images/work4.png";
 import work5 from "@/assets/images/work5.png";
 import { Button } from "../ui/button";
 import type { StaticImageData } from "next/image";
+import Image from "next/image";
 
 type Slot = {
   img: StaticImageData;
@@ -47,13 +48,12 @@ const WorkHero = () => {
         {/* Image Stack */}
         <div className="group mx-auto -space-x-8 sm:-space-x-12 md:-space-x-16 min-w-[180px] min-h-[180px] max-md:translate-y-4">
           {slots.map((slot, index) => (
-            <div
+            <Image
               key={index}
-              style={{
-                backgroundImage: `url(${slot.img.src})`,
-              }}
+              alt={`Image-${index + 1}`}
+              src={slot.img}
               className={clsx(
-                "w-[80px] h-[100px] sm:w-[100px] sm:h-[120px] md:w-[119.53px] md:h-[147.56px] inline-block bg-center bg-cover bg-no-repeat rounded-xl transition-all duration-300",
+                "w-[80px] h-[100px] sm:w-[100px] sm:h-[120px] md:w-[119.53px] md:h-[147.56px] inline-block object-center object-cover rounded-xl transition-all duration-300",
                 slot.className,
               )}
             />

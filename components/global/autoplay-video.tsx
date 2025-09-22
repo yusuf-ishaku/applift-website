@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import type { StaticImageData } from "next/image";
 import clsx from "clsx";
+import Image from "next/image";
 
 interface AutoplayVideoProps {
   src: string;
@@ -15,7 +16,7 @@ interface AutoplayVideoProps {
 export const AutoplayVideo: FC<AutoplayVideoProps> = ({
   src,
   poster,
-  // muted = true,
+  muted = true,
   loop = true,
   className,
 }) => {
@@ -31,8 +32,8 @@ export const AutoplayVideo: FC<AutoplayVideoProps> = ({
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
       {
-        threshold: 0.25, // trigger when 25% visible
-        rootMargin: "100px 0px", // preload/trigger earlier
+        threshold: 0.25,
+        rootMargin: "100px 0px",
       },
     );
 
@@ -68,24 +69,29 @@ export const AutoplayVideo: FC<AutoplayVideoProps> = ({
     <div
       ref={containerRef}
       className={clsx("absolute size-full overflow-hidden", className)}
-      style={{
-        backgroundImage: poster ? `url(${poster.src})` : undefined,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
     >
+      {poster && (
+        <Image
+          src={poster}
+          alt="Video poster"
+          className={clsx(
+            "absolute inset-0 size-full object-cover object-center",
+            videoReady ? "hidden" : "block",
+          )}
+          draggable={false}
+        />
+      )}
       <video
         ref={videoRef}
         src={src}
-        // muted={muted}
+        muted={muted}
         loop={loop}
         playsInline
         controls={false}
         onCanPlay={() => setVideoReady(true)}
         className={clsx(
-          "absolute inset-0 size-full object-cover object-center transition-opacity duration-500",
-          videoReady ? "opacity-100" : "opacity-0",
+          "absolute inset-0 size-full object-cover object-center",
+          videoReady ? "block" : "hidden",
         )}
       />
     </div>

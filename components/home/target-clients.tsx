@@ -2,6 +2,7 @@ import torusknot from "@/assets/images/torus-knot.png";
 import { Fragment, type ReactNode } from "react";
 import { AfricanSMEs, ClientAmbitions, Founders, Teams } from "../svgs";
 import { Separator } from "../ui/separator";
+import Image from "next/image";
 
 type Client = {
   icon: () => ReactNode;
@@ -41,11 +42,11 @@ const TargetClients = () => {
     <>
       <div className="mt-[100px]">
         <div className="grid lg:grid-cols-2 gap-y-6">
-          <div
-            className="bg-center bg-no-repeat bg-contain size-72 mx-auto lg:mx-0 lg:size-[496px]"
-            style={{
-              backgroundImage: `url(${torusknot.src})`,
-            }}
+          <Image
+            src={torusknot}
+            alt="Knot"
+            draggable={false}
+            className="object-contain object-center size-72 mx-auto lg:mx-0 lg:size-[496px]"
           />
           <div className="flex flex-col items-start gap-6 sm:gap-8">
             <h3 className="font-medium text-2xl w-full text-center md:text-left sm:text-3xl lg:text-[40px] lg:leading-[50px] text-[#9AC1E1]">
