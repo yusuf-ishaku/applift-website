@@ -6,6 +6,7 @@ import { blobToDataURL } from "@/utils/server";
 import z from "zod";
 import { zfd } from "zod-form-data";
 import { authorize } from ".";
+import { revalidatePath } from "next/cache";
 
 export async function getUsersDraftedPostsList() {
   const session = await authorize();
@@ -46,12 +47,14 @@ export const deleteBlogPostFn = z
   .implementAsync(async (data) => {
     const session = await authorize();
     const authorId = session.user.id;
-    await prisma.blog.delete({
+    const { slug } = await prisma.blog.delete({
       where: {
         id: data.id,
         authorId,
       },
     });
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${slug}`);
   });
 
 export async function deleteBlogPost(
@@ -74,7 +77,7 @@ const updateBlogFn = z
   .implementAsync(async ({ id, ...update }): Promise<void> => {
     const session = await authorize();
     const authorId = session.user.id;
-    await prisma.blog.update({
+    const { slug } = await prisma.blog.update({
       where: {
         id,
         authorId,
@@ -91,6 +94,8 @@ const updateBlogFn = z
         updatedAt: new Date(),
       },
     });
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${slug}`);
   });
 
 export async function updateBlog(args: Parameters<typeof updateBlogFn>[0]) {
@@ -105,7 +110,7 @@ const publishBlogFn = z
   .implementAsync(async (data) => {
     const session = await authorize();
     const authorId = session.user.id;
-    const { id } = await prisma.blog.create({
+    const { id, slug } = await prisma.blog.create({
       data: {
         ...data,
         authorId,
@@ -117,6 +122,8 @@ const publishBlogFn = z
               : undefined,
       },
     });
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${slug}`);
     return { id };
   });
 
