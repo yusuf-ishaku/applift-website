@@ -56,6 +56,7 @@ export const metadata: Metadata = seo({
     "blockchain industry insights",
     "digital innovation strategies",
     "startup technology advice",
+    "setup and cleanup advise"
   ],
   openGraph: {
     siteName: "Applift",
