@@ -145,6 +145,7 @@ const Footer = () => {
         </h4>
         <Separator ref={secondSeparatorRef} className="bg-[#014883]" />
         <Image
+          quality={70}
           src={logoxl}
           draggable={false}
           className="w-24 sm:w-32 lg:w-[142.14px]"

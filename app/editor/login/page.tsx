@@ -26,6 +26,7 @@ export default function LoginPage() {
         >
           <div className="text-primary-foreground flex size-16 items-center justify-center rounded-md">
             <Image
+              quality={70}
               src={appliftLogo}
               className="[clip-path:inset(0_0_30%_0)] translate-y-[15%]"
               alt="Applift Logo"

@@ -49,6 +49,7 @@ const WorkHero = () => {
         <div className="group mx-auto -space-x-8 sm:-space-x-12 md:-space-x-16 min-w-[180px] min-h-[180px] max-md:translate-y-4">
           {slots.map((slot, index) => (
             <Image
+              quality={70}
               key={index}
               alt={`Image-${index + 1}`}
               src={slot.img}

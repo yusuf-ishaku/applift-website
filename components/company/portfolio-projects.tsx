@@ -22,12 +22,10 @@ const PortfolioProjects: FC<Required<Pick<TeamMember, "projects">>> = ({
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
         {projects.slice(0, 9).map((project, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-start gap-4"
-          >
+          <div key={index} className="flex flex-col items-start gap-4">
             <div className="w-full aspect-[4/3]">
               <Image
+                quality={70}
                 src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover object-center rounded-md"

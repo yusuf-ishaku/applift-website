@@ -128,6 +128,7 @@ const Testimonials = () => {
                   <Avatar className="size-[60px] md:size-[80px] lg:size-[100px]">
                     <AvatarImage asChild src={item.author.image.src}>
                       <Image
+                        quality={70}
                         src={item.author.image.src}
                         alt={item.author.name}
                         width={100}

@@ -32,12 +32,14 @@ const HomeHero = () => {
           </div>
           <div className="flex h-full overflow-hidden absolute lg:bottom-0 w-full justify-end z-0">
             <Image
+              quality={70}
               src={bentlight}
               alt=""
               draggable={false}
               className="basis-1/2 object-cover max-md:translate-x-1/2 object-center translate-y-[45%]"
             />
             <Image
+              quality={70}
               src={bentlight}
               alt=""
               draggable={false}

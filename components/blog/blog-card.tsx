@@ -35,6 +35,7 @@ const BlogCard = ({
                 <Avatar className="size-8">
                   <AvatarImage asChild src={post.author.image ?? "#"}>
                     <Image
+                      quality={70}
                       src={post.author.image ?? "#"}
                       draggable={false}
                       alt={post.author.name}

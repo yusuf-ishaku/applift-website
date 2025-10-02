@@ -1,6 +1,6 @@
 "use client";
 
-import { draftedPostOptions } from "@/lib/query-options";
+import { draftedPostOptions, publishedPostOptions } from "@/lib/query-options";
 import {
   dehydrate,
   HydrationBoundary,
@@ -28,6 +28,7 @@ import { getQueryClient } from "@/app/get-query-client";
 export const DraftedPosts = () => {
   const { data: drafts } = useSuspenseQuery(draftedPostOptions);
   const pathname = usePathname();
+  if (!drafts.length) return null;
   return (
     <>
       <SidebarGroup>
@@ -55,15 +56,16 @@ export const DraftedPosts = () => {
 };
 
 export const PublishedPosts = () => {
-  const { data: drafts } = useSuspenseQuery(draftedPostOptions);
+  const { data: posts } = useSuspenseQuery(publishedPostOptions);
   const pathname = usePathname();
+  if (!posts.length) return null;
   return (
     <>
       <SidebarGroup>
         <SidebarGroupLabel>Published</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {drafts.map((post) => {
+            {posts.map((post) => {
               const path = `/editor/${post.id}/edit`;
               return (
                 <Link key={post.id} href={path}>

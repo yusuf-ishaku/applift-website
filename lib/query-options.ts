@@ -1,4 +1,7 @@
-import { getUsersDraftedPostsList, getUsersPublishedPostsList } from "@/actions/blog";
+import {
+  getUsersDraftedPostsList,
+  getUsersPublishedPostsList,
+} from "@/actions/blog";
 import { queryOptions } from "@tanstack/react-query";
 
 // TODO CONVERT TO INFINITE QUERY

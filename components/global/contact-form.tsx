@@ -21,6 +21,7 @@ const ContactForm = () => {
           {/* Left side */}
           <div className="flex flex-col items-start gap-16">
             <Image
+              quality={70}
               src={gradientGlass}
               className="w-48 h-56 sm:w-56 sm:h-64 lg:w-[217px] lg:h-[233px]"
               draggable={false}

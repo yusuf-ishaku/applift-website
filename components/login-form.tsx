@@ -68,6 +68,7 @@ export function LoginForm({
     mutationFn: async () => {
       const { error } = await authClient.signIn.social({
         provider: "github",
+        callbackURL: "/editor/new",
       });
       if (error) throw error;
     },
@@ -95,13 +96,17 @@ export function LoginForm({
   const { mutate: emailMutate, isPending: isPendingEmailAuth } = useMutation({
     mutationFn: async (input: Login | Register) => {
       if ("name" in input) {
-        const { error, data } = await authClient.signUp.email(input);
+        const { error, data } = await authClient.signUp.email({
+          ...input,
+          callbackURL: "/editor/new",
+        });
         if (error) throw error;
         return data.user;
       } else {
         const { error, data } = await authClient.signIn.email({
           ...input,
           rememberMe: true,
+          callbackURL: "/editor/new",
         });
         if (error) throw error;
         return data.user;
