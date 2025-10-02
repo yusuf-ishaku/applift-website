@@ -7,6 +7,7 @@ import NextTopLoader from "nextjs-toploader";
 import ogcardImg from "@/assets/images/og-card.jpg";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next"
 // @ts-expect-error I'll handle this later
 import "./globals.css";
 import Providers from "./providers";
@@ -88,6 +89,7 @@ export default function RootLayout({
           >
             <NextTopLoader showSpinner={false} />
             {children}
+            <Analytics />
             <Toaster />
           </ThemeProvider>
         </Providers>
