@@ -23,6 +23,7 @@ const PortfolioAbout: FC<Omit<TeamMember, "project">> = ({
       {/* Image */}
       <div className="w-40 h-48 sm:w-56 sm:h-64 lg:w-[247px] lg:h-[299px] shrink-0">
         <Image
+          quality={70}
           src={image}
           alt={name}
           className="w-full h-full object-cover object-top rounded-lg mix-blend-luminosity"

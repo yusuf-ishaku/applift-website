@@ -44,6 +44,7 @@ const Team = () => {
                 {/* Image */}
                 <div className="overflow-hidden rounded-xl w-full aspect-[338/359] relative">
                   <Image
+                    quality={70}
                     src={member.image}
                     alt={member.name}
                     fill

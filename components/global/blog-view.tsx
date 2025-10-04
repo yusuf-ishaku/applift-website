@@ -1,19 +1,8 @@
-"use client";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { BlogPost } from "@/types";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import Image from "next/image";
 
 const BlogView = ({ post }: { post: BlogPost }) => {
-  // Setup a read-only Tiptap editor
-  const editor = useEditor({
-    editable: false,
-    extensions: [StarterKit],
-    content: post.content,
-    immediatelyRender: false,
-  });
   const day = String((post.createdAt ?? new Date()).getDate()).padStart(2, "0");
   const month = String((post.createdAt ?? new Date()).getMonth() + 1).padStart(
     2,
@@ -33,6 +22,7 @@ const BlogView = ({ post }: { post: BlogPost }) => {
               <Avatar className="size-[28px]">
                 <AvatarImage asChild src={post.author.image ?? "#"}>
                   <Image
+                    quality={70}
                     src={post.author.image ?? "#"}
                     draggable={false}
                     alt={post.author.name}
@@ -55,6 +45,7 @@ const BlogView = ({ post }: { post: BlogPost }) => {
         <div className="mt-[32px]">
           {post.coverImage && (
             <Image
+              quality={70}
               src={post.coverImage}
               height={384}
               width={768}
@@ -62,7 +53,12 @@ const BlogView = ({ post }: { post: BlogPost }) => {
               alt="Cover Image"
             />
           )}
-          <EditorContent editor={editor} />
+          <div
+            className="tiptap"
+            dangerouslySetInnerHTML={{
+              __html: post.content,
+            }}
+          />
         </div>
       </div>
     </>

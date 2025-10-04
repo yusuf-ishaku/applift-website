@@ -1,14 +1,13 @@
 "use client";
 
-import { draftedPostOptions } from "@/lib/query-options";
+import { draftedPostOptions, publishedPostOptions } from "@/lib/query-options";
 import {
-  dehydrate,
-  HydrationBoundary,
-  useSuspenseQuery,
+  useSuspenseQuery
 } from "@tanstack/react-query";
 import { Bell, Home, Pencil, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -21,13 +20,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
-import { getQueryClient } from "@/app/get-query-client";
 
 // TODO DELETE BUTTON FOR POSTS
 
 export const DraftedPosts = () => {
   const { data: drafts } = useSuspenseQuery(draftedPostOptions);
   const pathname = usePathname();
+  if (!drafts.length) return null;
   return (
     <>
       <SidebarGroup>
@@ -55,15 +54,16 @@ export const DraftedPosts = () => {
 };
 
 export const PublishedPosts = () => {
-  const { data: drafts } = useSuspenseQuery(draftedPostOptions);
+  const { data: posts } = useSuspenseQuery(publishedPostOptions);
   const pathname = usePathname();
+  if (!posts.length) return null;
   return (
     <>
       <SidebarGroup>
         <SidebarGroupLabel>Published</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {drafts.map((post) => {
+            {posts.map((post) => {
               const path = `/editor/${post.id}/edit`;
               return (
                 <Link key={post.id} href={path}>
@@ -83,8 +83,7 @@ export const PublishedPosts = () => {
   );
 };
 
-const AppSidebar = () => {
-  const queryClient = getQueryClient();
+const AppSidebar = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   return (
     <Sidebar>
@@ -139,10 +138,7 @@ const AppSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <DraftedPosts />
-          <PublishedPosts />
-        </HydrationBoundary>
+        {children}
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>

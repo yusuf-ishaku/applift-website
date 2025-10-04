@@ -47,6 +47,7 @@ const ProductTile = ({ product }: { product: Product }) => {
       <div className="w-full basis-1/2 h-[486px] lg:w-[598px] /h-auto bg-[#CCE0F0] rounded-[10px] overflow-hidden">
         {/*TODO SORT THIS OUT*/}
         <Image
+          quality={70}
           src={product.image}
           draggable={false}
           className="w-full h-full object-cover aspect-video rounded-[10px]"

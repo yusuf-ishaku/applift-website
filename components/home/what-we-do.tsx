@@ -131,6 +131,7 @@ const WhatWeDo = () => {
                             )}
                           >
                             <Image
+                              quality={70}
                               src={appliftlogo}
                               draggable={false}
                               className="[clip-path:inset(0_0_30%_0)] mt-4 scale-100"

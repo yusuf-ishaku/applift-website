@@ -13,7 +13,7 @@ const Background: FC<Omit<ComponentProps<typeof Image>, "alt">> = ({
       {...props}
       alt=""
       placeholder={placeholder ?? "blur"}
-      quality={quality ?? 100}
+      quality={quality ?? 70}
       fill
       layout="fill"
       className={cn("object-cover size-full", className)}

@@ -43,6 +43,7 @@ const TargetClients = () => {
       <div className="mt-[100px]">
         <div className="grid lg:grid-cols-2 gap-y-6">
           <Image
+            quality={70}
             src={torusknot}
             alt="Knot"
             draggable={false}
@@ -60,7 +61,7 @@ const TargetClients = () => {
                   <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full">
                     <client.icon />
                     <div className="flex mx-1 md:mx-0 flex-col items-start gap-4 sm:gap-4">
-                      <h4 className="font-medium text-center md:text-left text-xl sm:text-2xl lg:text-[24px] lg:leading-[30px] text-white">
+                      <h4 className="font-medium text-center w-full md:text-left text-xl sm:text-2xl lg:text-[24px] lg:leading-[30px] text-white">
                         {client.title}
                       </h4>
                       <p className="text-base text-center md:text-left sm:text-lg lg:text-[20px] lg:leading-[25px] text-[#CFCFCF]">

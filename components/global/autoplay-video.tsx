@@ -72,6 +72,7 @@ export const AutoplayVideo: FC<AutoplayVideoProps> = ({
     >
       {poster && (
         <Image
+          quality={70}
           src={poster}
           alt="Video poster"
           className={clsx(
