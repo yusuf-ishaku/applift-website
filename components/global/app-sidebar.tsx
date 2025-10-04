@@ -2,13 +2,12 @@
 
 import { draftedPostOptions, publishedPostOptions } from "@/lib/query-options";
 import {
-  dehydrate,
-  HydrationBoundary,
-  useSuspenseQuery,
+  useSuspenseQuery
 } from "@tanstack/react-query";
 import { Bell, Home, Pencil, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -21,7 +20,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
-import { getQueryClient } from "@/app/get-query-client";
 
 // TODO DELETE BUTTON FOR POSTS
 
@@ -85,8 +83,7 @@ export const PublishedPosts = () => {
   );
 };
 
-const AppSidebar = () => {
-  const queryClient = getQueryClient();
+const AppSidebar = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   return (
     <Sidebar>
@@ -141,10 +138,7 @@ const AppSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <DraftedPosts />
-          <PublishedPosts />
-        </HydrationBoundary>
+        {children}
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>

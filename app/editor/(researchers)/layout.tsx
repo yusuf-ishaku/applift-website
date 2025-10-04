@@ -1,9 +1,10 @@
 import { getQueryClient } from "@/app/get-query-client";
-import AppSidebar from "@/components/global/app-sidebar";
+import AppSidebar, { DraftedPosts, PublishedPosts } from "@/components/global/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { draftedPostOptions, publishedPostOptions } from "@/lib/query-options";
 import { redirectGuests } from "@/actions";
 import type { ParentProps } from "@/types";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function ResearchersLayout({ children }: ParentProps) {
   await redirectGuests();
@@ -12,7 +13,12 @@ export default async function ResearchersLayout({ children }: ParentProps) {
   void queryClient.prefetchQuery(publishedPostOptions);
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <DraftedPosts />
+          <PublishedPosts />
+        </HydrationBoundary>
+      </AppSidebar>
       <main className="w-full">
         <div className="px-2.5">
           <div className="flex md:hidden items-center pt-2 max-md:justify-end">
