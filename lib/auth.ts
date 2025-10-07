@@ -23,5 +23,6 @@ export const auth = betterAuth({
     "http://localhost:3000",
     "https://liftblog.vercel.app",
     "https://liftblog-omega.vercel.app",
+    "https://applift.xyz",
   ],
 });
