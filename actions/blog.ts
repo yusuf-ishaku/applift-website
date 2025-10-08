@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { inquirySchema, newBlogSchema } from "@/schemas";
-import { blobToDataURL } from "@/utils/server";
+import { uploadImageToCloudinary } from "@/utils/server";
 import z from "zod";
 import { zfd } from "zod-form-data";
 import { authorize } from ".";
@@ -89,7 +89,7 @@ const updateBlogFn = z
           typeof update.coverImage === "string"
             ? update.coverImage
             : update.coverImage
-              ? await blobToDataURL(update.coverImage)
+              ? await uploadImageToCloudinary(update.coverImage)
               : undefined,
         updatedAt: new Date(),
       },
@@ -118,7 +118,7 @@ const publishBlogFn = z
           typeof data.coverImage === "string"
             ? data.coverImage
             : data.coverImage
-              ? await blobToDataURL(data.coverImage)
+              ? await uploadImageToCloudinary(data.coverImage)
               : undefined,
       },
     });
