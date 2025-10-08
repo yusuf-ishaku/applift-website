@@ -422,18 +422,15 @@ export function TiptapMenu({ editor }: { editor: Editor }) {
         >
           <FaEraser />
         </Button>
-        {/*<Button
+        <Button
           type="button"
           size="icon"
           variant="ghost"
-          onClick={() => {
-            const label = prompt("Enter button text") || "Button";
-            editor.chain().focus().insertUiButton({ label }).run();
-          }}
+          onClick={() => editor.chain().focus().insertUiLink().run()}
           title="Insert UI Button"
         >
           <Zap className="size-5" />
-        </Button>*/}
+        </Button>
       </TabsContent>
     </Tabs>
   );

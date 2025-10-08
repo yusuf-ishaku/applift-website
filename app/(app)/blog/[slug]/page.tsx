@@ -88,6 +88,28 @@ export default async function BlogSlugPage({ params }: Props) {
       <Suspense key={`blog-${slug}`}>
         <Recommendations slug={slug} authorId={post.authorId} />
       </Suspense>
+      {/*<section
+        id="comments-section"
+        className="mt-12 max-w-3xl mx-auto max-md:px-4"
+      >
+        <fieldset className="bg-[linear-gradient(270deg,rgba(0,11,20,0.2)_0%,rgba(1,73,132,0)_100%)] rounded-lg w-full">
+          <div className="flex flex-col gap-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#FAFAFA]">
+              Leave a Comment
+            </h2>
+
+            <div className="flex flex-col gap-4">
+              <CommentForm postId={post.id} />
+            </div>
+
+            <div className="h-px bg-gray-700/50" />
+
+            <div className="flex flex-col gap-6">
+              <CommentList />
+            </div>
+          </div>
+        </fieldset>
+      </section>*/}
     </div>
   );
 }

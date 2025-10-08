@@ -1236,35 +1236,6 @@ export const Teams = () => {
   );
 };
 
-export const ClientAmbitions = () => {
-  return (
-    <>
-      <svg
-        width="34"
-        height="34"
-        viewBox="0 0 34 34"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M17 33C25.8368 33 33 25.8368 33 17C33 8.1632 25.8368 1 17 1C8.1632 1 1 8.1632 1 17C1 25.8368 8.1632 33 17 33Z"
-          stroke="#4E93CB"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M1.79999 17.8001L10.6 21.0001L8.99999 26.6001L10.6 31.4001M25 30.6001L24.2 26.6001L20.2 25.0001V19.4001L25 17.8001L32.2 18.6001M28.2 6.6001L27.4 9.0001L21.8 9.8001V14.6001L25.8 13.0001H29L32.2 14.6001M1.79999 14.6001L5.79999 11.4001L9.79999 10.6001L13 5.8001L11.4 2.6001"
-          stroke="#4E93CB"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </>
-  );
-};
-
 export const Logo1 = () => {
   return (
     <>

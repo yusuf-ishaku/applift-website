@@ -24,7 +24,7 @@ const tabs = [
 
 const products: Product[] = [
   {
-    title: "Loop Journal",
+    title: "Destorah E-commerce",
     tags: ["SaaS", "B2B", "Artificial Intelligence"],
     timeToMVP: "4 wks",
     industry: "Health & Wellness",
@@ -36,7 +36,7 @@ const products: Product[] = [
     satisfaction: "95%",
   },
   {
-    title: "Loop Journal",
+    title: "Super Vibes Records",
     tags: ["SaaS", "B2B", "Artificial Intelligence"],
     timeToMVP: "4 wks",
     industry: "Health & Wellness",
@@ -48,7 +48,7 @@ const products: Product[] = [
     satisfaction: "95%",
   },
   {
-    title: "Loop Journal",
+    title: "Lune coin",
     tags: ["SaaS", "B2B", "Artificial Intelligence"],
     timeToMVP: "4 wks",
     industry: "Health & Wellness",

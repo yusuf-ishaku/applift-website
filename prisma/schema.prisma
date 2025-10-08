@@ -8,6 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Table: account
 model Account {
   id                    String    @id
   accountId             String
@@ -27,6 +28,40 @@ model Account {
   @@map("account")
 }
 
+// Table: blog
+model Blog {
+  id         String    @id @default(dbgenerated("gen_random_uuid()"))
+  title      String
+  slug       String    @unique
+  excerpt    String?
+  category   String
+  authorId   String
+  content    String
+  tags       Json?
+  coverImage String?
+  createdAt  DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt  DateTime  @default(now()) @db.Timestamp(6)
+  published  Boolean?  @default(false)
+  author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  comment    Comment[]
+
+  @@map("blog")
+}
+
+// Table: inquiry
+model Inquiry {
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  help_with  String[]
+  budget     String
+  name       String
+  email      String
+  overview   String
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  @@map("inquiry")
+}
+
+// Table: session
 model Session {
   id        String   @id
   expiresAt DateTime @db.Timestamp(6)
@@ -41,6 +76,7 @@ model Session {
   @@map("session")
 }
 
+// Table: user
 model User {
   id            String    @id
   name          String
@@ -50,12 +86,13 @@ model User {
   createdAt     DateTime  @default(now()) @db.Timestamp(6)
   updatedAt     DateTime  @default(now()) @db.Timestamp(6)
   account       Account[]
+  blog          Blog[]
   session       Session[]
-  Blog          Blog[]
 
   @@map("user")
 }
 
+// Table: verification
 model Verification {
   id         String    @id
   identifier String
@@ -67,33 +104,15 @@ model Verification {
   @@map("verification")
 }
 
-model Blog {
-  id         String   @id @default(uuid())
-  title      String
-  slug       String   @unique
-  excerpt    String? // nullable
-  category   String
-  authorId   String
-  content    String
-  tags       Json? // array of strings
-  coverImage String? // nullable
-  published  Boolean  @default(false) // <-- added field
-  createdAt  DateTime @default(now()) @db.Timestamp(6)
-  updatedAt  DateTime @default(now()) @db.Timestamp(6)
-
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@map("blog")
-}
-
-model Inquiry {
+// Table: comment
+model Comment {
   id          String   @id @default(cuid())
-  help_with   String[] // e.g. ["MVP Build", "AI Integration"]
-  budget      String   // e.g. "Under $5K"
-  name        String
-  email       String
-  overview    String   // Project overview text
-  created_at   DateTime @default(now())
+  postId      String
+  content     String
+  displayName String?  @default("Anonymous")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  blog        Blog     @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@map("inquiry")
+  @@map("comment")
 }

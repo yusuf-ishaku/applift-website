@@ -1,49 +1,47 @@
-import { Node, mergeAttributes} from "@tiptap/core";
+import { Node, mergeAttributes } from "@tiptap/core";
 
-export interface UiButtonOptions {
-  HTMLAttributes: Partial<HTMLButtonElement>
+export interface UiLinkOptions {
+  HTMLAttributes: Partial<HTMLAnchorElement>;
 }
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
-    uiButton: {
-      insertUiButton: (attrs: { label?: string; class?: string }) => ReturnType;
+    uiLink: {
+      insertUiLink: (attrs?: { class?: string }) => ReturnType;
     };
   }
 }
 
-export const UiButton = Node.create<UiButtonOptions>({
-  name: "uiButton",
-
+export const UiLink = Node.create<UiLinkOptions>({
+  name: "uiLink",
   group: "inline",
   inline: true,
-  atom: true,
-  selectable: true,  // allow selecting the node
-
+  atom: false,
+  content: "inline*", // Allows inline content (text, other marks/nodes) inside the link
   addOptions() {
     return {
       HTMLAttributes: {},
     };
   },
-
   addAttributes() {
     return {
-      label: {
-        default: "Button",
+      href: {
+        default: null,
+        parseHTML: (element) => element.getAttribute("href"),
       },
       class: {
         default: null,
       },
     };
   },
-
   parseHTML() {
     return [
       {
-        tag: "button[data-ui-button]",
+        tag: "a[data-ui-link]",
         getAttrs: (el) => {
+          if (typeof el === "string") return {};
           return {
-            label: el.getAttribute("data-label") ?? undefined,
+            href: el.getAttribute("href") ?? undefined,
             class: el.getAttribute("data-class") ?? undefined,
           };
         },
@@ -53,58 +51,36 @@ export const UiButton = Node.create<UiButtonOptions>({
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "button",
+      "a",
       mergeAttributes(
-        { "data-ui-button": "true", "data-label": HTMLAttributes.label, "data-class": HTMLAttributes.class },
+        {
+          "data-ui-link": "true",
+          target: "_blank", // Open in new tab
+          rel: "noopener noreferrer", // Security best practice
+        },
         this.options.HTMLAttributes,
         HTMLAttributes,
-        { class: "tiptap-ui-button" }
+        { class: "tiptap-ui-link btn" },
       ),
-      HTMLAttributes.label,
+      0,
     ];
   },
 
   addCommands() {
     return {
-      insertUiButton:
+      insertUiLink:
         (attrs) =>
         ({ commands }) => {
+          const href = window.prompt("Enter the URL for the link:");
+          if (!href) {
+            return false;
+          }
           return commands.insertContent({
             type: this.name,
-            attrs,
+            attrs: { ...attrs, href },
+            content: [{ type: "text", text: "Your Link Text" }],
           });
         },
-    };
-  },
-
-  addNodeView() {
-    return (props) => {
-      const { node } = props;
-
-      const dom = document.createElement("button");
-      dom.classList.add("tiptap-ui-button");
-      if (node.attrs.class) {
-        dom.classList.add(node.attrs.class);
-      }
-      dom.setAttribute("data-ui-button", "true");
-      dom.setAttribute("data-label", node.attrs.label);
-      dom.setAttribute("data-class", node.attrs.class || "");
-      dom.textContent = node.attrs.label;
-
-      // prevent editing inside
-      dom.contentEditable = "false";
-
-      // Return a minimal NodeView interface
-      return {
-        dom,
-        update: (newNode) => {
-          // If attributes change, update dom
-          if (newNode.attrs.label !== node.attrs.label) {
-            dom.textContent = newNode.attrs.label;
-          }
-          return true;
-        },
-      };
     };
   },
 });

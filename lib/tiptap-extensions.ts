@@ -21,7 +21,7 @@ import {
   DetailsSummary,
 } from "@tiptap/extension-details";
 import { Placeholder } from "@tiptap/extensions";
-import { UiButton } from "@/components/global/button-node";
+import { UiLink } from "@/components/global/button-node";
 
 export const tipTapExtensions = [
   StarterKit,
@@ -52,5 +52,5 @@ export const tipTapExtensions = [
   }),
   DetailsSummary,
   DetailsContent,
-  UiButton
+  UiLink,
 ];

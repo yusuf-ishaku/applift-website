@@ -8,12 +8,18 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/applift-labs/**",
+      },
     ],
   },
   experimental: {
     serverActions: {
       bodySizeLimit: "4.5mb",
     },
+    typedEnv: true,
   },
 };
 
