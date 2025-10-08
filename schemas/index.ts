@@ -67,3 +67,15 @@ export const inquirySchema = z.object({
     .string()
     .min(10, "Project overview should be at least 10 characters"),
 });
+
+export const newCommentSchema = z.object({
+  postId: z.uuid("Invalid Post ID format."),
+  content: z.string().min(3, "Comment must be at least 3 characters long."),
+  displayName: z
+    .string()
+    .trim()
+    .max(50)
+    .optional()
+    .nullable()
+    .transform((v) => v ?? null),
+});
