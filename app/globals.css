@@ -417,7 +417,7 @@ body {
     }
 
     hr {
-      @apply bg-border shrink-0 h-px w-full;
+      @apply bg-border shrink-0 h-px w-full mt-4;
       /*@apply hidden;*/
     }
 
