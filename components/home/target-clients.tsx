@@ -1,8 +1,8 @@
 import torusknot from "@/assets/images/torus-knot.png";
-import { Fragment, type ReactNode } from "react";
-import { AfricanSMEs, ClientAmbitions, Founders, Teams } from "../svgs";
-import { Separator } from "../ui/separator";
 import Image from "next/image";
+import { Fragment, type ReactNode } from "react";
+import { AfricanSMEs, Founders, Teams } from "../svgs";
+import { Separator } from "../ui/separator";
 
 type Client = {
   icon: () => ReactNode;
@@ -12,28 +12,22 @@ type Client = {
 
 const clients: Client[] = [
   {
-    icon: AfricanSMEs,
-    title: "African SMEs & Established Businesses",
-    description:
-      "Driving digital transformation with solutions built to modernize operations and boost growth.",
-  },
-  {
     icon: Founders,
     title: "Founders & Early-Stage Products",
     description:
       "From MVP to launch, we help turn bold ideas into usable, market-ready products.",
   },
   {
+    icon: AfricanSMEs,
+    title: "SMEs & Established Businesses",
+    description:
+      "Driving digital transformation with solutions built to modernize operations and boost growth.",
+  },
+  {
     icon: Teams,
     title: "Teams Needing Product Audits",
     description:
       "Clear UX reviews that improve usability, refine flows, and lift engagement metrics.",
-  },
-  {
-    icon: ClientAmbitions,
-    title: "Clients with Global Ambitions",
-    description:
-      "Lean, high-quality engineering tailored for businesses scaling across borders.",
   },
 ];
 
@@ -51,7 +45,7 @@ const TargetClients = () => {
           />
           <div className="flex flex-col items-start gap-6 sm:gap-8">
             <h3 className="font-medium text-2xl w-full text-center md:text-left sm:text-3xl lg:text-[40px] lg:leading-[50px] text-[#9AC1E1]">
-              Our Target Clients
+              Who we work with
             </h3>
 
             <div className="flex flex-col items-start gap-6 sm:gap-8 w-full">

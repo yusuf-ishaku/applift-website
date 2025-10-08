@@ -23,8 +23,8 @@ const WhyApplift = () => {
             </h4>
             <p className="text-sm leading-relaxed sm:text-base sm:leading-6 text-center text-[#E6E6E6]">
               We don’t just code. We listen. We audit. We research. We build
-              things with soul and solid systems. From first sketch to final
-              launch, our work is guided by care and clarity.
+              things with soul and solid systems. Second. We help individuals
+              solve for product so they can focus on business
             </p>
           </div>
         </div>
