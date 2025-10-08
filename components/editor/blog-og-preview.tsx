@@ -36,8 +36,8 @@ export const BlogOgPreview = memo(function BlogOgPreview() {
   return (
     <Card className="overflow-hidden border shadow-md">
       <div className="flex flex-col gap-2 sm:flex-row">
-        {/* Left Image Section */}
-        <div className="sm:w-1/3 md:ml-3 max-md:px-2">
+        {/* Left Image Section - ADDED flex-shrink-0 to prevent image crushing */}
+        <div className="sm:w-1/3 md:ml-3 max-md:px-2 flex-shrink-0">
           {/*eslint-disable-next-line @next/next/no-img-element*/}
           <img
             src={image}

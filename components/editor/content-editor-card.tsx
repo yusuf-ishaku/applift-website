@@ -1,6 +1,6 @@
 "use client";
 
-import { tipTapExtensions } from "@/lib/tiptap";
+import { tipTapExtensions } from "@/lib/tiptap-extensions";
 import type { newBlogSchema } from "@/schemas";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { memo } from "react";
