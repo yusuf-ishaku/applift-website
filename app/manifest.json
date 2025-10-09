@@ -1,0 +1,8 @@
+{
+  "name": "Applift Labs",
+  "short_name": "Applift",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}
