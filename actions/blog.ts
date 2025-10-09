@@ -36,101 +36,83 @@ export async function getUsersPublishedPostsList() {
   });
 }
 
-export const deleteBlogPostFn = z
-  .function({
-    input: [
-      z.object({
-        id: z.uuid(),
-      }),
-    ],
-  })
-  .implementAsync(async (data) => {
-    const session = await authorize();
-    const authorId = session.user.id;
-    const { slug } = await prisma.blog.delete({
-      where: {
-        id: data.id,
-        authorId,
-      },
-    });
-    revalidatePath("/blog");
-    revalidatePath(`/blog/${slug}`);
-  });
+const deletePostSchema = z.object({
+  id: z.uuid({
+    error: "Invalid post id",
+  }),
+});
 
-export async function deleteBlogPost(
-  args: Parameters<typeof deleteBlogPostFn>[0],
-) {
-  return await deleteBlogPostFn(args);
+export async function deleteBlogPost(postId: z.infer<typeof deletePostSchema>) {
+  deletePostSchema.parse(postId);
+  const session = await authorize();
+  const authorId = session.user.id;
+  const { slug } = await prisma.blog.delete({
+    where: {
+      id: postId.id,
+      authorId,
+    },
+  });
+  revalidatePath("/blog");
+  revalidatePath(`/blog/${slug}`);
 }
 
-const updateBlogFn = z
-  .function({
-    input: [
-      zfd.formData(
-        newBlogSchema.in.extend({
-          // require post id
-          id: newBlogSchema.in.shape.id.unwrap(),
-        }),
-      ),
-    ],
-  })
-  .implementAsync(async ({ id, ...update }): Promise<void> => {
-    const session = await authorize();
-    const authorId = session.user.id;
-    const { slug } = await prisma.blog.update({
-      where: {
-        id,
-        authorId,
-      },
-      data: {
-        ...update,
-        authorId,
-        coverImage:
-          typeof update.coverImage === "string"
-            ? update.coverImage
-            : update.coverImage
-              ? await uploadImageToCloudinary(update.coverImage)
-              : undefined,
-        updatedAt: new Date(),
-      },
-    });
-    revalidatePath("/blog");
-    revalidatePath(`/blog/${slug}`);
+const updateBlogSchema = zfd.formData(
+  newBlogSchema.in.extend({
+    id: newBlogSchema.in.shape.id.unwrap(), // require post id
+  }),
+);
+
+export async function updateBlog(formData: FormData) {
+  const { id, ...update } = updateBlogSchema.parse(formData);
+
+  const session = await authorize();
+  const authorId = session.user.id;
+
+  const { slug } = await prisma.blog.update({
+    where: {
+      id,
+      authorId,
+    },
+    data: {
+      ...update,
+      authorId,
+      coverImage:
+        typeof update.coverImage === "string"
+          ? update.coverImage
+          : update.coverImage
+            ? await uploadImageToCloudinary(update.coverImage)
+            : undefined,
+      updatedAt: new Date(),
+    },
   });
 
-export async function updateBlog(args: Parameters<typeof updateBlogFn>[0]) {
-  return await updateBlogFn(args);
+  revalidatePath("/blog");
+  revalidatePath(`/blog/${slug}`);
 }
 
-const publishBlogFn = z
-  .function({
-    input: [zfd.formData(newBlogSchema)],
-    output: z.custom<{ id: string }>(),
-  })
-  .implementAsync(async (data) => {
-    const session = await authorize();
-    const authorId = session.user.id;
-    const { id, slug } = await prisma.blog.create({
-      data: {
-        ...data,
-        authorId,
-        coverImage:
-          typeof data.coverImage === "string"
-            ? data.coverImage
-            : data.coverImage
-              ? await uploadImageToCloudinary(data.coverImage)
-              : undefined,
-      },
-    });
-    revalidatePath("/blog");
-    revalidatePath(`/blog/${slug}`);
-    return { id };
+export async function publishBlog(formData: FormData) {
+  const data = zfd.formData(newBlogSchema).parse(formData);
+
+  const session = await authorize();
+  const authorId = session.user.id;
+
+  const { id, slug } = await prisma.blog.create({
+    data: {
+      ...data,
+      authorId,
+      coverImage:
+        typeof data.coverImage === "string"
+          ? data.coverImage
+          : data.coverImage
+            ? await uploadImageToCloudinary(data.coverImage)
+            : undefined,
+    },
   });
 
-export async function publishBlog(
-  args: Parameters<typeof publishBlogFn>[0],
-): Promise<ReturnType<typeof publishBlogFn>> {
-  return await publishBlogFn(args);
+  revalidatePath("/blog");
+  revalidatePath(`/blog/${slug}`);
+
+  return { id };
 }
 
 export async function getBlogPostById(postId: string) {
@@ -151,18 +133,9 @@ export async function getBlogPostById(postId: string) {
   });
 }
 
-const newInquiryFn = z
-  .function({
-    input: [inquirySchema],
-  })
-  .implementAsync(async ({ helpWith, ...inquiry }) => {
-    await prisma.inquiry.create({
-      data: { ...inquiry, help_with: helpWith },
-    });
+export async function makeNewEnquiry(data: z.infer<typeof inquirySchema>) {
+  inquirySchema.parse(data);
+  await prisma.inquiry.create({
+    data: { ...data, help_with: data.helpWith },
   });
-
-export async function makeNewEnquiry(
-  args: Parameters<typeof newInquiryFn>[0],
-): Promise<ReturnType<typeof newInquiryFn>> {
-  return await newInquiryFn(args);
 }
