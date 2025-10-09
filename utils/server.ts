@@ -1,5 +1,5 @@
+import { cloudinary } from "@/lib/cloudinary";
 import type { Blog } from "@prisma-app/client";
-import { v2 as cloudinary } from "cloudinary";
 
 export async function uploadImageToCloudinary(blob: File | Blob) {
   const buffer = Buffer.from(await blob.arrayBuffer());
