@@ -2,12 +2,13 @@
 
 import { prisma } from "@/lib/prisma";
 import { inquirySchema, newBlogSchema } from "@/schemas";
-import { uploadImageToCloudinary } from "@/utils/server";
+import type { PostPreview } from "@/types";
+import { handleImageUpload } from "@/utils/server";
+import { waitUntil } from "@vercel/functions";
+import { revalidatePath } from "next/cache";
 import z from "zod";
 import { zfd } from "zod-form-data";
 import { authorizeSession } from ".";
-import { revalidatePath } from "next/cache";
-import type { PostPreview } from "@/types";
 
 export async function getUsersDraftedPostsList() {
   const session = await authorizeSession();
@@ -68,6 +69,11 @@ export async function updateBlog(formData: FormData) {
 
   const session = await authorizeSession();
   const authorId = session.user.id;
+  const coverImage = await handleImageUpload(update.coverImage, {
+    folder: "blog",
+    public_id: id,
+    overwrite: true,
+  });
 
   const { slug } = await prisma.blog.update({
     where: {
@@ -77,12 +83,7 @@ export async function updateBlog(formData: FormData) {
     data: {
       ...update,
       authorId,
-      coverImage:
-        typeof update.coverImage === "string"
-          ? update.coverImage
-          : update.coverImage
-            ? await uploadImageToCloudinary(update.coverImage)
-            : undefined,
+      coverImage: coverImage?.url,
       updatedAt: new Date(),
     },
   });
@@ -96,22 +97,24 @@ export async function publishBlog(formData: FormData) {
 
   const session = await authorizeSession();
   const authorId = session.user.id;
+  const coverImage = await handleImageUpload(data.coverImage, {
+    folder: "blog",
+  });
 
   const { id, slug } = await prisma.blog.create({
     data: {
       ...data,
       authorId,
-      coverImage:
-        typeof data.coverImage === "string"
-          ? data.coverImage
-          : data.coverImage
-            ? await uploadImageToCloudinary(data.coverImage)
-            : undefined,
+      coverImage: coverImage?.url,
     },
   });
 
   revalidatePath("/blog");
   revalidatePath(`/blog/${slug}`);
+
+  if (coverImage?.updateId) {
+    waitUntil(coverImage.updateId(id));
+  }
 
   return { id };
 }

@@ -15,8 +15,7 @@ export function seo({
   image?: string;
   pathname?: `/${string}`;
 }): Metadata {
-  let url = APP_URL;
-  if (pathname?.startsWith("/")) url += pathname;
+  const url = new URL(pathname ?? "/", APP_URL).href;
   return {
     ...metadata,
     title,
