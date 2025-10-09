@@ -34,6 +34,7 @@ export function seo({
         : {}),
     },
     openGraph: {
+      siteName: "Applift Labs",
       ...openGraph,
       type: "website",
       title,

@@ -8,6 +8,9 @@ export const metadata: Metadata = seo({
   description:
     "Read the latest blog posts from Applift — insights, tutorials, and stories about building and scaling modern web applications.",
   pathname: "/blogs",
+  openGraph: {
+    siteName: "Applift Blog",
+  },
 });
 
 export const revalidate = 600;

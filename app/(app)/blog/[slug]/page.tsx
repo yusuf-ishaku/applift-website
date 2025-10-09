@@ -59,6 +59,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           keywords: post.tags as string[],
         }
       : {}),
+    openGraph: {
+      siteName: "Applift Blog",
+    },
   });
 }
 
