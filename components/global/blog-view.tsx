@@ -1,15 +1,46 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import type { BlogPost } from "@/types";
+import { Share2 } from "lucide-react";
 import Image from "next/image";
+import { useCallback } from "react";
+import { toast } from "sonner";
 
 const BlogView = ({ post }: { post: BlogPost }) => {
+  const handleShare = useCallback(async () => {
+    if (!post.published) return;
+    const shareUrl = new URL(`/blog/${post.slug}`, window.location.href).href;
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: post.title,
+          text: `Check out this blog post: ${post.title}`,
+          url: shareUrl,
+        });
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success("Link copied!", {
+          description: "The blog link has been copied to your clipboard.",
+        });
+      }
+    } catch (error) {
+      console.error("Unable to share blog post", error);
+      toast.error("Unable to share", {
+        description: "Something went wrong while trying to share this post.",
+      });
+    }
+  }, [post.published, post.slug, post.title]);
+
   const day = String((post.createdAt ?? new Date()).getDate()).padStart(2, "0");
   const month = String((post.createdAt ?? new Date()).getMonth() + 1).padStart(
     2,
     "0",
-  ); // months are 0-indexed
-  const year = String((post.createdAt ?? new Date()).getFullYear()).slice(-2); // last 2 digits
+  );
+  const year = String((post.createdAt ?? new Date()).getFullYear()).slice(-2);
   const formattedDate = `${day}/${month}/${year}`;
+
   return (
     <>
       <div className="max-w-3xl mx-auto max-md:px-4">
@@ -39,9 +70,21 @@ const BlogView = ({ post }: { post: BlogPost }) => {
                 {formattedDate}
               </span>
             </div>
-            {/*<ThemeToggle />*/}
+
+            {/* Share Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleShare}
+              title="Share this post"
+              className="ml-auto"
+              disabled={!post.published}
+            >
+              <Share2 className="size-5 opacity-50" />
+            </Button>
           </div>
         </div>
+
         <div className="mt-[32px]">
           {post.coverImage && (
             <Image
