@@ -15,7 +15,7 @@ export async function redirectGuests() {
   if (!session) redirect("/editor/login");
 }
 
-export async function authorize() {
+export async function authorizeSession() {
   const session = await authenticate();
   if (!session) unauthorized();
   return session;

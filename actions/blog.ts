@@ -5,11 +5,12 @@ import { inquirySchema, newBlogSchema } from "@/schemas";
 import { uploadImageToCloudinary } from "@/utils/server";
 import z from "zod";
 import { zfd } from "zod-form-data";
-import { authorize } from ".";
+import { authorizeSession } from ".";
 import { revalidatePath } from "next/cache";
+import type { PostPreview } from "@/types";
 
 export async function getUsersDraftedPostsList() {
-  const session = await authorize();
+  const session = await authorizeSession();
   return await prisma.blog.findMany({
     where: {
       authorId: session.user.id,
@@ -23,7 +24,7 @@ export async function getUsersDraftedPostsList() {
 }
 
 export async function getUsersPublishedPostsList() {
-  const session = await authorize();
+  const session = await authorizeSession();
   return await prisma.blog.findMany({
     where: {
       authorId: session.user.id,
@@ -44,7 +45,7 @@ const deletePostSchema = z.object({
 
 export async function deleteBlogPost(postId: z.infer<typeof deletePostSchema>) {
   deletePostSchema.parse(postId);
-  const session = await authorize();
+  const session = await authorizeSession();
   const authorId = session.user.id;
   const { slug } = await prisma.blog.delete({
     where: {
@@ -65,7 +66,7 @@ const updateBlogSchema = zfd.formData(
 export async function updateBlog(formData: FormData) {
   const { id, ...update } = updateBlogSchema.parse(formData);
 
-  const session = await authorize();
+  const session = await authorizeSession();
   const authorId = session.user.id;
 
   const { slug } = await prisma.blog.update({
@@ -93,7 +94,7 @@ export async function updateBlog(formData: FormData) {
 export async function publishBlog(formData: FormData) {
   const data = zfd.formData(newBlogSchema).parse(formData);
 
-  const session = await authorize();
+  const session = await authorizeSession();
   const authorId = session.user.id;
 
   const { id, slug } = await prisma.blog.create({
@@ -116,7 +117,7 @@ export async function publishBlog(formData: FormData) {
 }
 
 export async function getBlogPostById(postId: string) {
-  const session = await authorize();
+  const session = await authorizeSession();
   return await prisma.blog.findUnique({
     where: {
       id: postId,
@@ -138,4 +139,33 @@ export async function makeNewEnquiry(data: z.infer<typeof inquirySchema>) {
   await prisma.inquiry.create({
     data: { ...data, help_with: data.helpWith },
   });
+}
+
+export async function listUsersPublishBlogPosts(): Promise<PostPreview[]> {
+  const session = await authorizeSession();
+  const posts = await prisma.blog.findMany({
+    where: {
+      published: true,
+      authorId: session.user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 9,
+    select: {
+      coverImage: true,
+      title: true,
+      createdAt: true,
+      category: true,
+      id: true,
+      slug: true,
+      author: {
+        select: {
+          name: true,
+          image: true,
+        },
+      },
+    },
+  });
+  return posts;
 }

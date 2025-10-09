@@ -88,6 +88,10 @@ model User {
   account       Account[]
   blog          Blog[]
   session       Session[]
+  facebook      String?
+  linkedin      String?
+  twitter       String?
+  contact_url   String?
 
   @@map("user")
 }
