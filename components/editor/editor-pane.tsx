@@ -150,9 +150,7 @@ function EditorPaneComponent() {
               className="w-full"
               onClick={() =>
                 // TODO use a dialog to confirm post deletion
-                deleteMutation.mutate({
-                  id: postId,
-                })
+                deleteMutation.mutate({ id: postId })
               }
             >
               <Trash className="size-4 mr-2" />

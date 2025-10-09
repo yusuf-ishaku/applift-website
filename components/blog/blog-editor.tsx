@@ -22,7 +22,11 @@ import type z from "zod";
 import { zfd } from "zod-form-data";
 import { useParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
-import { draftedPostOptions, publishedPostOptions } from "@/lib/query-options";
+import {
+  draftedPostOptions,
+  myBlogOptions,
+  publishedPostOptions,
+} from "@/lib/query-options";
 import { useCallback } from "react";
 
 const toastId = "PUBLISH-TOAST";
@@ -129,6 +133,8 @@ export const BlogEditor = ({ postToEdit }: { postToEdit?: BlogPost }) => {
 
         return newPosts;
       });
+
+      queryClient.invalidateQueries(myBlogOptions);
     },
     [queryClient],
   );

@@ -30,7 +30,7 @@ model Account {
 
 // Table: blog
 model Blog {
-  id         String    @id @default(dbgenerated("gen_random_uuid()"))
+  id         String    @id @default(uuid())
   title      String
   slug       String    @unique
   excerpt    String?
@@ -50,7 +50,7 @@ model Blog {
 
 // Table: inquiry
 model Inquiry {
-  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  id         String   @id @default(uuid())
   help_with  String[]
   budget     String
   name       String
@@ -88,6 +88,10 @@ model User {
   account       Account[]
   blog          Blog[]
   session       Session[]
+  facebook      String?
+  linkedin      String?
+  twitter       String?
+  contact_url   String?
 
   @@map("user")
 }

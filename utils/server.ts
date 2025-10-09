@@ -1,11 +1,13 @@
+import { cloudinary } from "@/lib/cloudinary";
 import type { Blog } from "@prisma-app/client";
-import { v2 as cloudinary } from "cloudinary";
 
-export async function uploadImageToCloudinary(blob: File | Blob) {
-  const buffer = Buffer.from(await blob.arrayBuffer());
-  const base64 = buffer.toString("base64");
-  const dataUrl = `data:${blob.type};base64,${base64}`;
-  const result = await cloudinary.uploader.upload(dataUrl, {
+export async function uploadImageToCloudinary(blob: File | Blob | string) {
+  if (typeof blob !== "string") {
+    const buffer = Buffer.from(await blob.arrayBuffer());
+    const base64 = buffer.toString("base64");
+    blob = `data:${blob.type};base64,${base64}`;
+  }
+  const result = await cloudinary.uploader.upload(blob, {
     auto_tagging: 0.8,
     folder: "blog",
   });
