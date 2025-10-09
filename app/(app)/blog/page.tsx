@@ -10,6 +10,8 @@ export const metadata: Metadata = seo({
   pathname: "/blogs",
 });
 
+export const revalidate = 600;
+
 export default async function BlogPage() {
   const posts = await listPublishBlogPosts();
   return (

@@ -10,6 +10,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache, Suspense } from "react";
 
+export const revalidate = 600;
+
 const cachedGetPostBySlug = cache(
   async (...args: Parameters<typeof getPostBySlug>) => {
     const post = await getPostBySlug(...args);
