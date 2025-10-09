@@ -1,9 +1,15 @@
 "use client";
 
-import { useState, useMemo, type ChangeEvent } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
-import { profileFormSchema, type ProfileFormValues } from "@/schemas";
+import { updateUserDetails } from "@/actions/users";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -13,21 +19,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Camera, Facebook, Linkedin, Twitter, LinkIcon } from "lucide-react";
-import { ImageCropDialog } from "./image-crop-dialog";
-import { toast } from "sonner";
+import { profileFormSchema, type ProfileFormValues } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { updateUserDetails } from "@/actions/users";
+import { Camera, Facebook, Linkedin, LinkIcon, Twitter } from "lucide-react";
+import { useMemo, useState, type ChangeEvent } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { ImageCropDialog } from "./image-crop-dialog";
 
 // Extend schema to include first/last name for this form
 
