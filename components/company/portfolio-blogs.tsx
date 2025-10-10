@@ -1,31 +1,10 @@
 import type { ComponentProps } from "react";
-import { Separator } from "../ui/separator";
 import BlogCard from "../blog/blog-card";
-import featured1 from "@/assets/images/featured-1.png";
-import featured2 from "@/assets/images/featured-2.png";
-import featured3 from "@/assets/images/featured-3.png";
+import { Separator } from "../ui/separator";
 
 type FeaturedPost = ComponentProps<typeof BlogCard>["post"];
 
-const featured: FeaturedPost[] = [
-  {
-    coverImage: featured1.src,
-    createdAt: new Date("05/11/25"),
-    title: "Harnessing AI in Product Development: Opportunities and Challenges",
-  },
-  {
-    coverImage: featured2.src,
-    createdAt: new Date("08/21/25"),
-    title: "From Idea to MVP: A Founder’s Guide to Building Fast",
-  },
-  {
-    coverImage: featured3.src,
-    createdAt: new Date("08/21/25"),
-    title: "From Idea to MVP: A Founder’s Guide to Building Fast",
-  },
-];
-
-const PortfolioBlogs = () => {
+const PortfolioBlogs = ({ featured }: { featured: FeaturedPost[] }) => {
   return (
     <>
       <div className="mt-12 md:mt-20 flex flex-col gap-8 md:gap-10">

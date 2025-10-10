@@ -92,6 +92,10 @@ model User {
   linkedin      String?
   twitter       String?
   contact_url   String?
+  bio           String?
+  publishedData Boolean?
+  slug          String?   @unique
+  work_role     String?
 
   @@map("user")
 }

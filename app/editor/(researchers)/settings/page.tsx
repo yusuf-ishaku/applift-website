@@ -1,7 +1,15 @@
 import { ProfileEditForm } from "@/components/profile/profile-edit-form";
 import { getUsersDetails } from "@/loaders/user";
+import { seo } from "@/utils/seo";
+import type { Metadata } from "next";
 
-export default async function Page() {
+export const metadata: Metadata = seo({
+  title: "Edit Profile",
+  description:
+    "Update your profile information, contact details, and social links on Comm.",
+});
+
+export default async function UserSettings() {
   const user = await getUsersDetails();
   return (
     <main className="bg-background py-12 px-4">

@@ -10,9 +10,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { profileFormSchema, type ProfileFormValues } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -28,6 +31,7 @@ import { useMemo, useState, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ImageCropDialog } from "./image-crop-dialog";
+import { MAX_FILE_SIZE_BYTES, MAX_FILE_SIZE_MB } from "@/config";
 
 // Extend schema to include first/last name for this form
 
@@ -42,6 +46,9 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
       linkedin: init.linkedin ?? "",
       contact_url: init.contact_url ?? "",
       image: init.image ?? "",
+      bio: init.bio ?? "",
+      work_role: init.work_role ?? "",
+      publishData: init.publishData ?? false,
     }),
     [init],
   );
@@ -53,14 +60,22 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setTempImage(reader.result as string);
-        setCropDialogOpen(true);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+      toast.error("File Size Exceeded 🚫", {
+        description: `Your file size is ${fileSizeMB} MB, which is over the limit of ${MAX_FILE_SIZE_MB} MB. Please choose a smaller image.`,
+      });
+      e.target.value = "";
+      return;
     }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setTempImage(reader.result as string);
+      setCropDialogOpen(true);
+    };
+    reader.readAsDataURL(file);
   };
 
   const getInitials = () => {
@@ -182,6 +197,65 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
 
               <Separator />
 
+              <FormField
+                control={form.control}
+                name="work_role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Role in Company{" "}
+                      <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g. Software Engineer, Designer, Product Manager"
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Specify your position or function within the company.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Separator />
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-medium text-foreground">Bio</h3>
+                  <p className="text-xs text-muted-foreground">
+                    Tell us about yourself
+                  </p>
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="bio"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>About you</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Write a short bio about yourself..."
+                          className="min-h-[120px] resize-none"
+                          {...field}
+                          value={field.value ?? ""}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Brief description for your profile (max 500 characters)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <Separator />
+
               {/* Social Links */}
               <div className="space-y-4">
                 <div>
@@ -189,7 +263,7 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                     Social Links
                   </h3>
                   <p className="text-xs text-muted-foreground">
-                    Optional — Add your social media profiles
+                    Optional — Add your social media usernames
                   </p>
                 </div>
 
@@ -202,12 +276,17 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                         <Facebook className="h-4 w-4" /> Facebook
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://facebook.com/username"
-                          {...field}
-                          value={field.value ?? ""}
-                        />
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground">
+                            fb.me/
+                          </span>
+                          <Input
+                            type="text"
+                            placeholder="john-doe"
+                            {...field}
+                            value={field.value ?? ""}
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -223,12 +302,17 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                         <Twitter className="h-4 w-4" /> X (Twitter)
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://x.com/username"
-                          {...field}
-                          value={field.value ?? ""}
-                        />
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground">
+                            x.com/
+                          </span>
+                          <Input
+                            type="text"
+                            placeholder="john-doe"
+                            {...field}
+                            value={field.value ?? ""}
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -244,12 +328,17 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                         <Linkedin className="h-4 w-4" /> LinkedIn
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://linkedin.com/in/username"
-                          {...field}
-                          value={field.value ?? ""}
-                        />
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground">
+                            linkedin.com/in/
+                          </span>
+                          <Input
+                            type="text"
+                            placeholder="john-doe"
+                            {...field}
+                            value={field.value ?? ""}
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -291,6 +380,41 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                         Enter a phone number, email address, or link to your
                         portfolio/website
                       </p>
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-medium text-foreground">
+                    Privacy Settings
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Control how your profile information is displayed
+                  </p>
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="publishData"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start gap-3 space-y-0 rounded-lg border p-4">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value ?? false}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>Publish profile publicly</FormLabel>
+                        <FormDescription>
+                          Allow your profile information to be displayed live on
+                          the website. You can change this setting at any time.
+                        </FormDescription>
+                      </div>
                     </FormItem>
                   )}
                 />

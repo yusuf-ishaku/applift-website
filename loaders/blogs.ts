@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import type { PostPreview } from "@/types";
+import { cache } from "react";
 
-export async function getPostBySlug(slug: string) {
+export const getPostBySlug = cache(async (slug: string) => {
   return await prisma.blog.findUnique({
     where: {
       slug,
@@ -16,7 +17,7 @@ export async function getPostBySlug(slug: string) {
       },
     },
   });
-}
+});
 
 export async function getPostRecommendations({
   authorId,
@@ -48,16 +49,18 @@ export async function getPostRecommendations({
   });
 }
 
-export async function getAllPublishedPostSlugs() {
+export const getAllPublishedPostSlugs = cache(async function () {
   return await prisma.blog.findMany({
     where: {
       published: true,
     },
     select: {
       slug: true,
+      createdAt: true,
+      updatedAt: true,
     },
   });
-}
+});
 
 export async function listPublishBlogPosts(): Promise<PostPreview[]> {
   const posts = await prisma.blog.findMany({
