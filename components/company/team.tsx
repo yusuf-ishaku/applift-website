@@ -8,6 +8,7 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 const Team = async () => {
   const teamList = await getTeamMembersList();
+  if (!teamList.length) return null;
   return (
     <section className="px-4">
       {/* Mission + Vision */}

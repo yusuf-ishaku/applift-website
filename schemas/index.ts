@@ -101,7 +101,7 @@ const baseProfileFields = z.object({
     .nullish(),
   image: z.url().nullish(),
   bio: z.string().max(2000).nullish(),
-  work_role: z.string().min(1, "Role is required").nullish(),
+  work_role: z.string().min(1, "Role is required"),
 });
 
 const noPublishProfile = baseProfileFields.extend({
@@ -113,15 +113,14 @@ const publishProfile = baseProfileFields
     contact_url: baseProfileFields.shape.contact_url.unwrap().unwrap(),
     image: baseProfileFields.shape.image.unwrap().unwrap(),
     bio: baseProfileFields.shape.bio.unwrap().unwrap(),
-    work_role: baseProfileFields.shape.work_role.unwrap().unwrap(),
   })
   .refine((data) => !!(data.facebook || data.twitter || data.linkedin), {
     message:
       "To publish your profile, you must include at least one social link.",
-    path: ["publishData"],
+    path: ["publishedData"],
   });
 
-export const profileFormSchema = z.discriminatedUnion("publishData", [
+export const profileFormSchema = z.discriminatedUnion("publishedData", [
   publishProfile,
   noPublishProfile,
 ]);

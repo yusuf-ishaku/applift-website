@@ -30,7 +30,8 @@ export const auth = betterAuth({
           contact_url: true,
           twitter: true,
           linkedin: true,
-          publishedData: true,
+          publishData: true,
+          work_role: true,
         },
       });
       return {
@@ -46,5 +47,6 @@ export const auth = betterAuth({
     "https://liftblog.vercel.app",
     "https://liftblog-omega.vercel.app",
     "https://applift.xyz",
+    "https://www.applift.xyz",
   ],
 });

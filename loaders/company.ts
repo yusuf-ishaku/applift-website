@@ -4,7 +4,7 @@ import { cache } from "react";
 export const getAllCompanySlugs = cache(async () => {
   const results = await prisma.user.findMany({
     where: {
-      publishedData: true,
+      publishData: true,
       slug: {
         not: null,
       },
@@ -23,7 +23,7 @@ export const getAllCompanySlugs = cache(async () => {
 export async function getTeamMembersList() {
   return await prisma.user.findMany({
     where: {
-      publishedData: true,
+      publishData: true,
     },
     select: {
       image: true,
@@ -37,7 +37,7 @@ export async function getTeamMembersList() {
 export async function getTeamMemberDetails(slug: string) {
   return await prisma.user.findUnique({
     where: {
-      publishedData: true,
+      publishData: true,
       slug,
     },
     select: {

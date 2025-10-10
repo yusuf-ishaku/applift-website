@@ -93,7 +93,7 @@ model User {
   twitter       String?
   contact_url   String?
   bio           String?
-  publishedData Boolean?
+  publishData   Boolean?
   slug          String?   @unique
   work_role     String?
 
