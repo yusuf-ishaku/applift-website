@@ -5,6 +5,9 @@ import OurStructure from "@/components/company/our-structure";
 import Team from "@/components/company/team";
 import { seo } from "@/utils/seo";
 import type { Metadata } from "next";
+import { Suspense } from "react";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = seo({
   title: "About Us",
@@ -18,7 +21,9 @@ export default function CompanyPage() {
     <>
       <CompanyHero />
       <Branding />
-      <Team />
+      <Suspense key="company-team">
+        <Team />
+      </Suspense>
       <HowWeWork />
       <OurStructure />
     </>

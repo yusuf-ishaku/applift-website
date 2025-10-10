@@ -1,31 +1,58 @@
 import { socialIconMap } from "@/constants/socials";
-import type { TeamMember } from "@/constants/team";
+import type { TeamMemberDetails } from "@/loaders/company";
 import Image from "next/image";
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
+import z from "zod";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 
-const PortfolioAbout: FC<Omit<TeamMember, "project">> = ({
+const SocialIcon = ({
+  platform,
+  url,
+}: {
+  platform: keyof typeof socialIconMap;
+  url: string;
+}) => {
+  const Icon = socialIconMap[platform];
+  return (
+    <Button asChild key={platform}>
+      <a
+        target="_blank"
+        href={url}
+        className="!size-10 sm:!size-12 !p-0 !bg-[#FAFAFA] !rounded-full flex items-center justify-center"
+      >
+        <Icon className="!size-5 sm:!size-6 fill-[#575757]" />
+      </a>
+    </Button>
+  );
+};
+
+const PortfolioAbout: FC<TeamMemberDetails> = ({
   image,
   name,
-  role,
-  socials: socialsRecord,
+  work_role: role,
   bio,
-  contact,
+  contact_url,
+  facebook,
+  linkedin,
+  twitter,
 }) => {
-  const socials = Object.entries(socialsRecord ?? {}) as [
-    keyof typeof socialIconMap,
-    string,
-  ][];
-
+  const contact = useMemo(() => {
+    if (z.email().safeParse(contact_url).success)
+      return `mailto:${contact_url}`;
+    else if (z.url().safeParse(contact_url).success) return contact_url!;
+    else return `tel:${contact_url}`;
+  }, [contact_url]);
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10 mt-8 md:mt-12">
       {/* Image */}
       <div className="w-40 h-48 sm:w-56 sm:h-64 lg:w-[247px] lg:h-[299px] shrink-0">
         <Image
           quality={70}
-          src={image}
+          src={image!}
           alt={name}
+          width={247}
+          height={299}
           className="w-full h-full object-cover object-top rounded-lg mix-blend-luminosity"
         />
       </div>
@@ -43,22 +70,26 @@ const PortfolioAbout: FC<Omit<TeamMember, "project">> = ({
             </p>
           </div>
 
-          {socials.length > 0 && (
+          {(facebook || twitter || linkedin) && (
             <div className="flex items-center gap-3">
-              {socials.map(([platform, url]) => {
-                const Icon = socialIconMap[platform];
-                return (
-                  <Button asChild key={platform}>
-                    <a
-                      target="_blank"
-                      href={url}
-                      className="!size-10 sm:!size-12 !p-0 !bg-[#FAFAFA] !rounded-full flex items-center justify-center"
-                    >
-                      <Icon className="!size-5 sm:!size-6 fill-[#575757]" />
-                    </a>
-                  </Button>
-                );
-              })}
+              {facebook && (
+                <SocialIcon
+                  platform="facebook"
+                  url={`https://fb.me/${facebook}`}
+                />
+              )}
+              {linkedin && (
+                <SocialIcon
+                  platform="linkedIn"
+                  url={`https://linked.in/in/${linkedin}`}
+                />
+              )}
+              {twitter && (
+                <SocialIcon
+                  platform="twitter"
+                  url={`https://x.com/${twitter}`}
+                />
+              )}
             </div>
           )}
         </div>

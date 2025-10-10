@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { blogCategories } from "@/constants/blog";
 import { myBlogOptions } from "@/lib/query-options";
 import { cn } from "@/lib/utils";
 import type { PostPreview as Post } from "@/types";
 import { extractNameInitials, formatDate } from "@/utils/client";
 import { useQuery } from "@tanstack/react-query";
+import uniqBy from "lodash.uniqby";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,17 +27,10 @@ export default function MyBlogs() {
 
   // --- Categories & filtering (memoized)
   const categories = useMemo(() => {
-    // preserve original category order and avoid duplicates
-    const seen = new Set<string>();
-    const cats: string[] = [];
-    for (const p of posts) {
-      const cat = p?.category ?? "Uncategorized";
-      if (!seen.has(cat)) {
-        seen.add(cat);
-        cats.push(cat);
-      }
-    }
-    return ["All", ...cats];
+    const tabs = uniqBy(posts, (post) => post.category).map(
+      (post) => post.category,
+    ) as Readonly<string[]> as typeof blogCategories;
+    return ["All", ...tabs] as const;
   }, [posts]);
 
   const [filter, setFilter] = useState<string>("All");

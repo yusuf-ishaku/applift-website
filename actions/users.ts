@@ -4,10 +4,14 @@ import { prisma } from "@/lib/prisma";
 import { profileFormSchema, type ProfileFormValues } from "@/schemas";
 import { handleImageUpload } from "@/utils/server";
 import { authorizeSession } from ".";
+import { revalidatePath } from "next/cache";
+import { makeSlug } from "@/utils/client";
 
 export async function updateUserDetails(data: ProfileFormValues) {
   const { firstName, lastName, image, ...parsed } =
     profileFormSchema.parse(data);
+  const name = `${firstName} ${lastName}`.trim();
+  const slug = makeSlug(name);
   const session = await authorizeSession();
   const imageUpload = await handleImageUpload(image ?? undefined, {
     folder: "users",
@@ -20,8 +24,12 @@ export async function updateUserDetails(data: ProfileFormValues) {
     },
     data: {
       ...parsed,
+      name,
+      slug,
       image: imageUpload?.url,
-      name: `${firstName} ${lastName}`.trim(),
     },
   });
+  revalidatePath("/sitemap.xml");
+  revalidatePath(`/company`);
+  revalidatePath(`/company/${slug}`);
 }

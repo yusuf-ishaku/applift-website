@@ -21,7 +21,7 @@ export const auth = betterAuth({
   baseURL: APP_URL,
   plugins: [
     customSession(async ({ user, session }) => {
-      const socials = await prisma.user.findUniqueOrThrow({
+      const extras = await prisma.user.findUniqueOrThrow({
         where: {
           id: user.id,
         },
@@ -30,10 +30,11 @@ export const auth = betterAuth({
           contact_url: true,
           twitter: true,
           linkedin: true,
+          publishedData: true,
         },
       });
       return {
-        socials,
+        extras,
         user,
         session,
       };

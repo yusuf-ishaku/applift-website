@@ -8,23 +8,25 @@ import {
 import { seo } from "@/utils/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { cache, Suspense } from "react";
+import { Suspense } from "react";
 
-export const revalidate = 600;
+export const revalidate = 3600;
 
-const cachedGetPostBySlug = cache(
-  async (...args: Parameters<typeof getPostBySlug>) => {
-    const post = await getPostBySlug(...args);
-    if (!post) notFound();
-    return post;
-  },
-);
-
-type Props = {
-  params: Promise<{ slug: string }>;
+const cachedGetPostBySlug = async (
+  ...args: Parameters<typeof getPostBySlug>
+) => {
+  const post = await getPostBySlug(...args);
+  if (!post) notFound();
+  return post;
 };
 
-export async function generateStaticParams() {
+type Params = { slug: string };
+
+type Props = {
+  params: Promise<Params>;
+};
+
+export async function generateStaticParams(): Promise<Params[]> {
   const posts = await getAllPublishedPostSlugs();
   return posts.map((post) => ({
     slug: post.slug,

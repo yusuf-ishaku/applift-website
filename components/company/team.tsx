@@ -1,12 +1,13 @@
 import { Separator } from "@/components/ui/separator";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
-import { teamMembers } from "@/constants/team";
-import Image from "next/image";
-import { Button } from "../ui/button";
+import { getTeamMembersList } from "@/loaders/company";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
-const Team = () => {
+const Team = async () => {
+  const teamList = await getTeamMembersList();
   return (
     <section className="px-4">
       {/* Mission + Vision */}
@@ -36,7 +37,7 @@ const Team = () => {
         {/* Scrollable Team Cards */}
         <ScrollArea className="w-full whitespace-nowrap">
           <div className="flex w-max space-x-4 py-4">
-            {teamMembers.map((member) => (
+            {teamList.map((member) => (
               <figure
                 key={member.name}
                 className="shrink-0 flex flex-col even:flex-col-reverse gap-6 items-center w-[250px] sm:w-[280px] md:w-[320px] lg:w-[338px] h-auto group"
@@ -45,14 +46,16 @@ const Team = () => {
                 <div className="overflow-hidden rounded-xl w-full aspect-[338/359] relative">
                   <Image
                     quality={70}
-                    src={member.image}
+                    src={member.image!}
                     alt={member.name}
                     fill
+                    width={338}
+                    height={359}
                     className="object-cover rounded-xl size-full mix-blend-luminosity object-center"
                   />
                   <div className="absolute bottom-5 inset-x-0">
                     <Link
-                      href={member.slug ? `/company/${member.slug}` : "#"}
+                      href={`/company/${member.slug}`}
                       className="size-14 sm:size-16 mx-auto block"
                     >
                       <Button
@@ -71,7 +74,7 @@ const Team = () => {
                     {member.name}
                   </h4>
                   <p className="text-sm md:text-base text-[#B7B7B7] text-center leading-snug">
-                    {member.role}
+                    {member.work_role}
                   </p>
                 </figcaption>
               </figure>

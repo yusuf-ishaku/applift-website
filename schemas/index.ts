@@ -80,7 +80,7 @@ export const newCommentSchema = z.object({
     .transform((v) => v ?? null),
 });
 
-export const profileFormSchema = z.object({
+const baseProfileFields = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   facebook: z.string().nullish(),
@@ -88,11 +88,42 @@ export const profileFormSchema = z.object({
   linkedin: z.string().nullish(),
   contact_url: z
     .string()
-    .regex(/^\+?\d{1,3}?[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,4}$/)
-    .or(z.url())
-    .or(z.email())
+    .refine(
+      (val) =>
+        !val ||
+        /^\+?\d{1,3}?[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,4}$/.test(
+          val,
+        ) ||
+        z.url().safeParse(val).success ||
+        z.email().safeParse(val).success,
+      "Must be a valid phone number, email, or URL",
+    )
     .nullish(),
   image: z.url().nullish(),
+  bio: z.string().max(2000).nullish(),
+  work_role: z.string().min(1, "Role is required").nullish(),
 });
+
+const noPublishProfile = baseProfileFields.extend({
+  publishData: z.literal(false).nullish(),
+});
+const publishProfile = baseProfileFields
+  .extend({
+    publishData: z.literal(true),
+    contact_url: baseProfileFields.shape.contact_url.unwrap().unwrap(),
+    image: baseProfileFields.shape.image.unwrap().unwrap(),
+    bio: baseProfileFields.shape.bio.unwrap().unwrap(),
+    work_role: baseProfileFields.shape.work_role.unwrap().unwrap(),
+  })
+  .refine((data) => !!(data.facebook || data.twitter || data.linkedin), {
+    message:
+      "To publish your profile, you must include at least one social link.",
+    path: ["publishData"],
+  });
+
+export const profileFormSchema = z.discriminatedUnion("publishData", [
+  publishProfile,
+  noPublishProfile,
+]);
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>;

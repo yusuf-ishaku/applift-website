@@ -56,6 +56,7 @@ export async function deleteBlogPost(postId: z.infer<typeof deletePostSchema>) {
   });
   revalidatePath("/blog");
   revalidatePath(`/blog/${slug}`);
+  revalidatePath("/sitemap.xml");
 }
 
 const updateBlogSchema = zfd.formData(
@@ -90,6 +91,7 @@ export async function updateBlog(formData: FormData) {
 
   revalidatePath("/blog");
   revalidatePath(`/blog/${slug}`);
+  revalidatePath("/sitemap.xml");
 }
 
 export async function publishBlog(formData: FormData) {
@@ -111,6 +113,7 @@ export async function publishBlog(formData: FormData) {
 
   revalidatePath("/blog");
   revalidatePath(`/blog/${slug}`);
+  revalidatePath("/sitemap.xml");
 
   if (coverImage?.updateId) {
     waitUntil(coverImage.updateId(id));
