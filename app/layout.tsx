@@ -7,10 +7,11 @@ import NextTopLoader from "nextjs-toploader";
 import ogcardImg from "@/assets/images/og-card.jpg";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
 // @ts-expect-error I'll handle this later
 import "./globals.css";
 import Providers from "./providers";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -57,7 +58,7 @@ export const metadata: Metadata = seo({
     "blockchain industry insights",
     "digital innovation strategies",
     "startup technology advice",
-    "setup and cleanup advise"
+    "setup and cleanup advise",
   ],
   openGraph: {
     siteName: "Applift",
@@ -90,6 +91,7 @@ export default function RootLayout({
             <NextTopLoader showSpinner={false} />
             {children}
             <Analytics />
+            <SpeedInsights />
             <Toaster />
           </ThemeProvider>
         </Providers>

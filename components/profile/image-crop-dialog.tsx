@@ -123,6 +123,7 @@ export function ImageCropDialog({
 
         <div className="space-y-4">
           <div className="relative flex items-center justify-center overflow-hidden rounded-lg bg-muted">
+            {/*eslint-disable-next-line @next/next/no-img-element*/}
             <img
               ref={imageRef}
               src={imageSrc || "/placeholder.svg"}
