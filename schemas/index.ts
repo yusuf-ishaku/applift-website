@@ -100,7 +100,7 @@ const baseProfileFields = z.object({
     )
     .nullish(),
   image: z.url().nullish(),
-  bio: z.string().nullish(),
+  bio: z.string().max(2000).nullish(),
   work_role: z.string().min(1, "Role is required").nullish(),
 });
 
