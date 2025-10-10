@@ -246,7 +246,7 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                         />
                       </FormControl>
                       <FormDescription>
-                        Brief description for your profile (max 500 characters)
+                        Brief description for your profile (max 2000 characters)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
