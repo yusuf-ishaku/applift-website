@@ -2,7 +2,7 @@ import type { Blog, User } from "@prisma-app/client";
 import type { ReactNode } from "react";
 
 export type BlogPost = Omit<Blog, "tags"> & {
-  author: Pick<User, "name" | "image">;
+  author: Pick<User, "name" | "image"> & Partial<Pick<User, "slug">>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tags?: any;
 };

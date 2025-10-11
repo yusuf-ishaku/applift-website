@@ -11,3 +11,5 @@
 
 get eslint rule to stop passing objects to template literals
 Add debounced checks to check for availability of slug
+
+remove header space on mobile

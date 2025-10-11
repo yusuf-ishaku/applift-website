@@ -41,8 +41,8 @@ const Navbar = () => {
   const pathname = usePathname();
   return (
     <>
-      <nav className="sticky top-1 md:top-4 z-50">
-        <div className="md:h-[97px] mt-[41px] mx-2 md:mx-6 lg:mx-20  rounded-[10px] px-4 md:px-6 lg:px-8 py-4 md:py-6 flex items-center justify-between border border-solid [border-image-source:linear-gradixent(90.38deg,#00111E_18.59%,rgba(141,141,141,0)_105.12%)] bg-background/80 backdrop-blur-xs">
+      <nav className="sticky top-4 z-50">
+        <div className="md:h-[97px] md:mt-[41px] mx-2 md:mx-6 lg:mx-20  rounded-[10px] px-4 md:px-6 lg:px-8 py-4 md:py-6 flex items-center justify-between border border-solid [border-image-source:linear-gradixent(90.38deg,#00111E_18.59%,rgba(141,141,141,0)_105.12%)] bg-background/80 backdrop-blur-xs">
           <div className="dark:bg-transparent lg:p-1.5 rounded-xl">
             <Image
               quality={70}

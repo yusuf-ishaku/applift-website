@@ -1,17 +1,16 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { profileFormSchema, type ProfileFormValues } from "@/schemas";
+import { profileSchema, type ProfileFormValues } from "@/schemas";
 import { handleImageUpload } from "@/utils/server";
 import { authorizeSession } from ".";
 import { revalidatePath } from "next/cache";
 import { makeSlug } from "@/utils/client";
 
 export async function updateUserDetails(data: ProfileFormValues) {
-  const { firstName, lastName, image, ...parsed } =
-    profileFormSchema.parse(data);
+  const { firstName, lastName, image, ...parsed } = profileSchema.parse(data);
   const name = `${firstName} ${lastName}`.trim();
-  const slug = makeSlug(name);
+  const slug = parsed.publishData ? makeSlug(name) : null;
   const session = await authorizeSession();
   const imageUpload = await handleImageUpload(image ?? undefined, {
     folder: "users",
@@ -28,7 +27,7 @@ export async function updateUserDetails(data: ProfileFormValues) {
       slug,
       image: imageUpload?.url,
     },
-    include: {
+    select: {
       blog: {
         where: {
           published: true,
@@ -42,7 +41,13 @@ export async function updateUserDetails(data: ProfileFormValues) {
   revalidatePath("/sitemap.xml");
   revalidatePath(`/company`);
   revalidatePath(`/company/${slug}`);
-  if (!blog.length) return;
-  revalidatePath("/blog");
-  blog.forEach(({ slug }) => revalidatePath(`/blog/${slug}`));
+  if (!blog.length) {
+    revalidatePath("/blog");
+    blog.forEach(({ slug }) => revalidatePath(`/blog/${slug}`));
+  }
+  if (slug) {
+    return {
+      slug,
+    };
+  }
 }

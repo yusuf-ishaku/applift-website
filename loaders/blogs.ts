@@ -13,6 +13,7 @@ export const getPostBySlug = cache(async (slug: string) => {
         select: {
           name: true,
           image: true,
+          slug: true,
         },
       },
     },
