@@ -5,6 +5,7 @@ import { Separator } from "../ui/separator";
 type FeaturedPost = ComponentProps<typeof BlogCard>["post"];
 
 const PortfolioBlogs = ({ featured }: { featured: FeaturedPost[] }) => {
+  if (!featured.length) return null;
   return (
     <>
       <div className="mt-12 md:mt-20 flex flex-col gap-8 md:gap-10">

@@ -32,6 +32,7 @@ export const auth = betterAuth({
           linkedin: true,
           publishData: true,
           work_role: true,
+          bio: true,
         },
       });
       return {

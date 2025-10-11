@@ -68,6 +68,7 @@ export const metadata: Metadata = seo({
   twitter: {
     card: "summary",
   },
+  metadataBase: new URL(APP_URL),
 });
 
 export default function RootLayout({

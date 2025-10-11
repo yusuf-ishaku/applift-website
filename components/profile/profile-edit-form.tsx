@@ -23,17 +23,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { profileFormSchema, type ProfileFormValues } from "@/schemas";
+import { profileSchema, type ProfileFormValues } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Camera, Facebook, Linkedin, LinkIcon, Twitter } from "lucide-react";
+import {
+  Camera,
+  Facebook,
+  Linkedin,
+  LinkIcon,
+  Twitter,
+  Eye,
+  Share2,
+} from "lucide-react";
 import { useMemo, useState, type ChangeEvent } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { ImageCropDialog } from "./image-crop-dialog";
-import { MAX_FILE_SIZE_BYTES, MAX_FILE_SIZE_MB } from "@/config";
+import {
+  MAX_BIO_LENGTH,
+  MAX_FILE_SIZE_BYTES,
+  MAX_FILE_SIZE_MB,
+  MIN_BIO_LENGTH,
+} from "@/config";
+import clsx from "clsx";
+import { useRouter } from "nextjs-toploader/app";
 
-// Extend schema to include first/last name for this form
+const toastId = "profile-update";
 
 export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
   const [cropDialogOpen, setCropDialogOpen] = useState(false);
@@ -52,10 +67,15 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
     }),
     [init],
   );
-
+  const router = useRouter();
   const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
+    resolver: zodResolver(profileSchema),
     defaultValues: initialState,
+  });
+
+  const isPublishing = useWatch({
+    control: form.control,
+    name: "publishData",
   });
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -88,23 +108,58 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
     onMutate: () => {
       toast.loading("Updating details...", {
         description: "Please wait while we save your changes.",
+        id: toastId,
       });
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Profile updated", {
-        description: "Your details have been saved successfully.",
+        description: "Details were saved successfully.",
+        id: toastId,
+        action: data?.slug && (
+          <div className="flex ml-1 gap-2">
+            <Button
+              size="icon"
+              title="View profile"
+              variant="outline"
+              onClick={() => router.push(`/company/${data.slug}`)}
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
+            <Button
+              size="icon"
+              variant="outline"
+              title="Copy share link"
+              onClick={async () => {
+                const url = new URL(
+                  `/company/${data.slug}`,
+                  window.location.href,
+                );
+                await navigator.clipboard.writeText(url.href);
+                toast.info("Profile link copied to clipboard!", {
+                  id: toastId,
+                });
+              }}
+            >
+              <Share2 className="h-4 w-4" />
+            </Button>
+          </div>
+        ),
       });
     },
     onError: (error) => {
       toast.error("Update failed", {
         description:
           error instanceof Error ? error.message : "Something went wrong.",
+        id: toastId,
       });
     },
   });
 
   return (
     <>
+      {Object.values(form.formState.errors).map((error, index) => (
+        <p key={index}>Error:{error.message}</p>
+      ))}
       <Form {...form}>
         <form onSubmit={form.handleSubmit((data) => update(data))}>
           <Card>
@@ -131,24 +186,35 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                           {getInitials()}
                         </AvatarFallback>
                       </Avatar>
+
                       <div className="flex-1">
-                        <label htmlFor="picture" className="cursor-pointer">
-                          <div className="flex items-center gap-2 text-sm font-medium text-primary hover:underline">
-                            <Camera className="h-4 w-4" />
-                            Change profile picture
-                          </div>
+                        <label
+                          htmlFor="picture"
+                          className="cursor-pointer flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+                        >
+                          <Camera className="h-4 w-4" />
+                          <span>
+                            Change profile picture{" "}
+                            {isPublishing && (
+                              <span className="text-destructive">*</span>
+                            )}
+                          </span>
                         </label>
+
                         <Input
                           id="picture"
                           type="file"
                           accept="image/*"
                           className="sr-only hidden"
                           onChange={handleImageChange}
+                          aria-required="true"
                         />
+
                         <p className="mt-1 text-xs text-muted-foreground">
                           JPG, PNG or GIF. Max size 5MB.
                         </p>
                       </div>
+
                       <ImageCropDialog
                         open={cropDialogOpen}
                         onOpenChange={setCropDialogOpen}
@@ -159,6 +225,7 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                   </FormItem>
                 )}
               />
+
               <Separator />
 
               {/* Name Fields */}
@@ -204,7 +271,9 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                   <FormItem>
                     <FormLabel>
                       Role in Company{" "}
-                      <span className="text-destructive">*</span>
+                      {isPublishing && (
+                        <span className="text-destructive">*</span>
+                      )}
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -234,23 +303,41 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                 <FormField
                   control={form.control}
                   name="bio"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>About you</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Write a short bio about yourself..."
-                          className="min-h-[120px] resize-none"
-                          {...field}
-                          value={field.value ?? ""}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Brief description for your profile (max 2000 characters)
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    const length = field.value?.length ?? 0;
+                    return (
+                      <FormItem>
+                        <FormLabel>
+                          About you{" "}
+                          {isPublishing && (
+                            <span className="text-destructive">*</span>
+                          )}
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            {...field}
+                            value={field.value ?? ""}
+                            className="min-h-[120px] resize-none"
+                            placeholder={`Write a short bio about yourself, at least ${MIN_BIO_LENGTH} characters`}
+                          />
+                        </FormControl>
+                        <FormDescription className="flex gap-2 items-center justify-between">
+                          <span>Brief description for your profile</span>
+                          <span
+                            className={clsx(
+                              length > MAX_BIO_LENGTH && "text-destructive",
+                              length >= MIN_BIO_LENGTH &&
+                                length < MAX_BIO_LENGTH &&
+                                "text-green-500",
+                            )}
+                          >
+                            {field.value?.length ?? 0}/{MAX_BIO_LENGTH}
+                          </span>
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
               </div>
 
@@ -366,7 +453,10 @@ export function ProfileEditForm({ init }: { init: ProfileFormValues }) {
                     <FormItem>
                       <FormLabel className="flex items-center gap-2">
                         <LinkIcon className="h-4 w-4" />
-                        Contact
+                        Contact{" "}
+                        {isPublishing && (
+                          <span className="text-destructive">*</span>
+                        )}
                       </FormLabel>
                       <FormControl>
                         <Input

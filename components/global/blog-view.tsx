@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import type { BlogPost } from "@/types";
 import { Share2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback } from "react";
 import { toast } from "sonner";
 
@@ -45,11 +46,17 @@ const BlogView = ({ post }: { post: BlogPost }) => {
     <>
       <div className="max-w-3xl mx-auto max-md:px-4">
         <div className="flex flex-col items-start gap-[32px] ">
-          <h1 className="font-medium text-[40px] leading-[50px]">
+          <h1 className="font-medium text-3xl leading-10 sm:text-4xl sm:leading-11 md:text-[40px] md:leading-[50px]">
             {post.title}
           </h1>
           <div className="flex items-center justify-between w-full">
-            <div className="flex items-center gap-[8px]">
+            <Link
+              href={post.author.slug ? `/company/${post.author.slug}` : "#"}
+              className="flex items-center gap-[8px]"
+              ref={(el) => {
+                if (!post.author.slug) el?.removeAttribute("href");
+              }}
+            >
               <Avatar className="size-[28px]">
                 <AvatarImage asChild src={post.author.image ?? "#"}>
                   <Image
@@ -69,7 +76,7 @@ const BlogView = ({ post }: { post: BlogPost }) => {
               <span className="text-[16px] leading-[20px] text-[#6F6F6F]">
                 {formattedDate}
               </span>
-            </div>
+            </Link>
 
             {/* Share Button */}
             <Button

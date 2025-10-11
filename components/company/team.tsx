@@ -50,8 +50,6 @@ const Team = async () => {
                     src={member.image!}
                     alt={member.name}
                     fill
-                    width={338}
-                    height={359}
                     className="object-cover rounded-xl size-full mix-blend-luminosity object-center"
                   />
                   <div className="absolute bottom-5 inset-x-0">

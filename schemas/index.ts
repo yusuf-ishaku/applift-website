@@ -1,3 +1,4 @@
+import { MAX_BIO_LENGTH, MIN_BIO_LENGTH } from "@/config";
 import { inquiryBudget, inquiryHelpWith } from "@/constants";
 import { blogCategories } from "@/constants/blog";
 import { makeSlug } from "@/utils/client";
@@ -80,49 +81,49 @@ export const newCommentSchema = z.object({
     .transform((v) => v ?? null),
 });
 
-const baseProfileFields = z.object({
+const baseProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   facebook: z.string().nullish(),
   twitter: z.string().nullish(),
   linkedin: z.string().nullish(),
-  contact_url: z
-    .string()
-    .refine(
-      (val) =>
-        !val ||
-        /^\+?\d{1,3}?[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,4}$/.test(
-          val,
-        ) ||
-        z.url().safeParse(val).success ||
-        z.email().safeParse(val).success,
-      "Must be a valid phone number, email, or URL",
-    )
-    .nullish(),
-  image: z.url().nullish(),
-  bio: z.string().max(2000).nullish(),
-  work_role: z.string().min(1, "Role is required"),
 });
 
-const noPublishProfile = baseProfileFields.extend({
+const noPublishProfile = baseProfileSchema.extend({
   publishData: z.literal(false).nullish(),
+  image: z.string().nullish(),
+  bio: z.string().nullish(),
+  work_role: z.string().nullish(),
+  contact_url: z.string().nullish(),
 });
-const publishProfile = baseProfileFields
+
+const publishProfile = baseProfileSchema
   .extend({
     publishData: z.literal(true),
-    contact_url: baseProfileFields.shape.contact_url.unwrap().unwrap(),
-    image: baseProfileFields.shape.image.unwrap().unwrap(),
-    bio: baseProfileFields.shape.bio.unwrap().unwrap(),
+    image: z.url(),
+    bio: z.string().trim().max(MAX_BIO_LENGTH).min(MIN_BIO_LENGTH),
+    work_role: z.string().min(1, "Role is required"),
+    contact_url: z
+      .string()
+      .refine(
+        (val) =>
+          /^\+?\d{1,3}?[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,4}$/.test(
+            val,
+          ) ||
+          z.url().safeParse(val).success ||
+          z.email().safeParse(val).success,
+        "Must be a valid phone number, email, or URL",
+      ),
   })
   .refine((data) => !!(data.facebook || data.twitter || data.linkedin), {
     message:
-      "To publish your profile, you must include at least one social link.",
-    path: ["publishedData"],
+      "To publish your profile, you must include at least one social media link.",
+    path: ["publishData"],
   });
 
-export const profileFormSchema = z.discriminatedUnion("publishedData", [
+export const profileSchema = z.discriminatedUnion("publishData", [
   publishProfile,
   noPublishProfile,
 ]);
 
-export type ProfileFormValues = z.infer<typeof profileFormSchema>;
+export type ProfileFormValues = z.infer<typeof profileSchema>;
